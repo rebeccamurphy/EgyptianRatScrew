@@ -23,11 +23,12 @@ public class GameView extends View{
 				redPaint.setColor(Color.RED);
 				circleX =100;
 				circleY = 100;
-				radius = 30;
+				radius = 50;
 			}
 			
 			@Override
-			protected void onDraw(Canvas canvas) {
+			protected void onDraw(Canvas canvas) 
+			{
 				canvas.drawCircle(circleX, circleY, radius, redPaint);
 			}
 			
@@ -43,7 +44,7 @@ public class GameView extends View{
 					break; 
 				case MotionEvent.ACTION_UP:
 					circleX =X;
-					circleY = Y;
+					circleY =Y;
 					break;
 				case MotionEvent.ACTION_MOVE:
 					break;
@@ -52,5 +53,5 @@ public class GameView extends View{
 				invalidate();
 				return true;
 			}
-		}
+	}
 	
