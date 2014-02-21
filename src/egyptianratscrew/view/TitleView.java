@@ -1,7 +1,8 @@
-package com.egyptianratscrew.view;
+package egyptianratscrew.view;
 
-import com.egyptianratscrew.activity.GameActivity;
-import com.egyptianratscrew.activity.R;
+
+import egyptianratscrew.activity.GameActivity;
+import egyptianratscrew.activity.R;
 
 import android.content.Context;
 import android.content.Intent;

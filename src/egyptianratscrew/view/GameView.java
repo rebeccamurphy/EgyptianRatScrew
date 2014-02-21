@@ -1,4 +1,4 @@
-package com.egyptianratscrew.view;
+package egyptianratscrew.view;
 
 import android.content.Context; 
 import android.graphics.Canvas;

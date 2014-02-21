@@ -1,6 +1,6 @@
-package com.egyptianratscrew.activity;
+package egyptianratscrew.activity;
 
-import com.egyptianratscrew.view.GameView;
+import egyptianratscrew.view.GameView;
 
 import android.app.Activity;
 import android.os.Bundle; 

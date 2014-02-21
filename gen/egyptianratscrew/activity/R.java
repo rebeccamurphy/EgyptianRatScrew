@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.egyptianratscrew.activity;
+package egyptianratscrew.activity;
 
 public final class R {
     public static final class attr {
