@@ -51,6 +51,9 @@ public class TitleView extends View {
 		super.onSizeChanged(w, h, oldw, oldh);
 		screenW = w;
 		screenH = h;
+		GameView myGameView = new GameView(myContext);
+		myGameView.initCards();
+		 
 	}
 	
 	@Override
