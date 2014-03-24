@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import egyptianratscrew.activity.R;
 import egyptianratscrew.card.Card;
+
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -57,9 +59,14 @@ public class GameView extends View {
 		super.onSizeChanged(w, h, oldw, oldh);
 		screenW = w;
 		screenH = h;
-		//initCards();
-		//dealCards();
-
+		initCards();
+		dealCards();
+		drawCard(discardPile); 
+		Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), R.drawable.card_back);
+		scaledCardW = (int) (screenW /8);
+		scaledCardH = (int) (scaledCardW*1.28);
+		cardBack = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
+		
 	}
 
 	@Override
@@ -86,6 +93,16 @@ public class GameView extends View {
 						null);
 			}
 		}
+		for (int i = 0; i < oppHand.size(); i++) 
+		{ 
+			canvas.drawBitmap(cardBack, i*(scale*5), whitePaint.getTextSize()+(50*scale), null); 
+		}
+		canvas.drawBitmap(cardBack, (screenW/2)-cardBack.getWidth()-10, (screenH/2)-(cardBack.getHeight()/2),null);
+		
+		if (!discardPile.isEmpty())
+		{ 
+			canvas.drawBitmap(discardPile.get(0).getBitmap(),(screenW/2)+10,(screenH/2)-(cardBack.getHeight()/2),null); 
+		} 
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
