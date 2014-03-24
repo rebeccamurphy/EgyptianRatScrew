@@ -37,6 +37,8 @@ public class GameView extends View {
 	
 	private int oppScore;
 	private int myScore;
+	
+	private Bitmap cardBack;
 
 	public GameView(Context context) {
 		super(context);
@@ -55,8 +57,8 @@ public class GameView extends View {
 		super.onSizeChanged(w, h, oldw, oldh);
 		screenW = w;
 		screenH = h;
-		initCards();
-		dealCards();
+		//initCards();
+		//dealCards();
 
 	}
 
@@ -67,10 +69,11 @@ public class GameView extends View {
 				10, 
 				whitePaint.getTextSize()+10,
 				whitePaint);
+		//this is wrong butit wasnt showing up the other way
 		canvas.drawText(
 				"My Score: " + Integer.toString(myScore) , 
 				10, 
-				screenH - whitePaint.getTextSize()-10,
+				whitePaint.getTextSize()+50,
 				whitePaint);
 		for (int i =0; i < myHand.size(); i++)
 		{
@@ -87,8 +90,6 @@ public class GameView extends View {
 
 	public boolean onTouchEvent(MotionEvent event) {
 		int eventaction = event.getAction();
-		int X = (int) event.getX();
-		int Y = (int) event.getY();
 
 		switch (eventaction) {
 		case MotionEvent.ACTION_DOWN:
@@ -103,20 +104,19 @@ public class GameView extends View {
 		return true;
 	}
 
-	// change to private later
-	public void initCards() {
+	
+	private void initCards() {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 102; j < 115; j++) {
 				int tempId = j + (i * 100);
 				Card tempCard = new Card(tempId);
 				int resourceId = getResources().getIdentifier("card" + tempId,
 						"drawable", myContext.getPackageName());
-				Bitmap tempBitmap = BitmapFactory.decodeResource(
-						myContext.getResources(), resourceId);
+				Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), resourceId);
 				scaledCardW = (int) (screenW / 8);
-				scaledCardH = (int) (screenH / 8);
-				Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap,
-						scaledCardW, scaledCardH, false);
+				scaledCardH = (int) (scaledCardW *1.28);
+				//scaled bitmap not working. 
+				Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
 				tempCard.setBitmap(scaledBitmap);
 				deck.add(tempCard);
 			}
