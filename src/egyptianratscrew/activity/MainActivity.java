@@ -15,7 +15,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         TitleView tView = new TitleView(this);
         tView.setKeepScreenOn(true); //keeps screen on for this view
-        /* makes it full screen  
+        /*makes it full screen  
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         */
