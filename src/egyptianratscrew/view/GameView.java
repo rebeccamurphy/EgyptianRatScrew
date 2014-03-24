@@ -61,7 +61,7 @@ public class GameView extends View {
 		screenH = h;
 		initCards();
 		dealCards();
-		drawCard(discardPile); 
+		//drawCard(discardPile); 
 		Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), R.drawable.card_back);
 		scaledCardW = (int) (screenW /8);
 		scaledCardH = (int) (scaledCardW*1.28);
@@ -82,7 +82,13 @@ public class GameView extends View {
 				10, 
 				whitePaint.getTextSize()+50,
 				whitePaint);
-		for (int i =0; i < myHand.size(); i++)
+		//draws players hand
+		canvas.drawBitmap(
+				cardBack, 
+				0*(scaledCardW+5),
+				screenH-scaledCardH-whitePaint.getTextSize()-(50*scale),
+				null);
+		/*for (int i =0; i < myHand.size(); i++)
 		{
 			if (i<7)
 			{
@@ -92,12 +98,17 @@ public class GameView extends View {
 						screenH-scaledCardH-whitePaint.getTextSize()-(50*scale),
 						null);
 			}
-		}
-		for (int i = 0; i < oppHand.size(); i++) 
+		}*/
+		//draws opponent hand
+		canvas.drawBitmap(cardBack, 0*(scale*5), whitePaint.getTextSize()+(50*scale), null); 
+		/*for (int i = 0; i < oppHand.size(); i++) 
 		{ 
 			canvas.drawBitmap(cardBack, i*(scale*5), whitePaint.getTextSize()+(50*scale), null); 
-		}
-		canvas.drawBitmap(cardBack, (screenW/2)-cardBack.getWidth()-10, (screenH/2)-(cardBack.getHeight()/2),null);
+			
+		}*/
+		
+		//canvas.drawBitmap(cardBack, (screenW/2)-cardBack.getWidth()-10, (screenH/2)-(cardBack.getHeight()/2),null);
+		
 		
 		if (!discardPile.isEmpty())
 		{ 
@@ -131,8 +142,7 @@ public class GameView extends View {
 						"drawable", myContext.getPackageName());
 				Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), resourceId);
 				scaledCardW = (int) (screenW / 8);
-				scaledCardH = (int) (scaledCardW *1.28);
-				//scaled bitmap not working. 
+				scaledCardH = (int) (scaledCardW *1.28); 
 				Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
 				tempCard.setBitmap(scaledBitmap);
 				deck.add(tempCard);
@@ -155,7 +165,7 @@ public class GameView extends View {
 	
 	private void dealCards(){
 		Collections.shuffle(deck, new Random());
-		for (int i =0; i < 7; i++)
+		for (int i =0; i < deck.size(); i++)
 		{
 			drawCard(myHand);
 			drawCard(oppHand);
