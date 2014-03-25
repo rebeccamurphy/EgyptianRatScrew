@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -35,7 +36,7 @@ public class GameView extends View {
 	private List<Card> discardPile = new ArrayList<Card>();
 	
 	private float scale;
-	private Paint whitePaint;
+	private Paint blackpaint;
 	
 	private int oppScore;
 	private int myScore;
@@ -46,12 +47,12 @@ public class GameView extends View {
 		super(context);
 		myContext = context;
 		scale = myContext.getResources().getDisplayMetrics().density;
-		whitePaint = new Paint();
-		whitePaint.setAntiAlias(true);
-		whitePaint.setColor(Color.WHITE);
-		whitePaint.setStyle(Paint.Style.STROKE);
-		whitePaint.setTextAlign(Paint.Align.LEFT);
-		whitePaint.setTextSize(scale*15);
+		blackpaint = new Paint();
+		blackpaint.setAntiAlias(true);
+		blackpaint.setColor(Color.BLACK);
+		blackpaint.setStyle(Paint.Style.STROKE);
+		blackpaint.setTextAlign(Paint.Align.LEFT);
+		blackpaint.setTextSize(scale*15);
 		
 	}
 
@@ -62,8 +63,10 @@ public class GameView extends View {
 		initCards();
 		dealCards();
 		//drawCard(discardPile); 
+		myScore = myHand.size();
+		oppScore = oppHand.size();
 		Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), R.drawable.card_back);
-		scaledCardW = (int) (screenW /8);
+		scaledCardW = (int) (screenW /3);
 		scaledCardH = (int) (scaledCardW*1.28);
 		cardBack = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
 		
@@ -74,45 +77,49 @@ public class GameView extends View {
 		canvas.drawText(
 				"Computer Score: " + Integer.toString(oppScore) , 
 				10, 
-				whitePaint.getTextSize()+10,
-				whitePaint);
+				blackpaint.getTextSize()+10,
+				blackpaint);
 		//this is wrong butit wasnt showing up the other way
 		canvas.drawText(
 				"My Score: " + Integer.toString(myScore) , 
 				10, 
-				whitePaint.getTextSize()+50,
-				whitePaint);
+				screenH - blackpaint.getTextSize(),
+				blackpaint);
 		//draws players hand
-		canvas.drawBitmap(
-				cardBack, 
-				0*(scaledCardW+5),
-				screenH-scaledCardH-whitePaint.getTextSize()-(50*scale),
-				null);
-		/*for (int i =0; i < myHand.size(); i++)
+		for (int i =0; i < 3; i++)
 		{
-			if (i<7)
+			if (myHand.size() > 1)
 			{
 				canvas.drawBitmap(
-						myHand.get(i).getBitmap(), 
-						i*(scaledCardW+5),
-						screenH-scaledCardH-whitePaint.getTextSize()-(50*scale),
+						cardBack, 
+						screenW/2 + i*(5) - (scaledCardW/2),
+						screenH-scaledCardH-blackpaint.getTextSize()-(10*scale),
 						null);
 			}
-		}*/
+		}
 		//draws opponent hand
-		canvas.drawBitmap(cardBack, 0*(scale*5), whitePaint.getTextSize()+(50*scale), null); 
-		/*for (int i = 0; i < oppHand.size(); i++) 
+		//canvas.drawBitmap(cardBack, 0*(scale*5), blackpaint.getTextSize()+(50*scale), null); 
+		for (int i = 0; i < 3; i++) 
 		{ 
-			canvas.drawBitmap(cardBack, i*(scale*5), whitePaint.getTextSize()+(50*scale), null); 
-			
-		}*/
+			if (oppHand.size() > 1)
+			{	
+			canvas.drawBitmap(cardBack, 
+					screenW/2- i*5 - (scaledCardW/2), 
+					blackpaint.getTextSize()+(10*scale), 
+					null);
+		
+			}
+		}
 		
 		//canvas.drawBitmap(cardBack, (screenW/2)-cardBack.getWidth()-10, (screenH/2)-(cardBack.getHeight()/2),null);
 		
 		
 		if (!discardPile.isEmpty())
 		{ 
-			canvas.drawBitmap(discardPile.get(0).getBitmap(),(screenW/2)+10,(screenH/2)-(cardBack.getHeight()/2),null); 
+			canvas.drawBitmap(discardPile.get(0).getBitmap(),
+					(screenW/2)- (scaledCardW/2),
+					(screenH/2)-(cardBack.getHeight()/2),
+					null); 
 		} 
 	}
 
@@ -141,34 +148,35 @@ public class GameView extends View {
 				int resourceId = getResources().getIdentifier("card" + tempId,
 						"drawable", myContext.getPackageName());
 				Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), resourceId);
-				scaledCardW = (int) (screenW / 8);
+				scaledCardW = (int) (screenW / 3);
 				scaledCardH = (int) (scaledCardW *1.28); 
 				Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
 				tempCard.setBitmap(scaledBitmap);
 				deck.add(tempCard);
 			}
+			
 		}
 	}
 	
 	private void drawCard(List<Card> handToDraw){
-		handToDraw.add(0, deck.get(0));
+		handToDraw.add(deck.get(0));
 		deck.remove(0);
-		if (deck.isEmpty()){
-			for (int i = discardPile.size()-1; i>0; i--)
-			{
-				deck.add(discardPile.get(i));
-				discardPile.remove(i);
-				Collections.shuffle(deck, new Random());
-			}
-		}
 	}
+	
+	private void discard (List<Card> handToDiscard){
+		discardPile.add(handToDiscard.get(0));
+		handToDiscard.remove(0);
+	}
+	
 	
 	private void dealCards(){
 		Collections.shuffle(deck, new Random());
-		for (int i =0; i < deck.size(); i++)
+		while (!deck.isEmpty())
 		{
 			drawCard(myHand);
 			drawCard(oppHand);
 		}
+		Log.e("deck sizes", Integer.toString(myHand.size()) + " " + Integer.toString(oppHand.size()));
+		discard(oppHand);
 	}
 }
