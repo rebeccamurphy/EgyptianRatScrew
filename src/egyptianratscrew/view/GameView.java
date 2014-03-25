@@ -15,7 +15,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -62,7 +61,6 @@ public class GameView extends View {
 		screenH = h;
 		initCards();
 		dealCards();
-		//drawCard(discardPile); 
 		myScore = myHand.size();
 		oppScore = oppHand.size();
 		Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), R.drawable.card_back);
@@ -79,13 +77,12 @@ public class GameView extends View {
 				10, 
 				blackpaint.getTextSize()+10,
 				blackpaint);
-		//this is wrong butit wasnt showing up the other way
 		canvas.drawText(
 				"My Score: " + Integer.toString(myScore) , 
 				10, 
 				screenH - blackpaint.getTextSize(),
 				blackpaint);
-		//draws players hand
+
 		for (int i =0; i < 3; i++)
 		{
 			if (myHand.size() > 1)
@@ -97,8 +94,7 @@ public class GameView extends View {
 						null);
 			}
 		}
-		//draws opponent hand
-		//canvas.drawBitmap(cardBack, 0*(scale*5), blackpaint.getTextSize()+(50*scale), null); 
+		
 		for (int i = 0; i < 3; i++) 
 		{ 
 			if (oppHand.size() > 1)
@@ -110,8 +106,7 @@ public class GameView extends View {
 		
 			}
 		}
-		
-		//canvas.drawBitmap(cardBack, (screenW/2)-cardBack.getWidth()-10, (screenH/2)-(cardBack.getHeight()/2),null);
+	
 		
 		
 		if (!discardPile.isEmpty())
@@ -176,7 +171,7 @@ public class GameView extends View {
 			drawCard(myHand);
 			drawCard(oppHand);
 		}
-		Log.e("deck sizes", Integer.toString(myHand.size()) + " " + Integer.toString(oppHand.size()));
+		
 		discard(oppHand);
 	}
 }
