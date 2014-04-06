@@ -7,6 +7,7 @@ import java.util.Random;
 
 import egyptianratscrew.activity.R;
 import egyptianratscrew.card.Card;
+import egyptianratscrew.game.Game;
 
 
 import android.content.Context;
@@ -26,25 +27,18 @@ public class GameView extends View {
 	private int screenH;
 
 	private Context myContext;
+	private Game game;
 	private int scaledCardW;
 	private int scaledCardH;
 	
-	private List<Card> deck = new ArrayList<Card>();
-	private List<Card> myHand = new ArrayList<Card>();
-	private List<Card> oppHand = new ArrayList<Card>();
-	private List<Card> discardPile = new ArrayList<Card>();
-	
 	private float scale;
 	private Paint blackpaint;
-	
-	private int oppScore;
-	private int myScore;
-	
-	private Bitmap cardBack;
 
 	public GameView(Context context) {
 		super(context);
 		myContext = context;
+		game = new Game(); //updated when options are available
+		
 		scale = myContext.getResources().getDisplayMetrics().density;
 		blackpaint = new Paint();
 		blackpaint.setAntiAlias(true);
@@ -59,14 +53,9 @@ public class GameView extends View {
 		super.onSizeChanged(w, h, oldw, oldh);
 		screenW = w;
 		screenH = h;
-		initCards();
-		dealCards();
-		myScore = myHand.size();
-		oppScore = oppHand.size();
-		Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), R.drawable.card_back);
 		scaledCardW = (int) (screenW /3);
 		scaledCardH = (int) (scaledCardW*1.28);
-		cardBack = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
+		game.gameStart(myContext, screenW);
 		
 	}
 
@@ -85,8 +74,15 @@ public class GameView extends View {
 
 		for (int i =0; i < 3; i++)
 		{
-			if (myHand.size() > 1)
+			if (myHand.size() > 3)
 			{
+				canvas.drawBitmap(
+						cardBack, 
+						screenW/2 + i*(5) - (scaledCardW/2),
+						screenH-scaledCardH-blackpaint.getTextSize()-(10*scale),
+						null);
+			}
+			else if (myHand.size() < i) {
 				canvas.drawBitmap(
 						cardBack, 
 						screenW/2 + i*(5) - (scaledCardW/2),
@@ -97,13 +93,20 @@ public class GameView extends View {
 		
 		for (int i = 0; i < 3; i++) 
 		{ 
-			if (oppHand.size() > 1)
+			if (oppHand.size() > 3)
 			{	
 			canvas.drawBitmap(cardBack, 
 					screenW/2- i*5 - (scaledCardW/2), 
 					blackpaint.getTextSize()+(10*scale), 
 					null);
 		
+			}
+			else if (oppHand.size() < i) {
+				canvas.drawBitmap(
+						cardBack, 
+						screenW/2 + i*(5) - (scaledCardW/2),
+						screenH-scaledCardH-blackpaint.getTextSize()-(10*scale),
+						null);
 			}
 		}
 	
@@ -135,43 +138,7 @@ public class GameView extends View {
 	}
 
 	
-	private void initCards() {
-		for (int i = 0; i < 4; i++) {
-			for (int j = 102; j < 115; j++) {
-				int tempId = j + (i * 100);
-				Card tempCard = new Card(tempId);
-				int resourceId = getResources().getIdentifier("card" + tempId,
-						"drawable", myContext.getPackageName());
-				Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), resourceId);
-				scaledCardW = (int) (screenW / 3);
-				scaledCardH = (int) (scaledCardW *1.28); 
-				Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
-				tempCard.setBitmap(scaledBitmap);
-				deck.add(tempCard);
-			}
-			
-		}
-	}
-	
-	private void drawCard(List<Card> handToDraw){
-		handToDraw.add(deck.get(0));
-		deck.remove(0);
-	}
-	
-	private void discard (List<Card> handToDiscard){
-		discardPile.add(handToDiscard.get(0));
-		handToDiscard.remove(0);
-	}
 	
 	
-	private void dealCards(){
-		Collections.shuffle(deck, new Random());
-		while (!deck.isEmpty())
-		{
-			drawCard(myHand);
-			drawCard(oppHand);
-		}
-		
-		discard(oppHand);
-	}
+	
 }
