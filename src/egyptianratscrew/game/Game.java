@@ -47,7 +47,7 @@ public class Game {
 			for (int i=1; i<= numPlayers; i++)
 				discardPile.drawCard(Players.get("Player"+Integer.toString(i)));
 		}
-		
+
 	}
 	public void updateScores(){
 		for (int i=1; i<= numPlayers; i++){
@@ -56,6 +56,14 @@ public class Game {
 		}
 			
 	}
+	
+	public HashMap<String, Player> getPlayers(){
+		return Players;
+	}
+	public DiscardPile getDiscardPile(){
+		return discardPile;
+	}
+	
 	public void gameStart(Context myContext, int screenW){
 		discardPile.fillDeck(myContext, screenW);
 		discardPile.shuffle();

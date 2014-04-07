@@ -9,6 +9,8 @@ import java.util.Random;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import egyptianratscrew.game.Rule;
 import egyptianratscrew.player.Player;
@@ -123,10 +125,18 @@ public class DiscardPile extends Deck{
 		
 	}
 	
-	public void drawDiscardPile(){
+	public void drawDiscardPile(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack, Paint paint){
 		//should draw atleast 3 cards
 		//posibly down Cards as well
 		//should draw last card of discard pile
+		if (!deck.isEmpty())
+		{ //5 cards will be displayed on the screen 
+			for(int i = deck.size()-1; i >deck.size()-6; i-- )
+			canvas.drawBitmap(deck.get(0).getBitmap(),
+					(screenW/2)- (scaledCardW/2),
+					(screenH/2)-(cardBack.getHeight()/2),
+					null); 
+		}
 	}
 	
 	public void fillDeck(Context myContext, int screenW) {

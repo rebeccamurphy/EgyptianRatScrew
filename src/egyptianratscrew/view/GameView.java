@@ -2,12 +2,17 @@ package egyptianratscrew.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import egyptianratscrew.activity.R;
 import egyptianratscrew.card.Card;
+import egyptianratscrew.card.DiscardPile;
 import egyptianratscrew.game.Game;
+import egyptianratscrew.player.Player;
+
 
 
 import android.content.Context;
@@ -28,24 +33,39 @@ public class GameView extends View {
 
 	private Context myContext;
 	private Game game;
+	private HashMap<String, Player> players;
+	private DiscardPile discardPile;
 	private int scaledCardW;
 	private int scaledCardH;
 	
 	private float scale;
 	private Paint blackpaint;
+	private Bitmap cardBack;
 
 	public GameView(Context context) {
 		super(context);
 		myContext = context;
-		game = new Game(); //updated when options are available
+		game = new Game(); //updated when options are available, with more players and stuff
 		
 		scale = myContext.getResources().getDisplayMetrics().density;
+		screenH = myContext.getResources().getDisplayMetrics().heightPixels;
+		screenW = myContext.getResources().getDisplayMetrics().widthPixels;
+		
+		scaledCardW = (int) (screenW /3);
+		scaledCardH = (int) (scaledCardW*1.28);
+		Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), R.drawable.card_back);
+		cardBack = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
+		
 		blackpaint = new Paint();
 		blackpaint.setAntiAlias(true);
 		blackpaint.setColor(Color.BLACK);
 		blackpaint.setStyle(Paint.Style.STROKE);
 		blackpaint.setTextAlign(Paint.Align.LEFT);
 		blackpaint.setTextSize(scale*15);
+		
+		game.gameStart(myContext, screenW);
+		players = game.getPlayers();
+		discardPile = game.getDiscardPile();
 		
 	}
 
@@ -55,12 +75,27 @@ public class GameView extends View {
 		screenH = h;
 		scaledCardW = (int) (screenW /3);
 		scaledCardH = (int) (scaledCardW*1.28);
-		game.gameStart(myContext, screenW);
+		Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), R.drawable.card_back);
+		cardBack = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
+
+		//game.gameStart(myContext, screenW);
 		
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+		
+		//iterate through players
+		for (int i =1; i<= players.size(); i++)
+		{
+			discardPile.add((players.get("Player"+ Integer.toString(i)).playCard()));
+			players.get("Player"+ Integer.toString(i)).getHand()
+			.drawPlayerDeck(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, i);
+		}
+		
+		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
+
+		/*
 		canvas.drawText(
 				"Computer Score: " + Integer.toString(oppScore) , 
 				10, 
@@ -71,54 +106,16 @@ public class GameView extends View {
 				10, 
 				screenH - blackpaint.getTextSize(),
 				blackpaint);
-
-		for (int i =0; i < 3; i++)
-		{
-			if (myHand.size() > 3)
-			{
-				canvas.drawBitmap(
-						cardBack, 
-						screenW/2 + i*(5) - (scaledCardW/2),
-						screenH-scaledCardH-blackpaint.getTextSize()-(10*scale),
-						null);
-			}
-			else if (myHand.size() < i) {
-				canvas.drawBitmap(
-						cardBack, 
-						screenW/2 + i*(5) - (scaledCardW/2),
-						screenH-scaledCardH-blackpaint.getTextSize()-(10*scale),
-						null);
-			}
-		}
+		*/
 		
-		for (int i = 0; i < 3; i++) 
-		{ 
-			if (oppHand.size() > 3)
-			{	
-			canvas.drawBitmap(cardBack, 
-					screenW/2- i*5 - (scaledCardW/2), 
-					blackpaint.getTextSize()+(10*scale), 
-					null);
-		
-			}
-			else if (oppHand.size() < i) {
-				canvas.drawBitmap(
-						cardBack, 
-						screenW/2 + i*(5) - (scaledCardW/2),
-						screenH-scaledCardH-blackpaint.getTextSize()-(10*scale),
-						null);
-			}
-		}
-	
-		
-		
+		/*
 		if (!discardPile.isEmpty())
 		{ 
 			canvas.drawBitmap(discardPile.get(0).getBitmap(),
 					(screenW/2)- (scaledCardW/2),
 					(screenH/2)-(cardBack.getHeight()/2),
 					null); 
-		} 
+		} */
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {

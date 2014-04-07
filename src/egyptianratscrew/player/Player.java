@@ -6,17 +6,18 @@ import java.util.List;
 import java.util.Random;
 
 import egyptianratscrew.card.Card;
+import egyptianratscrew.card.Deck;
 public class Player {
 	
-	private List<Card> myHand;
+	private Deck myHand;
 	private int score;
 	
 	public Player() {
-		myHand = new ArrayList<Card>();
+		myHand = new Deck();
 		score = 0;
 	}
 	
-	public List<Card> getHand() {
+	public Deck getHand() {
 		return myHand;
 	}
 	
@@ -34,6 +35,10 @@ public class Player {
 	
 	public void setScore(){
 		score = myHand.size();
+	}
+	
+	public int getScore(){
+		return score;
 	}
 	
 	public int getHandSize(){
