@@ -6,9 +6,12 @@ public class Card {
 
 	private int id;
 	private Bitmap bmp;
-	
+	private int rank;
+	private int suit;
 	public Card(int newId) {
 		id = newId;
+		suit = Math.round((id/100) * 100);
+		rank = id -suit;
 	}
 	
 	public void setBitmap(Bitmap newBitmap){
@@ -22,15 +25,16 @@ public class Card {
 	public int getId() {
 		return id;
 	}
-	public int getFaceId(){
-		int tempid = id;
-		while (tempid > 100)
-			tempid -= 100;
-		return tempid;
+	public int getSuit(){
+		return suit;
+	}
+	
+	public int getRank(){
+		return rank;
 	}
 	
 	public String getFace(){
-		switch (getFaceId())
+		switch (getRank())
 		{
 		case 11:return "jack";
 		case 12:return "queen";

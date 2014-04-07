@@ -21,6 +21,7 @@ public class DiscardPile extends Deck{
 	private ArrayList<Card> upCards;
 	private HashMap<String,Rule> rules;
 	private boolean slappable;
+	private int chances;
 	
 	public DiscardPile() {
 		deck= new ArrayList<Card>();
@@ -54,34 +55,34 @@ public class DiscardPile extends Deck{
 
 	public boolean checkAce(){
 		//(1-4)14 ace id
-		return deck.get(deck.size()-1).getFaceId() == 14;
+		return deck.get(deck.size()-1).getRank() == 14;
 	}
 	
 	public boolean checkKing(){
 		//(1-4)13 king id
-		return deck.get(deck.size()-1).getFaceId() == 13;
+		return deck.get(deck.size()-1).getRank() == 13;
 	}
 	public boolean checkQueen(){
 		//(1-4)13 king id
-		return deck.get(deck.size()-1).getFaceId() == 12;
+		return deck.get(deck.size()-1).getRank() == 12;
 	}
 	public boolean checkJack(){
 		//(1-4)13 king id
-		return deck.get(deck.size()-1).getFaceId() == 11;
+		return deck.get(deck.size()-1).getRank() == 11;
 	}
 	
 	public boolean checkSandwich(){
 		Rule tempRule = rules.get("sandwich");
 		//add more here once different rules are available
 		if (tempRule.getNum() == 3)
-			return upCards.get(upCards.size()-1).getFaceId() ==upCards.get(upCards.size()-3).getFaceId();
+			return upCards.get(upCards.size()-1).getRank() ==upCards.get(upCards.size()-3).getRank();
 		return false;
 	}
 	
 	public boolean checkDouble(){
 		Rule tempRule = rules.get("double");
 		if (tempRule.getNum() == 2)
-			return upCards.get(upCards.size()-1).getFaceId() ==upCards.get(upCards.size()-2).getFaceId();
+			return upCards.get(upCards.size()-1).getRank() ==upCards.get(upCards.size()-2).getRank();
 		return false;
 	} 
 	
