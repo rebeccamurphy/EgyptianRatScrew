@@ -22,4 +22,21 @@ public class Card {
 	public int getId() {
 		return id;
 	}
+	public int getFaceId(){
+		int tempid = id;
+		while (tempid > 100)
+			tempid -= 100;
+		return tempid;
+	}
+	
+	public String getFace(){
+		switch (getFaceId())
+		{
+		case 11:return "jack";
+		case 12:return "queen";
+		case 13:return "king";
+		case 14:return "ace";
+		}
+		return "Not Face Card";
+	}
 }
