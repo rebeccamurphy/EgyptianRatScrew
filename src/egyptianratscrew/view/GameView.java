@@ -33,10 +33,11 @@ public class GameView extends View {
 
 	private Context myContext;
 	private Game game;
-	private HashMap<String, Player> players;
+	private HashMap<Integer, Player> players;
 	private DiscardPile discardPile;
 	private int scaledCardW;
 	private int scaledCardH;
+
 	
 	private float scale;
 	private Paint blackpaint;

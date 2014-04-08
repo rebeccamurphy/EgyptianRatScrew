@@ -6,7 +6,7 @@ public class Rule {
 
 	//private ArrayList<Rule> rules;
 	private String ruleName;
-	private int cardNum;
+	private int cardNum; //card num allowances 
 	private boolean active;
 	
 	public Rule(int cards, boolean on) {

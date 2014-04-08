@@ -20,24 +20,31 @@ import egyptianratscrew.player.Player;
 public class Game {
 
 	private DiscardPile discardPile;
-	private HashMap<String, Player> Players;
+	private HashMap<Integer , Player> Players;
 	private int numPlayers;
-	private String currentTurn;
-	
+	private int turn;
+	private ArrayList<Integer> turnList;
 	
 	public Game() {
 		discardPile = new DiscardPile();
 		numPlayers =2;
-		Players = new HashMap<String, Player>();
-		Players.put("Player1", new Player());//computer
-		Players.put("Player2", new Player());
+		Players = new HashMap<Integer, Player>();
+		Players.put(1, new Player(1));//computer
+		Players.put(2, new Player(2));
+		turn = 1;
+		turnList = new ArrayList<Integer>() ;
+		turnList.add(1);
+		turnList.add(2);
 	}
 	
 	public Game(int Decks, int numberPlayers) {
 		discardPile= new DiscardPile (Decks);
 		numPlayers = numberPlayers;
+		turn =1;
+		turnList = new ArrayList<Integer>() ;
 		for (int i=1; i <= numPlayers;i++ ){
-			Players.put("Player" + Integer.toString(i), new Player());
+			Players.put(i, new Player(i));
+			turnList.add(i);
 		}
 	}
 	
@@ -57,7 +64,7 @@ public class Game {
 			
 	}
 	
-	public HashMap<String, Player> getPlayers(){
+	public HashMap<Integer, Player> getPlayers(){
 		return Players;
 	}
 	public DiscardPile getDiscardPile(){
@@ -69,6 +76,29 @@ public class Game {
 		discardPile.shuffle();
 		dealCards();
 		updateScores();
+	}
+	public void nextTurn(){
+		if(turn == turnList.size() )
+			turn = turn % turnList.size();
+		else
+			turn +=1;
+	}
+	
+	public void makePlay(Player player){
+		if (player.getId() == turn){
+			discardPile.add(player.playCard());
+			nextTurn();
+		}
+		
+	}
+	
+	public void slap(Player player){
+		if (discardPile.checkAllSlapRules())
+			player.addCard(discardPile);
+		//else
+			//toast not a slap
+			//possible penalty
+		
 	}
 	
 }

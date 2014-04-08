@@ -22,7 +22,7 @@ public class Deck {
 	//private HashMap<String, Boolean> Rules;
 	
 	public Deck() {
-		deck= new ArrayList<Card>();	
+		deck= new ArrayList<Card>();
 	}
 	
 	public void add(Card card){
@@ -39,6 +39,9 @@ public class Deck {
 		return deck.size();
 	}
 	
+	public List<Card> getDeck(){
+		return deck;
+	}
 	
 	public void drawCard(List<Card> handToDraw){
 		handToDraw.add(deck.get(0));

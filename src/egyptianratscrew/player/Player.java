@@ -7,14 +7,17 @@ import java.util.Random;
 
 import egyptianratscrew.card.Card;
 import egyptianratscrew.card.Deck;
+import egyptianratscrew.card.DiscardPile;
 public class Player {
 	
 	private Deck myHand;
 	private int score;
+	private int playerId;
 	
-	public Player() {
+	public Player(Integer playerID) {
 		myHand = new Deck();
 		score = 0;
+		playerId = playerID;
 	}
 	
 	public Deck getHand() {
@@ -25,12 +28,16 @@ public class Player {
 		myHand.add(card);
 	}
 	
-	public void addCard(List<Card> cards){
-		myHand.addAll(cards);
+	public void addCard(DiscardPile cards){
+		myHand.addAll(cards.getDeck());
 		}
 	
 	public Card playCard(){
 		return myHand.remove(0);
+	}
+	
+	public Integer getId(){
+		return playerId;
 	}
 	
 	public void setScore(){
