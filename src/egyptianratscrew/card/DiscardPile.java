@@ -96,7 +96,7 @@ public class DiscardPile extends Deck{
 		slappable = checkAllSlapRules();
 		return slappable;
 	}
-	
+	/*
 	public void checkFaceCard(){
 		if (checkAce())
 			//call method with ace rule
@@ -109,7 +109,7 @@ public class DiscardPile extends Deck{
 		else
 			//do nothing
 	}
-	
+	*/
 	/*
 	 * End Rules
 	 */
@@ -128,6 +128,8 @@ public class DiscardPile extends Deck{
 		long seed = System.nanoTime();
 		Collections.shuffle(deck, new Random(seed));
 	}
+	
+	public void calcActiveArea(){}
 	/*
 	 * End Deck Methods
 	 */

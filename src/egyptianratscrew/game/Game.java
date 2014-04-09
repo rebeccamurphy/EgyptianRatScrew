@@ -19,8 +19,8 @@ import egyptianratscrew.player.Player;
 
 public class Game {
 
-	private DiscardPile discardPile;
-	private HashMap<Integer , Player> Players;
+	public DiscardPile discardPile;
+	public HashMap<Integer , Player> Players;
 	private int numPlayers;
 	private int turn;
 	private ArrayList<Integer> turnList;

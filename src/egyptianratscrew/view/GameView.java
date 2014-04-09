@@ -121,9 +121,22 @@ public class GameView extends View {
 
 	public boolean onTouchEvent(MotionEvent event) {
 		int eventaction = event.getAction();
-
+		int X = (int) event.getX();
+		int Y = (int) event.getY();
+		boolean hit = false;
 		switch (eventaction) {
 		case MotionEvent.ACTION_DOWN:
+			//only for one player for now
+			// hit = game.discardPile.checkActiveArea(X, Y);
+			if (game.discardPile.checkSlappable())//&& hit 
+				//player2 (human) gets discard pile if the pile is s
+				game.Players.get(2).addCard(game.discardPile);
+			//else if (!game.discardPile.checkSlappable()) //&& hit
+				//toast not valid slap
+				//possibly pay penalty
+			//hit = game.Players.get(2).getHand().checkActiveArea(X, Y);
+			//some thing to check turn and ace stuff.  
+			
 			break;
 		case MotionEvent.ACTION_UP:
 			break;
