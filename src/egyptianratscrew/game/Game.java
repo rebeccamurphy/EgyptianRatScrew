@@ -22,7 +22,7 @@ public class Game {
 	public DiscardPile discardPile;
 	public HashMap<Integer , Player> Players;
 	private int numPlayers;
-	private int turn;
+	public int turn;
 	private ArrayList<Integer> turnList;
 	
 	public Game() {
@@ -91,10 +91,32 @@ public class Game {
 		}
 		
 	}
+	public void makePlay(int playerID){
+		if (playerID == 1 && turn ==1 ){
+			//check Robot Strategy 
+			//discardPile.add(Players.get(playerID).playCard());
+			//nextTurn();
+			}
+		
+		if (playerID == turn){
+			discardPile.add(Players.get(playerID).playCard());
+			nextTurn();
+			}
+		//else
+			//toast not your turn
+			
+		}
+		
+	
 	
 	public void slap(Player player){
-		if (discardPile.checkAllSlapRules())
+		if (discardPile.checkAllSlapRules()){
 			player.addCard(discardPile);
+			if (turn != player.getId())
+				turn = player.getId();
+				//nextTurn(); // the person who gets the discard pile places the card
+				// Toast Player 2 turn 
+		}
 		//else
 			//toast not a slap
 			//possible penalty

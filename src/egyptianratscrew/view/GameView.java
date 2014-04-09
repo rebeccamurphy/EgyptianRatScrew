@@ -89,7 +89,7 @@ public class GameView extends View {
 		//iterate through players
 		for (int i =1; i<= players.size(); i++)
 		{
-			discardPile.add((players.get("Player"+ Integer.toString(i)).playCard()));
+			//discardPile.add((players.get(i).playCard()));
 			players.get("Player"+ Integer.toString(i)).getHand()
 			.drawPlayerDeck(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, i);
 		}
@@ -123,19 +123,20 @@ public class GameView extends View {
 		int eventaction = event.getAction();
 		int X = (int) event.getX();
 		int Y = (int) event.getY();
-		boolean hit = false;
+		boolean hitDiscard, hitPlayerPile  = false;
 		switch (eventaction) {
 		case MotionEvent.ACTION_DOWN:
 			//only for one player for now
-			// hit = game.discardPile.checkActiveArea(X, Y);
-			if (game.discardPile.checkSlappable())//&& hit 
-				//player2 (human) gets discard pile if the pile is s
-				game.Players.get(2).addCard(game.discardPile);
-			//else if (!game.discardPile.checkSlappable()) //&& hit
-				//toast not valid slap
-				//possibly pay penalty
-			//hit = game.Players.get(2).getHand().checkActiveArea(X, Y);
-			//some thing to check turn and ace stuff.  
+			hitDiscard = game.discardPile.checkActiveArea(X, Y);
+			hitPlayerPile = game.Players.get(game.turn).getHand().checkActiveArea(X, Y);
+			if (hitDiscard)//&& hit  
+				game.slap(game.Players.get(2));	//player2 (human) gets discard pile if the pile is			
+				//if not slappable, slap method will make toast not valid
+			
+			else if (hitPlayerPile)  //&& some thing to check turn and face card stuff) 
+			{
+				game.makePlay(game.turn);
+			}
 			
 			break;
 		case MotionEvent.ACTION_UP:

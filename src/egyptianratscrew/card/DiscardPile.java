@@ -144,14 +144,16 @@ public class DiscardPile extends Deck{
 	public void drawDiscardPile(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack, Paint paint){
 		//should draw atleast 3 cards
 		//posibly down Cards as well
-		//should draw last card of discard pile
+		//should draw last card of discard pile on top. 
 		if (!deck.isEmpty())
 		{ //5 cards will be displayed on the screen 
 			for(int i = deck.size()-1; i >deck.size()-6; i-- )
-			canvas.drawBitmap(deck.get(0).getBitmap(),
+			try {canvas.drawBitmap(deck.get(i).getBitmap(),
 					(screenW/2)- (scaledCardW/2),
 					(screenH/2)-(cardBack.getHeight()/2),
-					null); 
+					null);
+			}
+			catch(Exception e) {break;}
 		}
 	}
 	
