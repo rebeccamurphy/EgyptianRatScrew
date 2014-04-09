@@ -97,6 +97,19 @@ public class DiscardPile extends Deck{
 		return slappable;
 	}
 	
+	public void checkFaceCard(){
+		if (checkAce())
+			//call method with ace rule
+		else if (checkKing())
+			//call method with king rule
+		else if (checkQueen())
+			//call method with queen rule
+		else if (checkJack())
+			//call method with jack rule
+		else
+			//do nothing
+	}
+	
 	/*
 	 * End Rules
 	 */
@@ -164,6 +177,8 @@ public class DiscardPile extends Deck{
 	
 	public void addPiletoHand(Player player){
 		//add current discard to players hand
+		player.addCard(deck);
+				
 	}
 
 }

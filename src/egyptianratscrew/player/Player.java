@@ -27,6 +27,9 @@ public class Player {
 	public void addCard(Card card){
 		myHand.add(card);
 	}
+	public void addCard(List<Card> card){
+		myHand.addAll(card);
+	}
 	
 	public void addCard(DiscardPile cards){
 		myHand.addAll(cards.getDeck());
