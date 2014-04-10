@@ -66,8 +66,8 @@ public class GameView extends View {
 		blackpaint.setTextSize(scale*15);
 		
 		game.gameStart(myContext, screenW);
-		players = game.getPlayers();
-		discardPile = game.getDiscardPile();
+		Log.d("Turn " , Integer.toString(game.turn));
+		game.Players.get(1).Computer(game, 5);
 		
 	}
 
@@ -88,21 +88,25 @@ public class GameView extends View {
 	protected void onDraw(Canvas canvas) {
 		
 		//iterate through players
-		if (game.turn==1)
-		{
-			game.Players.get(1).Computer(game, 5);
-		}
 		
-		for (int i =1; i<= players.size(); i++)
+		
+			
+		//Log.d("Computer Card", game.discardPile.get(game.discardPile.size()-1).toString());
+		for (int i =1; i<= game.Players.size(); i++)
 		{
-			//discardPile.add((players.get(i).playCard()));
-			players.get("Player"+ Integer.toString(i)).getHand()
+			//game.discardPile.add((game.Players.get(i).playCard()));
+			try{
+			Log.d("start", "Got here");
+			game.Players.get(i).getHand()
 			.drawPlayerDeck(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, i);
+			Log.d("end", "got here");}
+			catch(Exception e){break;}
 		}
 		
 		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
 		game.updateScores();
 		
+		/*
 		canvas.drawText(
 				"Computer Score: " + Integer.toString(game.Players.get(1).getScore()) , 
 				10, 
@@ -113,7 +117,7 @@ public class GameView extends View {
 				10, 
 				screenH - blackpaint.getTextSize(),
 				blackpaint);
-		
+		*/
 		
 		/*
 		if (!discardPile.isEmpty())
@@ -130,19 +134,25 @@ public class GameView extends View {
 		int X = (int) event.getX();
 		int Y = (int) event.getY();
 		boolean hitDiscard, hitPlayerPile  = false;
+		
 		switch (eventaction) {
 		case MotionEvent.ACTION_DOWN:
 			//only for one player for now
-			hitDiscard = game.discardPile.checkActiveArea(X, Y);
+			//hitDiscard = game.discardPile.checkActiveArea(X, Y);
 			hitPlayerPile = game.Players.get(game.turn).getHand().checkActiveArea(X, Y);
-			if (hitDiscard)//&& hit  
-				game.slap(game.Players.get(2));	//player2 (human) gets discard pile if the pile is			
+			Log.d("Touch", "Touchevent is happening. X: " + Integer.toString(X) + "Y: " + Integer.toString(Y) );
+			//if (hitDiscard)//&& hit  
+			//	game.slap(game.Players.get(2));	//player2 (human) gets discard pile if the pile is			
 				//if not slappable, slap method will make toast not valid
 			
-			else if (hitPlayerPile)  //&& some thing to check turn and face card stuff) 
+			 if (hitPlayerPile)  //&& some thing to check turn and face card stuff) 
 			{
+				Log.d("Testing Player input","Touch detected. "+ Integer.toString(game.turn));
 				game.makePlay(game.turn);
-				Log.d("Testing Player input","Touch detected.");
+				Log.d("Player Card", game.discardPile.get(game.discardPile.size()-1).toString());
+				//game.turn =2;
+				invalidate();
+				game.Players.get(1).Computer(game, 5);
 			}
 			
 			break;
@@ -151,7 +161,7 @@ public class GameView extends View {
 		case MotionEvent.ACTION_MOVE:
 			break;
 		}
-
+		
 		invalidate();
 		return true;
 	}

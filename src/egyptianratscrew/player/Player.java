@@ -60,11 +60,23 @@ public class Player {
 	}
 	
 	public void Computer(Game game, int secDelay) {
-		if (game.discardPile.checkSlappable()){
+		Log.d("Time", "before");
+	    
+		try {
+		    Thread.sleep(3000);
+		    Log.d("Time", "after");
+		    game.makePlay(this);
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
+		
+	   
+		
+		/*if (game.discardPile.checkSlappable()){
 			try {
 			    
 			    TimeUnit.SECONDS.sleep(secDelay);
-		
+			    //sleep 5 seconds should be able to be changes in game rules
 			} catch (Exception e) {
 			    //Handle exception
 				Log.d("Wait Exception", "Computer broke");
@@ -74,7 +86,7 @@ public class Player {
 		else
 			game.makePlay(this);
 		
-	}
+		*/}
 }
 
 

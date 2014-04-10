@@ -9,6 +9,7 @@ import java.util.Random;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.content.res.Resources;
 
 import egyptianratscrew.activity.R;
@@ -24,11 +25,14 @@ public class Game {
 	private int numPlayers;
 	public int turn;
 	private ArrayList<Integer> turnList;
+	private String faceCard;
+	private int numCardsPlayed;
 	
 	public Game() {
 		discardPile = new DiscardPile();
 		numPlayers =2;
 		Players = new HashMap<Integer, Player>();
+		numPlayers =2;
 		Players.put(1, new Player(1));//computer
 		Players.put(2, new Player(2));
 		turn = 1;
@@ -52,14 +56,13 @@ public class Game {
 		while (!discardPile.isEmpty())
 		{
 			for (int i=1; i<= numPlayers; i++)
-				discardPile.drawCard(Players.get("Player"+Integer.toString(i)));
+				discardPile.drawCard(Players.get(i));
 		}
 
 	}
 	public void updateScores(){
 		for (int i=1; i<= numPlayers; i++){
-			String PlayerID = "Player"+Integer.toString(i);
-			Players.get(PlayerID).setScore();
+			Players.get(i).setScore();
 		}
 		//draw score to screen on next lines
 			
@@ -80,7 +83,7 @@ public class Game {
 	}
 	public void nextTurn(){
 		if(turn == turnList.size() )
-			turn = turn % turnList.size();
+			turn = 1;
 		else
 			turn +=1;
 	}
@@ -97,13 +100,21 @@ public class Game {
 		if (playerID == turn){
 			discardPile.add(Players.get(playerID).playCard());
 			nextTurn();
+			Log.d("Turn: ", Integer.toString(turn));
 			}
 		//else
 			//toast not your turn
 			
 		}
 		
-	
+	public void checkFaceCard(){
+		//if (checkAce() ||checkKing()|| checkQueen()|| checkJack())
+		if (discardPile.checkFaceCard()){
+			faceCard = discardPile.get(discardPile.size()-1).getFace();
+			numCardsPlayed = 0;
+		}
+			
+	}
 	
 	public void slap(Player player){
 		if (discardPile.checkAllSlapRules()){

@@ -10,6 +10,11 @@ public class Computer {
 
 	
 	public Computer(Game game, Player player, int secDelay) {
+		try { TimeUnit.SECONDS.sleep(3);}
+		catch (Exception e) {
+			//Handle exception
+			Log.d("Wait Exception", "Computer broke");
+		}
 		if (game.discardPile.checkSlappable()){
 			try {
 			    

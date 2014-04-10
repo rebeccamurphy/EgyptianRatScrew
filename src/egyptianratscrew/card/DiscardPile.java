@@ -46,6 +46,9 @@ public class DiscardPile extends Deck{
 		upCards = new ArrayList<Card>();
 		slappable = false;
 	}
+	public Card get(int index){
+		return deck.get(index);
+	}
 	//add another constructor with rules when rule options are added
 	
 	
@@ -96,20 +99,13 @@ public class DiscardPile extends Deck{
 		slappable = checkAllSlapRules();
 		return slappable;
 	}
-	/*
-	public void checkFaceCard(){
-		if (checkAce())
-			//call method with ace rule
-		else if (checkKing())
-			//call method with king rule
-		else if (checkQueen())
-			//call method with queen rule
-		else if (checkJack())
-			//call method with jack rule
-		else
-			//do nothing
+	
+	public boolean checkFaceCard(){
+		return (checkAce() ||checkKing()|| checkQueen()|| checkJack());
+			
+			
 	}
-	*/
+	
 	/*
 	 * End Rules
 	 */
@@ -147,13 +143,13 @@ public class DiscardPile extends Deck{
 		//should draw last card of discard pile on top. 
 		if (!deck.isEmpty())
 		{ //5 cards will be displayed on the screen 
-			for(int i = deck.size()-1; i >deck.size()-6; i-- )
-			try {canvas.drawBitmap(deck.get(i).getBitmap(),
+			//for(int i = deck.size()-1; i >deck.size()-6; i-- )
+			try {canvas.drawBitmap(deck.get(deck.size()-1).getBitmap(),
 					(screenW/2)- (scaledCardW/2),
 					(screenH/2)-(cardBack.getHeight()/2),
 					null);
 			}
-			catch(Exception e) {break;}
+			catch(Exception e) {}
 		}
 	}
 	

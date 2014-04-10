@@ -43,4 +43,7 @@ public class Card {
 		}
 		return "Not Face Card";
 	}
+	public String toString(){
+		return "Suit: " + suit + "Rank: " + rank; 
+	}
 }
