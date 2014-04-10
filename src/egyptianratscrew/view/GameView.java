@@ -67,7 +67,8 @@ public class GameView extends View {
 		
 		game.gameStart(myContext, screenW);
 		Log.d("Turn " , Integer.toString(game.turn));
-		game.Players.get(1).Computer(game, 5);
+		//toast press to start or make start button
+		//game.Players.get(1).Computer(game, 5);
 		
 	}
 
@@ -88,7 +89,8 @@ public class GameView extends View {
 	protected void onDraw(Canvas canvas) {
 		
 		//iterate through players
-		
+		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
+		game.updateScores();
 		
 			
 		//Log.d("Computer Card", game.discardPile.get(game.discardPile.size()-1).toString());
@@ -103,10 +105,13 @@ public class GameView extends View {
 			catch(Exception e){break;}
 		}
 		
-		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
-		game.updateScores();
+		//if (game.turn ==1){
 		
-		/*
+		//do computer move
+		//draw discard again draw goes through all things 
+		//game.Players.get(1).Computer(game, 1); 
+		//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
+		//}
 		canvas.drawText(
 				"Computer Score: " + Integer.toString(game.Players.get(1).getScore()) , 
 				10, 
@@ -117,7 +122,7 @@ public class GameView extends View {
 				10, 
 				screenH - blackpaint.getTextSize(),
 				blackpaint);
-		*/
+		
 		
 		/*
 		if (!discardPile.isEmpty())
@@ -145,24 +150,33 @@ public class GameView extends View {
 			//	game.slap(game.Players.get(2));	//player2 (human) gets discard pile if the pile is			
 				//if not slappable, slap method will make toast not valid
 			
-			 if (hitPlayerPile)  //&& some thing to check turn and face card stuff) 
+			 if (hitPlayerPile )  //&& some thing to check turn and face card stuff) 
 			{
 				Log.d("Testing Player input","Touch detected. "+ Integer.toString(game.turn));
 				game.makePlay(game.turn);
 				Log.d("Player Card", game.discardPile.get(game.discardPile.size()-1).toString());
 				//game.turn =2;
 				invalidate();
-				game.Players.get(1).Computer(game, 5);
+				return true;
 			}
 			
 			break;
 		case MotionEvent.ACTION_UP:
+			if (game.turn ==1){
+			
+			//do computer move
+			//draw discard again draw goes through all things 
+			game.Players.get(1).Computer(game, 1); 
+			//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
+			invalidate();
+			return true;
+			}
 			break;
 		case MotionEvent.ACTION_MOVE:
 			break;
 		}
 		
-		invalidate();
+		//invalidate();
 		return true;
 	}
 

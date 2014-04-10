@@ -66,7 +66,8 @@ public class Player {
 		    Thread.sleep(3000);
 		    Log.d("Time", "after");
 		    game.makePlay(this);
-		} catch(InterruptedException ex) {
+		    Log.d("Computer Card", game.discardPile.get(game.discardPile.size()-1).toString());
+		} catch(Exception ex) {
 		    Thread.currentThread().interrupt();
 		}
 		
