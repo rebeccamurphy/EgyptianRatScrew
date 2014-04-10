@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+import android.util.Log;
 
 import egyptianratscrew.card.Card;
 import egyptianratscrew.card.Deck;
 import egyptianratscrew.card.DiscardPile;
+import egyptianratscrew.game.Game;
 public class Player {
 	
 	private Deck myHand;
@@ -53,6 +57,23 @@ public class Player {
 	
 	public int getHandSize(){
 		return myHand.size();
+	}
+	
+	public void Computer(Game game, int secDelay) {
+		if (game.discardPile.checkSlappable()){
+			try {
+			    
+			    TimeUnit.SECONDS.sleep(secDelay);
+		
+			} catch (Exception e) {
+			    //Handle exception
+				Log.d("Wait Exception", "Computer broke");
+			}
+			game.slap(this);
+		}
+		else
+			game.makePlay(this);
+		
 	}
 }
 

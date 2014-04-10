@@ -61,6 +61,7 @@ public class Game {
 			String PlayerID = "Player"+Integer.toString(i);
 			Players.get(PlayerID).setScore();
 		}
+		//draw score to screen on next lines
 			
 	}
 	
@@ -92,11 +93,6 @@ public class Game {
 		
 	}
 	public void makePlay(int playerID){
-		if (playerID == 1 && turn ==1 ){
-			//check Robot Strategy 
-			//discardPile.add(Players.get(playerID).playCard());
-			//nextTurn();
-			}
 		
 		if (playerID == turn){
 			discardPile.add(Players.get(playerID).playCard());
@@ -114,6 +110,19 @@ public class Game {
 			player.addCard(discardPile);
 			if (turn != player.getId())
 				turn = player.getId();
+				//nextTurn(); // the person who gets the discard pile places the card
+				// Toast Player 2 turn 
+		}
+		//else
+			//toast not a slap
+			//possible penalty
+		
+	}
+	public void slap(int playerID){
+		if (discardPile.checkAllSlapRules()){
+			Players.get(playerID).addCard(discardPile);
+			if (turn != playerID)
+				turn = playerID;
 				//nextTurn(); // the person who gets the discard pile places the card
 				// Toast Player 2 turn 
 		}

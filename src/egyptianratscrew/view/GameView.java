@@ -21,6 +21,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -87,6 +88,11 @@ public class GameView extends View {
 	protected void onDraw(Canvas canvas) {
 		
 		//iterate through players
+		if (game.turn==1)
+		{
+			game.Players.get(1).Computer(game, 5);
+		}
+		
 		for (int i =1; i<= players.size(); i++)
 		{
 			//discardPile.add((players.get(i).playCard()));
@@ -95,19 +101,19 @@ public class GameView extends View {
 		}
 		
 		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
-
-		/*
+		game.updateScores();
+		
 		canvas.drawText(
-				"Computer Score: " + Integer.toString(oppScore) , 
+				"Computer Score: " + Integer.toString(game.Players.get(1).getScore()) , 
 				10, 
 				blackpaint.getTextSize()+10,
 				blackpaint);
 		canvas.drawText(
-				"My Score: " + Integer.toString(myScore) , 
+				"My Score: " + Integer.toString(game.Players.get(2).getScore()) , 
 				10, 
 				screenH - blackpaint.getTextSize(),
 				blackpaint);
-		*/
+		
 		
 		/*
 		if (!discardPile.isEmpty())
@@ -136,6 +142,7 @@ public class GameView extends View {
 			else if (hitPlayerPile)  //&& some thing to check turn and face card stuff) 
 			{
 				game.makePlay(game.turn);
+				Log.d("Testing Player input","Touch detected.");
 			}
 			
 			break;
