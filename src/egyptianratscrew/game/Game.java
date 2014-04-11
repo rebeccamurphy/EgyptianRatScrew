@@ -24,27 +24,36 @@ public class Game {
 	public HashMap<Integer , Player> Players;
 	private int numPlayers;
 	public int turn;
+	public boolean touchDisabled;
 	private ArrayList<Integer> turnList;
 	private String faceCard;
 	private int numCardsPlayed;
+	public int secDelay;
+	public int cardsDrawn;
+	public boolean gameOver;
 	
 	public Game() {
 		discardPile = new DiscardPile();
 		numPlayers =2;
 		Players = new HashMap<Integer, Player>();
 		numPlayers =2;
+		touchDisabled =false;
+		gameOver = false;
+		secDelay = 3000;
+		cardsDrawn = 5;
 		Players.put(1, new Player(1));//computer
 		Players.put(2, new Player(2));
-		turn = 1;
+		turn = 2;
 		turnList = new ArrayList<Integer>() ;
 		turnList.add(1);
 		turnList.add(2);
 	}
 	
-	public Game(int Decks, int numberPlayers) {
+	public Game(int Decks, int numberPlayers, int secsDelay) {
 		discardPile= new DiscardPile (Decks);
 		numPlayers = numberPlayers;
-		turn =1;
+		turn =2;
+		secDelay = secsDelay;
 		turnList = new ArrayList<Integer>() ;
 		for (int i=1; i <= numPlayers;i++ ){
 			Players.put(i, new Player(i));
@@ -101,6 +110,8 @@ public class Game {
 			discardPile.add(Players.get(playerID).playCard());
 			nextTurn();
 			Log.d("Turn: ", Integer.toString(turn));
+			discardPile.updateUpCards();
+			Log.i("Discard pile", Integer.toString(discardPile.upCards.size()));
 			}
 		//else
 			//toast not your turn

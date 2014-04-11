@@ -10,6 +10,7 @@ public class Computer {
 
 	
 	public Computer(Game game, Player player, int secDelay) {
+		Log.i("Discard pile Before comp", Integer.toString(game.discardPile.upCards.size()));
 		try { TimeUnit.SECONDS.sleep(3);}
 		catch (Exception e) {
 			//Handle exception

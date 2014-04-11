@@ -61,16 +61,28 @@ public class Player {
 	
 	public void Computer(Game game, int secDelay) {
 		Log.d("Time", "before");
-	    
+		Log.i("Discard pile Before comp", Integer.toString(game.discardPile.upCards.size()));
+		/*if (game.discardPile.checkSlappable()){
+			try {
+			Thread.sleep(secDelay);
+	    	game.slap(this);
+	    	Log.d("Computer Slap", "Computer slapped pile");
+			}
+			catch(Exception ex) {
+			    Thread.currentThread().interrupt();
+			}
+	    }
+		else {*/
 		try {
-		    Thread.sleep(3000);
-		    Log.d("Time", "after");
+			Thread.sleep(2000);
 		    game.makePlay(this);
-		    Log.d("Computer Card", game.discardPile.get(game.discardPile.size()-1).toString());
-		} catch(Exception ex) {
+		    Log.i("Computer", "made play");
+			}
+		    
+		 catch(Exception ex) {
 		    Thread.currentThread().interrupt();
-		}
-		
+		 }	
+		//}
 	   
 		
 		/*if (game.discardPile.checkSlappable()){

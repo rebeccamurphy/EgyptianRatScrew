@@ -12,13 +12,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import egyptianratscrew.game.Game;
 import egyptianratscrew.game.Rule;
 import egyptianratscrew.player.Player;
 
 public class DiscardPile extends Deck{
 
 	private int numDecks;
-	private ArrayList<Card> upCards;
+	public ArrayList<Card> upCards;
 	private HashMap<String,Rule> rules;
 	private boolean slappable;
 	private int chances;
@@ -77,14 +78,14 @@ public class DiscardPile extends Deck{
 	public boolean checkSandwich(){
 		Rule tempRule = rules.get("sandwich");
 		//add more here once different rules are available
-		if (tempRule.getNum() == 3)
+		if (tempRule.getNum() == 3&& upCards.size() >2)
 			return upCards.get(upCards.size()-1).getRank() ==upCards.get(upCards.size()-3).getRank();
 		return false;
 	}
 	
 	public boolean checkDouble(){
 		Rule tempRule = rules.get("double");
-		if (tempRule.getNum() == 2)
+		if (tempRule.getNum() == 2 && upCards.size()>1) //null pointer?
 			return upCards.get(upCards.size()-1).getRank() ==upCards.get(upCards.size()-2).getRank();
 		return false;
 	} 
@@ -96,7 +97,7 @@ public class DiscardPile extends Deck{
 	
 	public boolean checkSlappable(){
 		//should be called after every turn. 
-		slappable = checkAllSlapRules();
+			slappable = checkAllSlapRules();
 		return slappable;
 	}
 	
@@ -124,6 +125,17 @@ public class DiscardPile extends Deck{
 		long seed = System.nanoTime();
 		Collections.shuffle(deck, new Random(seed));
 	}
+	public void updateUpCards(){
+		upCards = new ArrayList<Card>();
+		for (int i = this.size()-1; i> this.size()-6; i--){
+			try	{
+				upCards.add(this.get(i));
+			}
+			catch(Exception e){
+				break;
+			}
+		}
+	}
 	
 	public void calcActiveArea(){}
 	/*
@@ -133,23 +145,28 @@ public class DiscardPile extends Deck{
 	/*
 	 * Start Draw Methods
 	 */
-	public void drawUpCards(){
+	public void drawUpCards(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack, Paint paint){
 		
 	}
 	
-	public void drawDiscardPile(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack, Paint paint){
+	public void drawDiscardPile(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack, Paint paint, Game game){
 		//should draw atleast 3 cards
 		//posibly down Cards as well
-		//should draw last card of discard pile on top. 
+		//should draw last card of discard pile on top.
+		upCards = new ArrayList<Card>();
 		if (!deck.isEmpty())
 		{ //5 cards will be displayed on the screen 
-			//for(int i = deck.size()-1; i >deck.size()-6; i-- )
-			try {canvas.drawBitmap(deck.get(deck.size()-1).getBitmap(),
-					(screenW/2)- (scaledCardW/2),
+			int j =0;
+			for(int i = deck.size()-game.cardsDrawn; i <deck.size(); i++ ){
+			try {canvas.drawBitmap(deck.get(i).getBitmap(),
+					(screenW/2)- (scaledCardW/2) + j*scaledCardW/5,
 					(screenH/2)-(cardBack.getHeight()/2),
 					null);
+				j++;
+				upCards.add(deck.get(i));
 			}
 			catch(Exception e) {}
+		}
 		}
 	}
 	
