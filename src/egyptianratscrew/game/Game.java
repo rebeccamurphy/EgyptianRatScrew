@@ -129,7 +129,7 @@ public class Game {
 	
 	public void slap(Player player){
 		if (discardPile.checkAllSlapRules()){
-			player.addCard(discardPile);
+			discardPile.addPiletoHand(player);
 			if (turn != player.getId())
 				turn = player.getId();
 				//nextTurn(); // the person who gets the discard pile places the card

@@ -58,48 +58,46 @@ public class Player {
 	public int getHandSize(){
 		return myHand.size();
 	}
-	
-	public void Computer(Game game, int secDelay) {
-		Log.d("Time", "before");
-		Log.i("Discard pile Before comp", Integer.toString(game.discardPile.upCards.size()));
-		/*if (game.discardPile.checkSlappable()){
+	public void slapTryThread(Game game, int secDelay){
+
 			try {
 			Thread.sleep(secDelay);
 	    	game.slap(this);
 	    	Log.d("Computer Slap", "Computer slapped pile");
+	    	
 			}
 			catch(Exception ex) {
 			    Thread.currentThread().interrupt();
-			}
-	    }
-		else {*/
-		try {
-			Thread.sleep(2000);
-		    game.makePlay(this);
-		    Log.i("Computer", "made play");
-			}
-		    
-		 catch(Exception ex) {
-		    Thread.currentThread().interrupt();
-		 }	
-		//}
-	   
-		
-		/*if (game.discardPile.checkSlappable()){
-			try {
 			    
-			    TimeUnit.SECONDS.sleep(secDelay);
-			    //sleep 5 seconds should be able to be changes in game rules
-			} catch (Exception e) {
-			    //Handle exception
-				Log.d("Wait Exception", "Computer broke");
 			}
-			game.slap(this);
-		}
-		else
-			game.makePlay(this);
+	    
+	
+	}
+	public void makeMoveThread(Game game){
 		
-		*/}
+			try {
+				Thread.sleep(2000);
+			    game.makePlay(this);
+			    Log.i("Computer", "made play");
+			    
+				}
+			    
+			 catch(Exception ex) {
+			    Thread.currentThread().interrupt();
+			 }	
+			
+	}
+	public void Computer(Game game, int secDelay) {
+		Log.d("Time", "before");
+		Log.i("Discard pile Before comp", Integer.toString(game.discardPile.upCards.size()));
+		//while (game.discardPile.checkSlappable()){
+		//this wont work if it is ot already the computers turn. there needs to be a check in makeMove if the player is the computer
+		//that it will start a slapTryThread. maybe put a check on discardPile.size !=1 in there? TODO
+		if (game.discardPile.checkSlappable())
+				slapTryThread(game, secDelay);
+				makeMoveThread(game);
+		//}		
+		//makeMoveThread(game);
+	}
+
 }
-
-

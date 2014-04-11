@@ -94,8 +94,8 @@ public class Deck {
 			case 4: break;
 			}
 			
-			if  (deck.size() > 3 || deck.size() < i)
-			{	//this might draw the wrong number of cards when cards are less than 3
+			if  (deck.size() > 3 || deck.size() <= i)
+			{	//this might draw the wrong number of cards when cards are less than 3 TODO
 			canvas.drawBitmap(cardBack, 
 					X, 
 					Y, 

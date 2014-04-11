@@ -38,7 +38,7 @@ public class DiscardPile extends Deck{
 		rules.put("jack", new Rule(1, true));
 		
 		rules.put("sandwich", new Rule( 3, true));
-		rules.put("doubles", new Rule( 2, true));
+		rules.put("double", new Rule( 2, true));
 		
 	}
 	public DiscardPile(int num) {
@@ -85,7 +85,7 @@ public class DiscardPile extends Deck{
 	
 	public boolean checkDouble(){
 		Rule tempRule = rules.get("double");
-		if (tempRule.getNum() == 2 && upCards.size()>1) //null pointer?
+		if (tempRule.getNum() == 2 && upCards.size()>1 ) //null pointer?
 			return upCards.get(upCards.size()-1).getRank() ==upCards.get(upCards.size()-2).getRank();
 		return false;
 	} 
@@ -195,6 +195,8 @@ public class DiscardPile extends Deck{
 	public void addPiletoHand(Player player){
 		//add current discard to players hand
 		player.addCard(deck);
+		deck = new ArrayList<Card>();
+		upCards = new ArrayList<Card>();
 				
 	}
 
