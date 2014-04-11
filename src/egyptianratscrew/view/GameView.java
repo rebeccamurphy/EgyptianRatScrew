@@ -160,7 +160,7 @@ public class GameView extends View {
 				return true;
 			}
 			 else 
-				 //not Your turn!
+				 Log.d("Turn", "Not your turn.");//not Your turn!
 			
 			break;
 		case MotionEvent.ACTION_UP:
