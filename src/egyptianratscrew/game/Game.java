@@ -109,9 +109,9 @@ public class Game {
 		if (playerID == turn){
 			discardPile.add(Players.get(playerID).playCard());
 			nextTurn();
-			Log.d("Turn: ", Integer.toString(turn));
+			//Log.d("Turn: ", Integer.toString(turn));
 			discardPile.updateUpCards();
-			Log.i("Discard pile", Integer.toString(discardPile.upCards.size()));
+			//Log.i("Discard pile", Integer.toString(discardPile.upCards.size()));
 			}
 		//else
 			//toast not your turn

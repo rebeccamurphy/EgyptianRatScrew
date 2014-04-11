@@ -99,7 +99,7 @@ public class Player {
 				makeMoveThread(game);
 		}		
 		else*/ makeMoveThread(game);
-		Log.d("Time", "before");
+		Log.d("Time", "after");
 	}
 
 }

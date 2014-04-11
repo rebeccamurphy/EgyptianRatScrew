@@ -60,8 +60,8 @@ public class Deck {
 	}
 	
 	public boolean checkActiveArea(int X, int Y){
-		Log.d("Touch Active Area top", "X: " +Integer.toString(activeArea[0])+ " " +Integer.toString(activeArea[1]));
-		Log.d("Touch Active Area bot", "X: " +Integer.toString(activeArea[2])+ " " +Integer.toString(activeArea[3]));
+		//Log.d("Touch Active Area top", "X: " +Integer.toString(activeArea[0])+ " " +Integer.toString(activeArea[1]));
+		//Log.d("Touch Active Area bot", "X: " +Integer.toString(activeArea[2])+ " " +Integer.toString(activeArea[3]));
 		
 		return ((X> activeArea[0] &&  X< activeArea[2]) &&(Y > activeArea[1] && Y< activeArea[3]));
 	}
@@ -76,7 +76,7 @@ public class Deck {
 			case 2: 
 				X = screenW/2 + i*(5) - (scaledCardW/2);
 				Y = screenH-scaledCardH-paint.getTextSize()-(10*scale);
-				Log.d("Player2 XY", Integer.toString((int)X)+ " " +Integer.toString((int)Y));
+				//Log.d("Player2 XY", Integer.toString((int)X)+ " " +Integer.toString((int)Y));
 				activeArea[0] = (int) (screenW/2 + 0*(5) - (scaledCardW/2));
 				activeArea[1] = (int) (screenH-scaledCardH-paint.getTextSize()-(10*scale));
 				activeArea[2] = (int) (screenW/2 + 3*(5) - (scaledCardW/2) + scaledCardW);

@@ -38,6 +38,7 @@ public class GameView extends View {
 	private DiscardPile discardPile;
 	private int scaledCardW;
 	private int scaledCardH;
+	Canvas canvas = new Canvas();
 
 	
 	private float scale;
@@ -89,10 +90,15 @@ public class GameView extends View {
 	protected void onDraw(Canvas canvas) {
 		
 		//iterate through players
+		/*TODO
+		 * Order is fucked up, player goes, then ondraw sould go, then computer goes
+		 * instead player goes, computer goes, ondraw is called*/
+		//if (game.touchDisabled)
+		{
 		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
 		game.updateScores();
+		}
 		
-			
 		//Log.d("Computer Card", game.discardPile.get(game.discardPile.size()-1).toString());
 		for (int i =1; i<= game.Players.size(); i++)
 		{
@@ -122,7 +128,7 @@ public class GameView extends View {
 				10, 
 				screenH - blackpaint.getTextSize(),
 				blackpaint);
-		
+		Log.i("Order", "this /should/ be before actionUP.");
 		game.touchDisabled = false;
 		/*
 		if (!discardPile.isEmpty())
@@ -150,7 +156,7 @@ public class GameView extends View {
 			//	game.slap(game.Players.get(2));	//player2 (human) gets discard pile if the pile is			
 				//if not slappable, slap method will make toast not valid
 			
-			 if (hitPlayerPile && game.touchDisabled ==false)  //&& some thing to check turn and face card stuff) 
+			 if (hitPlayerPile && !game.touchDisabled&& game.turn!=1)  //&& some thing to check turn and face card stuff) 
 			{
 				game.touchDisabled=true;
 				Log.d("Testing Player input","Touch detected. "+ Integer.toString(game.turn));
@@ -161,9 +167,12 @@ public class GameView extends View {
 			}
 			 else 
 				Log.d("turn", "not yours"); //not Your turn!
-			//return true;
-			break;
+			Log.d("Here", "should be right after player card");
+			return true;
+			 
+			//break;
 		case MotionEvent.ACTION_UP:
+			Log.d("when is onDrawCalled", Boolean.toString(game.touchDisabled));
 			if (game.turn ==1){
 			
 			//do computer move
@@ -172,6 +181,7 @@ public class GameView extends View {
 			game.Players.get(1).Computer(game, 3000); 
 			//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
 			invalidate();
+			//onDraw(canvas);
 			return true;
 			}
 			break;
