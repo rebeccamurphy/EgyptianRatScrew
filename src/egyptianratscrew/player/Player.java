@@ -93,11 +93,13 @@ public class Player {
 		//while (game.discardPile.checkSlappable()){
 		//this wont work if it is ot already the computers turn. there needs to be a check in makeMove if the player is the computer
 		//that it will start a slapTryThread. maybe put a check on discardPile.size !=1 in there? TODO
-		if (game.discardPile.checkSlappable())
+		/*if (game.discardPile.checkSlappable()){
+			Log.d("Time", "after");
 				slapTryThread(game, secDelay);
 				makeMoveThread(game);
-		//}		
-		//makeMoveThread(game);
+		}		
+		else*/ makeMoveThread(game);
+		Log.d("Time", "before");
 	}
 
 }
