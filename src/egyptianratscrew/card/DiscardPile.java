@@ -23,6 +23,7 @@ public class DiscardPile extends Deck{
 	private HashMap<String,Rule> rules;
 	private boolean slappable;
 	private int chances;
+	public String currFaceCard;
 	
 	public DiscardPile() {
 		deck= new ArrayList<Card>();

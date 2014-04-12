@@ -94,6 +94,7 @@ public class GameView extends View {
 		
 			
 		//Log.d("Computer Card", game.discardPile.get(game.discardPile.size()-1).toString());
+		if (game.firstTurn ==true){
 		for (int i =1; i<= game.Players.size(); i++)
 		{
 			//game.discardPile.add((game.Players.get(i).playCard()));
@@ -104,6 +105,24 @@ public class GameView extends View {
 			Log.d("end", "got here");}
 			catch(Exception e){break;}
 		}
+		}
+		else {
+			for (int i =1; i<= game.Players.size(); i++)
+			{
+				//game.discardPile.add((game.Players.get(i).playCard()));
+				if ( !game.Players.get(i).drawn)
+				try{
+				Log.d("start", "Got here");
+				game.Players.get(i).getHand()
+				.drawPlayerDeck(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, i);
+				Log.d("end", "got here");
+				game.Players.get(i).drawn = true;
+				}
+				
+				catch(Exception e){break;}
+			}
+		}
+		
 		
 		//if (game.turn ==1){
 		
@@ -123,7 +142,7 @@ public class GameView extends View {
 				screenH - blackpaint.getTextSize(),
 				blackpaint);
 		
-		game.touchDisabled = false;
+		
 		/*
 		if (!discardPile.isEmpty())
 		{ 
@@ -152,10 +171,12 @@ public class GameView extends View {
 			
 			 if (hitPlayerPile && game.touchDisabled ==false)  //&& some thing to check turn and face card stuff) 
 			{
+				game.firstTurn = false;
 				game.touchDisabled=true;
 				Log.d("Testing Player input","Touch detected. "+ Integer.toString(game.turn));
 				game.makePlay(game.turn);
 				Log.d("Player Card", game.discardPile.get(game.discardPile.size()-1).toString());
+				game.Players.get(game.turn).drawn = false;
 				invalidate();
 				return true;
 			}

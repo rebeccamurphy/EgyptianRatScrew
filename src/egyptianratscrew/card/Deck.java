@@ -22,6 +22,7 @@ public class Deck {
 	protected int[] activeArea; //topleftX, topleftY, toprightX,toprightX
 	protected int[] activeAreaBot;
 	private int numDecks;
+	public boolean drawn = false;
 	//private HashMap<String, Boolean> Rules;
 	
 	public Deck() {

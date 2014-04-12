@@ -31,6 +31,7 @@ public class Game {
 	public int secDelay;
 	public int cardsDrawn;
 	public boolean gameOver;
+	public boolean firstTurn;
 	
 	public Game() {
 		discardPile = new DiscardPile();
@@ -39,6 +40,7 @@ public class Game {
 		numPlayers =2;
 		touchDisabled =false;
 		gameOver = false;
+		firstTurn = true;
 		secDelay = 3000;
 		cardsDrawn = 5;
 		Players.put(1, new Player(1));//computer
