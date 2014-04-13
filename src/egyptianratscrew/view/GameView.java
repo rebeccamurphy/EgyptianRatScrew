@@ -68,6 +68,7 @@ public class GameView extends View {
 		
 		game.gameStart(myContext, screenW);
 		Log.d("Turn " , Integer.toString(game.turn));
+		//gameLoop();
 		//toast press to start or make start button
 		//game.Players.get(1).Computer(game, 5);
 		
@@ -107,10 +108,10 @@ public class GameView extends View {
 			game.Players.get(i).getHand()
 			.drawPlayerDeck(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, i);
 			Log.d("end", "got here");}
-			catch(Exception e){break;}
+			catch(Exception e){}
 		}
 		Log.d("Draw Discard","Game turn " + Integer.toString(game.turn) + ", " + Boolean.toString(game.Players.get(game.turn).drawn) );
-		if (game.firstTurn == true)
+		if (game.firstTurn == true) //actually not necessary 
 		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
 		else if (game.Players.get(game.turn).drawn == false) {
 			game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
@@ -198,13 +199,14 @@ Log.d("HitplayerPile:", Boolean.toString(hitPlayerPile));
 			//do computer move
 			//draw discard again draw goes through all things
 			game.touchDisabled = true;
-			game.Players.get(1).Computer(game, 3000);
+			//game.Players.get(1).Computer(game, 3000);
 			game.Players.get(game.turn).drawn = false;
 			//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
-			invalidate();
+			if (game.Players.get(1).Computer(game, 3000))
+				invalidate();
 			//onDraw(canvas);
 			return true;
-			}
+			} 
 			break;
 		case MotionEvent.ACTION_MOVE:
 			break;
@@ -214,8 +216,21 @@ Log.d("HitplayerPile:", Boolean.toString(hitPlayerPile));
 		return true;
 	}
 
-	
-	
+	public void gameLoop(){
+		while(!game.gameOver){
+			if (game.turn ==1){
+				
+				//do computer move
+				//draw discard again draw goes through all things
+				game.touchDisabled = true;
+				game.Players.get(1).Computer(game, 3000);
+				game.Players.get(game.turn).drawn = false;
+				//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
+				invalidate();
+				//onDraw(canvas);
+		}
+	}
+	}
 	
 	
 }
