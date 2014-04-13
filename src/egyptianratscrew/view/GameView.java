@@ -90,16 +90,15 @@ public class GameView extends View {
 	protected void onDraw(Canvas canvas) {
 		
 		//iterate through players
+
 		/*TODO
 		 * Order is fucked up, player goes, then ondraw sould go, then computer goes
 		 * instead player goes, computer goes, ondraw is called*/
 		//if (game.touchDisabled)
-		{
-		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
-		game.updateScores();
-		}
+		
 		
 		//Log.d("Computer Card", game.discardPile.get(game.discardPile.size()-1).toString());
+		//if (game.firstTurn ==true){}
 		for (int i =1; i<= game.Players.size(); i++)
 		{
 			//game.discardPile.add((game.Players.get(i).playCard()));
@@ -110,6 +109,24 @@ public class GameView extends View {
 			Log.d("end", "got here");}
 			catch(Exception e){break;}
 		}
+		Log.d("Draw Discard","Game turn " + Integer.toString(game.turn) + ", " + Boolean.toString(game.Players.get(game.turn).drawn) );
+		if (game.firstTurn == true)
+		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
+		else if (game.Players.get(game.turn).drawn == false) {
+			game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
+			game.Players.get(game.turn).drawn = true;
+			game.nextTurn();
+			Log.d("Here", "discard is being drawn");
+			if (game.turn!=1)
+			{
+				game.touchDisabled = false;
+			}
+		}
+			
+		game.updateScores();
+		
+		//Log.d("Print","this a million times");
+		
 		
 		//if (game.turn ==1){
 		
@@ -128,8 +145,7 @@ public class GameView extends View {
 				10, 
 				screenH - blackpaint.getTextSize(),
 				blackpaint);
-		Log.i("Order", "this /should/ be before actionUP.");
-		game.touchDisabled = false;
+
 		/*
 		if (!discardPile.isEmpty())
 		{ 
@@ -155,13 +171,17 @@ public class GameView extends View {
 			//if (hitDiscard)//&& hit  
 			//	game.slap(game.Players.get(2));	//player2 (human) gets discard pile if the pile is			
 				//if not slappable, slap method will make toast not valid
-			
-			 if (hitPlayerPile && !game.touchDisabled&& game.turn!=1)  //&& some thing to check turn and face card stuff) 
+Log.d("HitplayerPile:", Boolean.toString(hitPlayerPile));
+			Log.d("TouchDisabled:", Boolean.toString(game.touchDisabled));
+			 if (hitPlayerPile && game.touchDisabled ==false)  //&& some thing to check turn and face card stuff) 
+
 			{
+				game.firstTurn = false;
 				game.touchDisabled=true;
 				Log.d("Testing Player input","Touch detected. "+ Integer.toString(game.turn));
 				game.makePlay(game.turn);
 				Log.d("Player Card", game.discardPile.get(game.discardPile.size()-1).toString());
+				game.Players.get(game.turn).drawn = false;
 				invalidate();
 				return true;
 			}
@@ -178,7 +198,8 @@ public class GameView extends View {
 			//do computer move
 			//draw discard again draw goes through all things
 			game.touchDisabled = true;
-			game.Players.get(1).Computer(game, 3000); 
+			game.Players.get(1).Computer(game, 3000);
+			game.Players.get(game.turn).drawn = false;
 			//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
 			invalidate();
 			//onDraw(canvas);

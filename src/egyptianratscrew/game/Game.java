@@ -31,6 +31,7 @@ public class Game {
 	public int secDelay;
 	public int cardsDrawn;
 	public boolean gameOver;
+	public boolean firstTurn;
 	
 	public Game() {
 		discardPile = new DiscardPile();
@@ -39,6 +40,7 @@ public class Game {
 		numPlayers =2;
 		touchDisabled =false;
 		gameOver = false;
+		firstTurn = true;
 		secDelay = 3000;
 		cardsDrawn = 5;
 		Players.put(1, new Player(1));//computer
@@ -100,7 +102,7 @@ public class Game {
 	public void makePlay(Player player){
 		if (player.getId() == turn){
 			discardPile.add(player.playCard());
-			nextTurn();
+			//nextTurn();
 		}
 		
 	}
@@ -108,10 +110,15 @@ public class Game {
 		
 		if (playerID == turn){
 			discardPile.add(Players.get(playerID).playCard());
-			nextTurn();
-			//Log.d("Turn: ", Integer.toString(turn));
+
+			Log.d("Turn: ", Integer.toString(turn));
 			discardPile.updateUpCards();
-			//Log.i("Discard pile", Integer.toString(discardPile.upCards.size()));
+			Log.i("Discard pile", Integer.toString(discardPile.upCards.size()));
+			//possibly do this in onDraw instead
+			// so that next turn will only happen if the previous
+			// has already been drawn. 
+			//nextTurn();
+
 			}
 		//else
 			//toast not your turn
