@@ -102,7 +102,7 @@ public class Game {
 	public void makePlay(Player player){
 		if (player.getId() == turn){
 			discardPile.add(player.playCard());
-			nextTurn();
+			//nextTurn();
 		}
 		
 	}
@@ -110,10 +110,14 @@ public class Game {
 		
 		if (playerID == turn){
 			discardPile.add(Players.get(playerID).playCard());
-			nextTurn();
+			
 			Log.d("Turn: ", Integer.toString(turn));
 			discardPile.updateUpCards();
 			Log.i("Discard pile", Integer.toString(discardPile.upCards.size()));
+			//possibly do this in onDraw instead
+			// so that next turn will only happen if the previous
+			// has already been drawn. 
+			//nextTurn();
 			}
 		//else
 			//toast not your turn
