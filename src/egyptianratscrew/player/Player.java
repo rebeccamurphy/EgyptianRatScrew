@@ -74,22 +74,21 @@ public class Player {
 	    
 	
 	}
-	public boolean makeMoveThread(Game game){
+	public void makeMoveThread(Game game){
 		
 			try {
 				Thread.sleep(2000);
 			    game.makePlay(this);
 			    Log.i("Computer", "made play");
-			    return true;
+			    
 				}
 			    
 			 catch(Exception ex) {
 			    Thread.currentThread().interrupt();
-			    return false;
 			 }	
 			
 	}
-	public boolean Computer(Game game, int secDelay) {
+	public void Computer(Game game, int secDelay) {
 		Log.d("Time", "before");
 		Log.i("Discard pile Before comp", Integer.toString(game.discardPile.upCards.size()));
 		//while (game.discardPile.checkSlappable()){
@@ -100,10 +99,8 @@ public class Player {
 				slapTryThread(game, secDelay);
 				makeMoveThread(game);
 		}		
-		else*/ 
-		return makeMoveThread(game);
-		//Log.d("Time", "after");
-		
+		else*/ makeMoveThread(game);
+		Log.d("Time", "after");
 	}
 
 }

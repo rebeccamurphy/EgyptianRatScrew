@@ -203,7 +203,7 @@ Log.d("HitplayerPile:", Boolean.toString(hitPlayerPile));
 
 			game.Players.get(game.turn).drawn = false;
 			//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
-			if (game.Players.get(1).Computer(game, 3000))
+			
 				invalidate();
 			//onDraw(canvas);
 			return true;
