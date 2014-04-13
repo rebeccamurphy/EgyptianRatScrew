@@ -17,7 +17,7 @@ public class Player {
 	private Deck myHand;
 	private int score;
 	private int playerId;
-	public boolean drawn = false;
+	public boolean drawn = true;
 	
 	public Player(Integer playerID) {
 		myHand = new Deck();
