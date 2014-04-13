@@ -110,12 +110,12 @@ public class GameView extends View {
 			catch(Exception e){break;}
 		}
 		Log.d("Draw Discard","Game turn " + Integer.toString(game.turn) + ", " + Boolean.toString(game.Players.get(game.turn).drawn) );
-		if (game.firstTurn == true)
-		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
-		else if (game.Players.get(game.turn).drawn == false) {
+		if (game.Players.get(game.turn).drawn == false) {
+			Log.d("if", "before "+ Integer.toString(game.turn));
 			game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
-			game.Players.get(game.turn).drawn = true;
-			game.nextTurn();
+			//game.Players.get(game.turn).drawn = true;
+			//game.nextTurn();
+			Log.d("if", "after "+ Integer.toString(game.turn));
 			Log.d("Here", "discard is being drawn");
 			if (game.turn!=1)
 			{
@@ -192,17 +192,18 @@ Log.d("HitplayerPile:", Boolean.toString(hitPlayerPile));
 			 
 			//break;
 		case MotionEvent.ACTION_UP:
-			Log.d("when is onDrawCalled", Boolean.toString(game.touchDisabled));
+			Log.d("if", Integer.toString(game.turn) +" " +Boolean.toString(game.touchDisabled) + " " + Boolean.toString(game.Players.get(game.turn).drawn));
+		
 			if (game.turn ==1 && game.touchDisabled ==  true && game.Players.get(game.turn).drawn == true){
-			
+			Log.d("can", "even get here");
 			//do computer move
 			//draw discard again draw goes through all things
-			
+			//int currDiscardSize = game.discardPile.size();
 			game.Players.get(1).Computer(game, 3000);
 			game.Players.get(game.turn).drawn = false;
 			//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
-			invalidate();
 			//onDraw(canvas);
+			invalidate();
 			return true;
 			}
 			break;

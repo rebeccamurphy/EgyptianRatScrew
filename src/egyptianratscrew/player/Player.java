@@ -18,7 +18,7 @@ public class Player {
 	private int score;
 	private int playerId;
 	public boolean drawn = true;
-	
+	public boolean flag = false;
 	public Player(Integer playerID) {
 		myHand = new Deck();
 		score = 0;
@@ -80,7 +80,7 @@ public class Player {
 				Thread.sleep(2000);
 			    game.makePlay(this);
 			    Log.i("Computer", "made play");
-			    
+			    flag = true;
 				}
 			    
 			 catch(Exception ex) {

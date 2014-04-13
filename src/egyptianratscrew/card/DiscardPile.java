@@ -169,6 +169,8 @@ public class DiscardPile extends Deck{
 			catch(Exception e) {}
 		}
 		}
+		game.Players.get(game.turn).drawn = true;
+		game.nextTurn();
 	}
 	
 	public void fillDeck(Context myContext, int screenW) {
