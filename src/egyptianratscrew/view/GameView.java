@@ -193,11 +193,11 @@ Log.d("HitplayerPile:", Boolean.toString(hitPlayerPile));
 			//break;
 		case MotionEvent.ACTION_UP:
 			Log.d("when is onDrawCalled", Boolean.toString(game.touchDisabled));
-			if (game.turn ==1){
+			if (game.turn ==1 && game.touchDisabled ==  true && game.Players.get(game.turn).drawn == true){
 			
 			//do computer move
 			//draw discard again draw goes through all things
-			game.touchDisabled = true;
+			
 			game.Players.get(1).Computer(game, 3000);
 			game.Players.get(game.turn).drawn = false;
 			//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
