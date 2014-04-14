@@ -22,6 +22,7 @@ public class Deck {
 	protected int[] activeArea; //topleftX, topleftY, toprightX,toprightX
 	protected int[] activeAreaBot;
 	private int numDecks;
+	public boolean drawn = false;
 	//private HashMap<String, Boolean> Rules;
 	
 	public Deck() {
@@ -60,8 +61,8 @@ public class Deck {
 	}
 	
 	public boolean checkActiveArea(int X, int Y){
-		Log.d("Touch Active Area top", "X: " +Integer.toString(activeArea[0])+ " " +Integer.toString(activeArea[1]));
-		Log.d("Touch Active Area bot", "X: " +Integer.toString(activeArea[2])+ " " +Integer.toString(activeArea[3]));
+		//Log.d("Touch Active Area top", "X: " +Integer.toString(activeArea[0])+ " " +Integer.toString(activeArea[1]));
+		//Log.d("Touch Active Area bot", "X: " +Integer.toString(activeArea[2])+ " " +Integer.toString(activeArea[3]));
 		
 		return ((X> activeArea[0] &&  X< activeArea[2]) &&(Y > activeArea[1] && Y< activeArea[3]));
 	}
@@ -76,7 +77,7 @@ public class Deck {
 			case 2: 
 				X = screenW/2 + i*(5) - (scaledCardW/2);
 				Y = screenH-scaledCardH-paint.getTextSize()-(10*scale);
-				Log.d("Player2 XY", Integer.toString((int)X)+ " " +Integer.toString((int)Y));
+				//Log.d("Player2 XY", Integer.toString((int)X)+ " " +Integer.toString((int)Y));
 				activeArea[0] = (int) (screenW/2 + 0*(5) - (scaledCardW/2));
 				activeArea[1] = (int) (screenH-scaledCardH-paint.getTextSize()-(10*scale));
 				activeArea[2] = (int) (screenW/2 + 3*(5) - (scaledCardW/2) + scaledCardW);
@@ -94,15 +95,22 @@ public class Deck {
 			case 4: break;
 			}
 			
-			if  (deck.size() > 3 || deck.size() <= i)
+			if  (deck.size() > 1)
 			{	//this might draw the wrong number of cards when cards are less than 3 TODO
 			canvas.drawBitmap(cardBack, 
 					X, 
 					Y, 
 					null);
 		
-		
-			} 	
+			}
+			else 
+			{	//draw 1 card if deck only has one card.
+				canvas.drawBitmap(cardBack, 
+						X, 
+						Y, 
+						null);
+			
+				}
 		}
 	}
 	

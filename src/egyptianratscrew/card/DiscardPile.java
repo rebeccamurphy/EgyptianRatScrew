@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 import egyptianratscrew.game.Game;
 import egyptianratscrew.game.Rule;
@@ -20,9 +21,10 @@ public class DiscardPile extends Deck{
 
 	private int numDecks;
 	public ArrayList<Card> upCards;
-	private HashMap<String,Rule> rules;
+	public HashMap<String,Rule> rules;
 	private boolean slappable;
 	private int chances;
+	public String currFaceCard;
 	
 	public DiscardPile() {
 		deck= new ArrayList<Card>();
@@ -166,6 +168,12 @@ public class DiscardPile extends Deck{
 				upCards.add(deck.get(i));
 			}
 			catch(Exception e) {}
+			activeArea[0] = (int) ((screenW/2)- (scaledCardW/2) + 0*scaledCardW/5);
+			activeArea[1] = (int) ((screenH/2)-(cardBack.getHeight()/2));
+			activeArea[2] = (int) ((screenW/2)- (scaledCardW/2) + j*scaledCardW/5+ scaledCardW);
+			activeArea[3] = activeArea[1] + scaledCardH;
+			Log.d("Touch Discard Area ", "X " +Integer.toString(activeArea[0]) + ", Y" + Integer.toString(activeArea[1]) + " X" +
+					Integer.toString(activeArea[2]) + ", Y" + Integer.toString(activeArea[3]));
 		}
 		}
 	}
