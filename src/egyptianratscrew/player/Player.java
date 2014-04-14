@@ -63,6 +63,7 @@ public class Player {
 
 			try {
 			Thread.sleep(secDelay);
+		
 	    	game.slap(this);
 	    	Log.d("Computer Slap", "Computer slapped pile");
 	    	

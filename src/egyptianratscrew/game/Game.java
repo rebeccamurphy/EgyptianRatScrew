@@ -93,8 +93,8 @@ public class Game {
 		return discardPile;
 	}
 	
-	public void gameStart(Context myContext, int screenW){
-		discardPile.fillDeck(myContext, screenW);
+	public void gameStart(Context myContext){
+		discardPile.fillDeck(myContext, myContext.getResources().getDisplayMetrics().widthPixels);
 		discardPile.shuffle();
 		dealCards();
 		updateScores();
@@ -188,6 +188,8 @@ public class Game {
 	public void slap(int playerID){
 		if (discardPile.checkAllSlapRules()){
 			Players.get(playerID).addCard(discardPile);
+			faceCard = null;
+			chances = 0;
 			if (turn != playerID)
 				turn = playerID;
 				//nextTurn(); // the person who gets the discard pile places the card

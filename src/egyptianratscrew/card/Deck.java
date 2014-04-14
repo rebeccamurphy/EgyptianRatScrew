@@ -63,10 +63,13 @@ public class Deck {
 	public boolean checkActiveArea(int X, int Y){
 		//Log.d("Touch Active Area top", "X: " +Integer.toString(activeArea[0])+ " " +Integer.toString(activeArea[1]));
 		//Log.d("Touch Active Area bot", "X: " +Integer.toString(activeArea[2])+ " " +Integer.toString(activeArea[3]));
-		
-		return ((X> activeArea[0] &&  X< activeArea[2]) &&(Y > activeArea[1] && Y< activeArea[3]));
+		if (activeArea !=null)
+			return ((X> activeArea[0] &&  X< activeArea[2]) &&(Y > activeArea[1] && Y< activeArea[3]));
+		return false;
 	}
-	
+	public void disableActiveArea(){
+		activeArea = null;
+	}
 	public void drawPlayerDeck(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack, Paint paint, int p){
 		//draws down cards
 	

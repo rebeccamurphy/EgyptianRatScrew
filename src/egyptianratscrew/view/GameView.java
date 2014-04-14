@@ -11,6 +11,7 @@ import egyptianratscrew.activity.R;
 import egyptianratscrew.card.Card;
 import egyptianratscrew.card.DiscardPile;
 import egyptianratscrew.game.Game;
+import egyptianratscrew.game.GameThread;
 import egyptianratscrew.player.Player;
 
 
@@ -23,23 +24,22 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 
 
-public class GameView extends View {
+public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
 	private int screenW;
 	private int screenH;
 
 	private Context myContext;
-	private Game game;
-	private HashMap<Integer, Player> players;
-	private DiscardPile discardPile;
 	private int scaledCardW;
 	private int scaledCardH;
 	Canvas canvas = new Canvas();
-
+	private GameThread gameThread;
 	
 	private float scale;
 	private Paint blackpaint;
@@ -48,7 +48,11 @@ public class GameView extends View {
 	public GameView(Context context) {
 		super(context);
 		myContext = context;
-		game = new Game(); //updated when options are available, with more players and stuff
+		
+		getHolder().addCallback(this);
+		gameThread = new GameThread(getHolder(), this, myContext);
+		setFocusable(true);
+		
 		
 		scale = myContext.getResources().getDisplayMetrics().density;
 		screenH = myContext.getResources().getDisplayMetrics().heightPixels;
@@ -66,8 +70,8 @@ public class GameView extends View {
 		blackpaint.setTextAlign(Paint.Align.LEFT);
 		blackpaint.setTextSize(scale*15);
 		
-		game.gameStart(myContext, screenW);
-		Log.d("Turn " , Integer.toString(game.turn));
+		
+		//Log.d("Turn " , Integer.toString(game.turn));
 		//gameLoop();
 		//toast press to start or make start button
 		//game.Players.get(1).Computer(game, 5);
@@ -88,68 +92,46 @@ public class GameView extends View {
 	}
 
 	@Override
-	protected void onDraw(Canvas canvas) {
-		if (!game.gameOver){
-		//iterate through players
-
-		/*TODO
-		 * Order is fucked up, player goes, then ondraw sould go, then computer goes
-		 * instead player goes, computer goes, ondraw is called*/
-		//if (game.touchDisabled)
+	public void onDraw(Canvas canvas) {
 		
-		
-		//Log.d("Computer Card", game.discardPile.get(game.discardPile.size()-1).toString());
-		//if (game.firstTurn ==true){}
-		for (int i =1; i<= game.Players.size(); i++)
 		{
-			//game.discardPile.add((game.Players.get(i).playCard()));
+			canvas.drawColor(Color.WHITE);
+		Log.d("onDraw", "being called.");
+
+			
+		for (int i =1; i<= gameThread.game.Players.size(); i++)
+		{
+			//draws player decks
 			try{
-			Log.d("start", "Got here");
-			game.Players.get(i).getHand()
+			gameThread.game.Players.get(i).getHand()
 			.drawPlayerDeck(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, i);
-			Log.d("end", "got here");}
+			;}
+			
 			catch(Exception e){}
 		}
-		Log.d("Draw Discard","Game turn " + Integer.toString(game.turn) + ", " + Boolean.toString(game.Players.get(game.turn).drawn) );
-		if (game.Players.get(game.turn).drawn == false) {
-			game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
-			game.Players.get(game.turn).drawn = true;
-			if (game.faceCard == null)
-				game.nextTurn();
-			else if (game.chances ==0){
-				//player didnt get a face card or slap in chances
-					game.faceCard = null;
-					game.chances = 0;
-					if (game.turn == 1 )//it was player 2's face card
-						game.discardPile.addPiletoHand(game.Players.get(2));					
-					else
-						game.discardPile.addPiletoHand(game.Players.get(1));
-					game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
-					game.nextTurn();
-					
-			} 
+		
+		gameThread.game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, gameThread.game);
+		gameThread.game.updateScores();
+		
+				}
 			
-			Log.d("Here", "discard is being drawn");
-			if (game.turn!=1)
-			{
-				game.touchDisabled = false;
-			}
-		}
-		}	
-		game.updateScores();
+			
 		
 		canvas.drawText(
-				"Computer Score: " + Integer.toString(game.Players.get(1).getScore()) , 
+				"Computer Score: " + Integer.toString(gameThread.game.Players.get(1).getScore()) , 
 				10, 
 				blackpaint.getTextSize()+10,
 				blackpaint);
 		canvas.drawText(
-				"My Score: " + Integer.toString(game.Players.get(2).getScore()) , 
+				"My Score: " + Integer.toString(gameThread.game.Players.get(2).getScore()) , 
 				10, 
 				screenH - blackpaint.getTextSize(),
 				blackpaint);
-
+		
+		
 	}
+	
+	
 
 	public boolean onTouchEvent(MotionEvent event) {
 		int eventaction = event.getAction();
@@ -160,29 +142,22 @@ public class GameView extends View {
 		switch (eventaction) {
 		case MotionEvent.ACTION_DOWN:
 			//only for one player for now
-			hitDiscard = game.discardPile.checkActiveArea(X, Y);
-			hitPlayerPile = game.Players.get(game.turn).getHand().checkActiveArea(X, Y);
+			hitDiscard = gameThread.game.discardPile.checkActiveArea(X, Y);
+			hitPlayerPile = gameThread.game.Players.get(gameThread.game.turn).getHand().checkActiveArea(X, Y);
 			Log.d("Touch", "Touchevent is happening. X: " + Integer.toString(X) + "Y: " + Integer.toString(Y) );
 			Log.d("Touch Discard Pile", Boolean.toString(hitDiscard));
-			if (hitDiscard && game.discardPile.checkSlappable())//&& hit
+			if (hitDiscard && gameThread.game.discardPile.checkSlappable())//&& hit
 				{  
-				game.slap(game.Players.get(2));
-				invalidate();
+				gameThread.playerSlapped();
+				//invalidate();
 				return true;
 				}	//player2 (human) gets discard pile if the pile is			
 				//if not slappable, slap method will make toast not valid
 			Log.d("HitplayerPile:", Boolean.toString(hitPlayerPile));
-			Log.d("TouchDisabled:", Boolean.toString(game.touchDisabled));
-			 if (hitPlayerPile && game.touchDisabled ==false)  //&& some thing to check turn and face card stuff) 
-
+			//Log.d("TouchDisabled:", Boolean.toString(game.touchDisabled));
+			 if (hitPlayerPile)  //&& some thing to check turn and face card stuff) 
 			{
-				game.firstTurn = false;
-				game.touchDisabled=true;
-				Log.d("Testing Player input","Touch detected. "+ Integer.toString(game.turn));
-				game.makePlay(game.turn);
-				Log.d("Player Card", game.discardPile.get(game.discardPile.size()-1).toString());
-				game.Players.get(game.turn).drawn = false;
-				invalidate();
+				gameThread.playerMoved();
 				return true;
 			}
 			 else 
@@ -192,46 +167,53 @@ public class GameView extends View {
 			 
 		
 		case MotionEvent.ACTION_UP:
-			Log.d("when is onDrawCalled", Boolean.toString(game.touchDisabled));
-			if (game.turn ==1 && game.touchDisabled ==  true && game.Players.get(game.turn).drawn == true){
 			
-			//do computer move
-			//draw discard again draw goes through all things
-
-			game.Players.get(1).Computer(game, 3000);
-
-			game.Players.get(game.turn).drawn = false;
-			//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
-			
-				invalidate();
-			//onDraw(canvas);
-			return true;
-			} 
+			 
 			//maybe put in an ontouchevent action up on the else? 
 			break;
 		case MotionEvent.ACTION_MOVE:
 			break;
 		}
 		
-		//invalidate();
 		return true;
 	}
 
-	public void gameLoop(){
-		while(!game.gameOver){
-			if (game.turn ==1){
-				
-				//do computer move
-				//draw discard again draw goes through all things
-				game.touchDisabled = true;
-				game.Players.get(1).Computer(game, 3000);
-				game.Players.get(game.turn).drawn = false;
-				//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
-				invalidate();
-				//onDraw(canvas);
-		}
+
+
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int w,int h) {
+	
+		screenW = w;
+		screenH = h;
+		scaledCardW = (int) (screenW /3);
+		scaledCardH = (int) (scaledCardW*1.28);
+		Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), R.drawable.card_back);
+		cardBack = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
+
+		
 	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		gameThread.setRunning(true);
+		gameThread.start();
+		setWillNotDraw(false);
+		
 	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder){
+        boolean retry = true;
+        gameThread.setRunning(false);
+        while (retry) {
+               try {
+                     gameThread.join();
+                     retry = false;
+               } catch (InterruptedException e) {
+               }
+        }
+ }
+
 	
 	
 }
