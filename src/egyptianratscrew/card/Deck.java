@@ -95,15 +95,22 @@ public class Deck {
 			case 4: break;
 			}
 			
-			if  (deck.size() > 3 || deck.size() <= i)
+			if  (deck.size() > 1)
 			{	//this might draw the wrong number of cards when cards are less than 3 TODO
 			canvas.drawBitmap(cardBack, 
 					X, 
 					Y, 
 					null);
 		
-		
-			} 	
+			}
+			else 
+			{	//draw 1 card if deck only has one card.
+				canvas.drawBitmap(cardBack, 
+						X, 
+						Y, 
+						null);
+			
+				}
 		}
 	}
 	

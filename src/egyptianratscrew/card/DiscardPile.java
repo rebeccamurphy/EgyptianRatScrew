@@ -21,7 +21,7 @@ public class DiscardPile extends Deck{
 
 	private int numDecks;
 	public ArrayList<Card> upCards;
-	private HashMap<String,Rule> rules;
+	public HashMap<String,Rule> rules;
 	private boolean slappable;
 	private int chances;
 	public String currFaceCard;

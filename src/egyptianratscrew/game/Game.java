@@ -29,6 +29,7 @@ public class Game {
 	private ArrayList<Integer> turnList;
 	public String faceCard;
 	public int numCardsPlayed;
+	public int chances;
 	public int secDelay;
 	public int cardsDrawn;
 	public boolean gameOver;
@@ -44,6 +45,7 @@ public class Game {
 		firstTurn = true;
 		secDelay = 3000;
 		cardsDrawn = 5;
+		chances = -1;
 		Players.put(1, new Player(1));//computer
 		Players.put(2, new Player(2));
 		turn = 2;
@@ -106,33 +108,58 @@ public class Game {
 	}
 	
 	public void makePlay(Player player){
-		if (player.getId() == turn){
+		if (player.getId() != turn){
+			//make toast
+			Log.v("Turn", "not yours");
+		}
+		else if (faceCard == null){
 			discardPile.add(player.playCard());
+			if (discardPile.get(discardPile.size()-1).getRank() > 10){ //first time facecard played
+				faceCard = discardPile.get(discardPile.size()-1).getFace();
+				chances = discardPile.rules.get(faceCard).getNum();
+				nextTurn();// flips to next player
+			}
+		}
+		else if (faceCard !=null && chances>0){ // facecard played on facecard
+			discardPile.add(player.playCard());
+			chances--;
 			if (discardPile.get(discardPile.size()-1).getRank() > 10){
 				faceCard = discardPile.get(discardPile.size()-1).getFace();
+				chances = discardPile.rules.get(faceCard).getNum();
+				nextTurn();
 			}
-			//nextTurn();
+			
+		}
+		
+			
+		}
+		
+		
+	
+	public void makePlay(int playerID){
+	if (playerID != turn){
+		//make toast
+		Log.v("Turn", "not yours");
+	}
+	else if (faceCard == null){
+		discardPile.add(Players.get(playerID).playCard());
+		if (discardPile.get(discardPile.size()-1).getRank() > 10){ //first time facecard played
+			faceCard = discardPile.get(discardPile.size()-1).getFace();
+			chances = discardPile.rules.get(faceCard).getNum();
+			nextTurn();// flips to next player
+		}
+	}
+	else if (faceCard !=null && chances>0){ // facecard played on facecard
+		discardPile.add(Players.get(playerID).playCard());
+		chances--;
+		if (discardPile.get(discardPile.size()-1).getRank() > 10){
+			faceCard = discardPile.get(discardPile.size()-1).getFace();
+			chances = discardPile.rules.get(faceCard).getNum();
+			nextTurn();
 		}
 		
 	}
-	public void makePlay(int playerID){
-		
-		if (playerID == turn){
-			discardPile.add(Players.get(playerID).playCard());
-
-			Log.d("Turn: ", Integer.toString(turn));
-			discardPile.updateUpCards();
-			Log.i("Discard pile", Integer.toString(discardPile.upCards.size()));
-			//possibly do this in onDraw instead
-			// so that next turn will only happen if the previous
-			// has already been drawn. 
-			//nextTurn();
-
-			}
-		//else
-			//toast not your turn
-			
-		}
+}
 		
 	public void checkFaceCard(){
 		//if (checkAce() ||checkKing()|| checkQueen()|| checkJack())
@@ -146,6 +173,8 @@ public class Game {
 	public void slap(Player player){
 		if (discardPile.checkAllSlapRules()){
 			discardPile.addPiletoHand(player);
+			faceCard = null;
+			chances = 0;
 			if (turn != player.getId())
 				turn = player.getId();
 				//nextTurn(); // the person who gets the discard pile places the card

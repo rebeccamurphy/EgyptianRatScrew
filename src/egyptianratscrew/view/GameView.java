@@ -111,13 +111,24 @@ public class GameView extends View {
 			catch(Exception e){}
 		}
 		Log.d("Draw Discard","Game turn " + Integer.toString(game.turn) + ", " + Boolean.toString(game.Players.get(game.turn).drawn) );
-		if (game.firstTurn == true) //actually not necessary 
-		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
-		else if (game.Players.get(game.turn).drawn == false) {
+		if (game.Players.get(game.turn).drawn == false) {
 			game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
 			game.Players.get(game.turn).drawn = true;
-			if (game.faceCard != null)
-			game.nextTurn();
+			if (game.faceCard == null)
+				game.nextTurn();
+			else if (game.chances ==0){
+				//player didnt get a face card or slap in chances
+					game.faceCard = null;
+					game.chances = 0;
+					if (game.turn == 1 )//it was player 2's face card
+						game.discardPile.addPiletoHand(game.Players.get(2));					
+					else
+						game.discardPile.addPiletoHand(game.Players.get(1));
+					game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
+					game.nextTurn();
+					
+			} 
+			
 			Log.d("Here", "discard is being drawn");
 			if (game.turn!=1)
 			{
