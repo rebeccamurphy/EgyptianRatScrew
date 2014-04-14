@@ -27,8 +27,8 @@ public class Game {
 	public int turn;
 	public boolean touchDisabled;
 	private ArrayList<Integer> turnList;
-	private String faceCard;
-	private int numCardsPlayed;
+	public String faceCard;
+	public int numCardsPlayed;
 	public int secDelay;
 	public int cardsDrawn;
 	public boolean gameOver;
@@ -75,7 +75,11 @@ public class Game {
 	public void updateScores(){
 		for (int i=1; i<= numPlayers; i++){
 			Players.get(i).setScore();
+			if (Players.get(i).getScore() == 0)
+				gameOver = true;
+				//add somethign forloser
 		}
+		
 		//draw score to screen on next lines
 			
 	}
@@ -104,6 +108,9 @@ public class Game {
 	public void makePlay(Player player){
 		if (player.getId() == turn){
 			discardPile.add(player.playCard());
+			if (discardPile.get(discardPile.size()-1).getRank() > 10){
+				faceCard = discardPile.get(discardPile.size()-1).getFace();
+			}
 			//nextTurn();
 		}
 		

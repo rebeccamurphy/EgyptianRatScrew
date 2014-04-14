@@ -89,7 +89,7 @@ public class GameView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		
+		if (!game.gameOver){
 		//iterate through players
 
 		/*TODO
@@ -116,6 +116,7 @@ public class GameView extends View {
 		else if (game.Players.get(game.turn).drawn == false) {
 			game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint, game);
 			game.Players.get(game.turn).drawn = true;
+			if (game.faceCard != null)
 			game.nextTurn();
 			Log.d("Here", "discard is being drawn");
 			if (game.turn!=1)
@@ -123,19 +124,9 @@ public class GameView extends View {
 				game.touchDisabled = false;
 			}
 		}
-			
+		}	
 		game.updateScores();
 		
-		//Log.d("Print","this a million times");
-		
-		
-		//if (game.turn ==1){
-		
-		//do computer move
-		//draw discard again draw goes through all things 
-		//game.Players.get(1).Computer(game, 1); 
-		//game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackpaint);
-		//}
 		canvas.drawText(
 				"Computer Score: " + Integer.toString(game.Players.get(1).getScore()) , 
 				10, 
@@ -147,14 +138,6 @@ public class GameView extends View {
 				screenH - blackpaint.getTextSize(),
 				blackpaint);
 
-		/*
-		if (!discardPile.isEmpty())
-		{ 
-			canvas.drawBitmap(discardPile.get(0).getBitmap(),
-					(screenW/2)- (scaledCardW/2),
-					(screenH/2)-(cardBack.getHeight()/2),
-					null); 
-		} */
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
@@ -166,13 +149,18 @@ public class GameView extends View {
 		switch (eventaction) {
 		case MotionEvent.ACTION_DOWN:
 			//only for one player for now
-			//hitDiscard = game.discardPile.checkActiveArea(X, Y);
+			hitDiscard = game.discardPile.checkActiveArea(X, Y);
 			hitPlayerPile = game.Players.get(game.turn).getHand().checkActiveArea(X, Y);
 			Log.d("Touch", "Touchevent is happening. X: " + Integer.toString(X) + "Y: " + Integer.toString(Y) );
-			//if (hitDiscard)//&& hit  
-			//	game.slap(game.Players.get(2));	//player2 (human) gets discard pile if the pile is			
+			Log.d("Touch Discard Pile", Boolean.toString(hitDiscard));
+			if (hitDiscard && game.discardPile.checkSlappable())//&& hit
+				{  
+				game.slap(game.Players.get(2));
+				invalidate();
+				return true;
+				}	//player2 (human) gets discard pile if the pile is			
 				//if not slappable, slap method will make toast not valid
-Log.d("HitplayerPile:", Boolean.toString(hitPlayerPile));
+			Log.d("HitplayerPile:", Boolean.toString(hitPlayerPile));
 			Log.d("TouchDisabled:", Boolean.toString(game.touchDisabled));
 			 if (hitPlayerPile && game.touchDisabled ==false)  //&& some thing to check turn and face card stuff) 
 
@@ -208,6 +196,7 @@ Log.d("HitplayerPile:", Boolean.toString(hitPlayerPile));
 			//onDraw(canvas);
 			return true;
 			} 
+			//maybe put in an ontouchevent action up on the else? 
 			break;
 		case MotionEvent.ACTION_MOVE:
 			break;
