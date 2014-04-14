@@ -91,8 +91,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		
 	}
 
-	@Override
-	public void onDraw(Canvas canvas) {
+	//@Override
+	public void Draw(Canvas canvas) {
 		
 		{
 			canvas.drawColor(Color.WHITE);
@@ -198,6 +198,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		gameThread.setRunning(true);
 		gameThread.start();
 		setWillNotDraw(false);
+		Draw(canvas);
 		
 	}
 

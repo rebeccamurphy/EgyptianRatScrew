@@ -58,8 +58,9 @@ public class GameThread extends Thread {
 					synchronized (view.getHolder()){
 						canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), blackPaint);
 						//drawPlayerMove(canvas);
-						view.onDraw(canvas);
+						//view.onDraw(canvas);
 						//surfaceHolder.unlockCanvasAndPost(canvas);
+						//postInvalidate();
 					}
 				}
 					
