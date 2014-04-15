@@ -28,7 +28,7 @@ public class Computer extends Thread{
 	public void run(){
 		while(running){
 			//Log.d("C", "t");
-		
+		//TODO computer not slapping on its turn.
 		if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
 			running = false;
 			slapTry();

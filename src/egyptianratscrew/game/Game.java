@@ -119,6 +119,8 @@ public class Game {
 		
 	
 	public void makePlay(int playerID){
+		//TODO debug next turn 
+		//have player touch discard pile to take it when computer chances are 0?
 		if (playerID != turn){
 			//make toast
 			Log.v("Turn", "not yours");
