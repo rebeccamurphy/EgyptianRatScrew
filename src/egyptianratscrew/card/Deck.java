@@ -21,6 +21,7 @@ public class Deck {
 	protected List<Card> downCards;
 	protected int[] activeArea; //topleftX, topleftY, toprightX,toprightX
 	protected int[] activeAreaBot;
+	protected boolean activeAreaDisabled;
 	private int numDecks;
 	public boolean drawn = false;
 	//private HashMap<String, Boolean> Rules;
@@ -69,6 +70,10 @@ public class Deck {
 	}
 	public void disableActiveArea(){
 		activeArea = new int[4];
+		activeAreaDisabled = true;
+	}
+	public void enableActiveArea(){
+		activeAreaDisabled = false;
 	}
 	public void drawPlayerDeck(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack, Paint paint, int p){
 		//draws down cards
@@ -81,11 +86,12 @@ public class Deck {
 				X = screenW/2 + i*(5) - (scaledCardW/2);
 				Y = screenH-scaledCardH-paint.getTextSize()-(10*scale);
 				//Log.d("Player2 XY", Integer.toString((int)X)+ " " +Integer.toString((int)Y));
+				if (!activeAreaDisabled){
 				activeArea[0] = (int) (screenW/2 + 0*(5) - (scaledCardW/2));
 				activeArea[1] = (int) (screenH-scaledCardH-paint.getTextSize()-(10*scale));
 				activeArea[2] = (int) (screenW/2 + 3*(5) - (scaledCardW/2) + scaledCardW);
 				activeArea[3] = activeArea[1] + scaledCardH;
-				
+				}
 				
 		
 				break;
