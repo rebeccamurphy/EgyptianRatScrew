@@ -78,7 +78,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		blackPaint.setTextAlign(Paint.Align.LEFT);
 		blackPaint.setTextSize(scale*15);
 
-        
+        //egyptianratscrew.game.GameInfo.game.start(context);
 		
 
         setFocusable(true);
@@ -168,7 +168,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     			gameThread.game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackPaint, gameThread.game);
     			gameThread.game.Players.get(gameThread.game.turn).drawn = true;
     			//if (gameThread.game.faceCard == null)
-    				gameThread.game.nextTurn();
+    				GameThread.game.nextTurn();
     			/*else if (gameThread.game.chances ==0){
     				//player didnt get a face card or slap in chances
     					gameThread.game.faceCard = null;

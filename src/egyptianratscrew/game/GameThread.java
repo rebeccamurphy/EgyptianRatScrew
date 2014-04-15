@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import egyptianratscrew.activity.R;
+import egyptianratscrew.player.Computer;
 import egyptianratscrew.view.GameView;
 
 
@@ -26,7 +27,8 @@ public float y;
 int move = 0;
 int slap =0;
 public boolean firstTurn = true;
-public Game game;
+public static Game game;
+private Computer computer;
 
 public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Handler handler ) {
     this.surfaceHolder = surfaceHolder;  
@@ -36,10 +38,14 @@ public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Ha
 	this.y =50;
 	game = new Game(); //add options to constructor later
 	game.start(context);
+	computer = new Computer(game.secDelay, view);
 }
 
 public void setRunning(boolean run) {
       running = run;
+      computer.setRunning(run);
+      computer.start();
+      
 }
 public void setSurfaceSize(int width, int height, int screenW, int screenH){
 	synchronized(this.surfaceHolder){
@@ -55,35 +61,15 @@ public void run() {
             	 drawGame();
             	 firstTurn = false;
              }
+             /*
              else if (move ==2)
              {
             	 move =0;
             	 drawGame();
             	 //game.nextTurn();
             	 Log.d("Test", "Player made move, Next turn:" + Integer.toString(game.turn));
-             }
-             else if (game.turn ==1 && game.Players.get(game.turn).drawn ==true)
-             {
-            	 Log.d("TimeX", "before");
-            	 //game.Players.get(1).Computer(game, 2000);
-            	 try {
-     				Thread.sleep(2000);
-     			    game.makePlay(1);
-     			    Log.i("Computer", "made play");
-     			    
-     				}
-     			    
-     			 catch(Exception ex) {
-     			    Thread.currentThread().interrupt();
-     			 }	
-            	 //game.Players.get(2).getHand().enableActiveArea();
-            	 game.Players.get(game.turn).drawn = false;
-            	 drawGame();
-            	 Log.d("TimeX", "after");
-            	 //game.nextTurn();
-            	 Log.d("Test", "Computer made move, Next turn:" + Integer.toString(game.turn));
-            	 
-             }
+             }*/
+            
              
       }
 }
@@ -122,6 +108,7 @@ public boolean doTouchEvent(MotionEvent event){
 				game.Players.get(game.turn).drawn = false;
 				move = 2;
 				Log.d("Touch", "move true");
+				drawGame();
 			}
 			else 
 				Log.d("Turn", "not yous");
