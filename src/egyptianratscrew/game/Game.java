@@ -111,7 +111,7 @@ public class Game {
 		if (player.getId() != turn){
 			//make toast
 			Log.v("Turn", "not yours");
-		}
+		}/*
 		else if (faceCard == null){
 			discardPile.add(player.playCard());
 			if (discardPile.get(discardPile.size()-1).getRank() > 10){ //first time facecard played
@@ -129,7 +129,7 @@ public class Game {
 				nextTurn();
 			}
 			
-		}
+		}*/
 		
 			
 		}
@@ -141,8 +141,8 @@ public class Game {
 		//make toast
 		Log.v("Turn", "not yours");
 	}
-	else if (faceCard == null){
-		discardPile.add(Players.get(playerID).playCard());
+	else //if (faceCard == null){
+		discardPile.add(Players.get(playerID).playCard());/*
 		if (discardPile.get(discardPile.size()-1).getRank() > 10){ //first time facecard played
 			faceCard = discardPile.get(discardPile.size()-1).getFace();
 			chances = discardPile.rules.get(faceCard).getNum();
@@ -158,7 +158,7 @@ public class Game {
 			nextTurn();
 		}
 		
-	}
+	}*/
 }
 		
 	public void checkFaceCard(){
@@ -172,7 +172,7 @@ public class Game {
 	
 	public void slap(Player player){
 		if (discardPile.checkAllSlapRules()){
-			discardPile.addPiletoHand(player);
+			discardPile.addPileToHand(player);
 			faceCard = null;
 			chances = 0;
 			if (turn != player.getId())
@@ -187,7 +187,7 @@ public class Game {
 	}
 	public void slap(int playerID){
 		if (discardPile.checkAllSlapRules()){
-			Players.get(playerID).addCard(discardPile);
+			discardPile.addPileToHand(Players.get(playerID));
 			faceCard = null;
 			chances = 0;
 			if (turn != playerID)
@@ -195,8 +195,8 @@ public class Game {
 				//nextTurn(); // the person who gets the discard pile places the card
 				// Toast Player 2 turn 
 		}
-		//else
-			//toast not a slap
+		else
+			Log.d("toast", "not a slap");
 			//possible penalty
 		
 	}

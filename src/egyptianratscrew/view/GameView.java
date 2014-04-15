@@ -114,6 +114,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void surfaceDestroyed(SurfaceHolder holder) {
     	gameThread.setRunning(false);
+    	gameThread.computer.setRunning(false);
        /* boolean retry = true;
 
         while (retry) {
@@ -150,8 +151,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void draw(Canvas canvas) {
     	try{
+    		//Log.d("Check thread: ", Boolean.toString(gameThread.isAlive()) +" " + Boolean.toString(gameThread.running));
     		canvas.drawColor(Color.WHITE); //clears screen
-    		//canvas.drawCircle(gameThread.x, gameThread.y, 30, redPaint);
+    		
     		for (int i =1; i<= egyptianratscrew.game.GameInfo.game.Players.size(); i++)
     		{
     			//draws player decks
@@ -166,7 +168,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     			}
     		}
 
-    		
+    		egyptianratscrew.game.GameInfo.game.discardPile.drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack);
     		egyptianratscrew.game.GameInfo.game.updateScores();
 
     		canvas.drawText(
@@ -180,11 +182,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     				screenH - blackPaint.getTextSize(),
     				blackPaint);
     	
-    		egyptianratscrew.game.GameInfo.game.discardPile.drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack);
-    		//if (turn!=0)
-    		egyptianratscrew.game.GameInfo.game.Players.get(egyptianratscrew.game.GameInfo.game.turn).drawn = true;
+    		
     	
-    		Log.d("Game", "Drawn");
+    		//Log.d("Game", "Drawn");
     	}
     	catch (Exception e){
     		

@@ -12,6 +12,7 @@ public class Computer extends Thread{
 	public boolean running = false;
 	private int secDelay;
 	private GameView view;
+	public boolean makingMove = false;
 	public Computer(int secDelay, GameView view) {
 		this.secDelay = secDelay;
 		this.view = view;
@@ -25,38 +26,33 @@ public class Computer extends Thread{
 	public void run(){
 		while(running){
 			//Log.d("C", "t");
-		if (egyptianratscrew.game.GameInfo.game.turn == 1 && egyptianratscrew.game.GameInfo.game.Players.get(2).drawn){
-			egyptianratscrew.game.GameInfo.game.Players.get(1).drawn = false;
+		if (egyptianratscrew.game.GameInfo.game.turn == 1 && makingMove ==false){
+		running = false;	
 		Log.d("Time", "before");
 		Log.i("Discard pile Before comp", Integer.toString(egyptianratscrew.game.GameInfo.game.discardPile.upCards.size()));
-		//while (game.discardPile.checkSlappable()){
-		//this wont work if it is ot already the computers turn. there needs to be a check in makeMove if the player is the computer
-		//that it will start a slapTryThread. maybe put a check on discardPile.size !=1 in there? TODO
-		/*
-		if (egyptianratscrew.game.GameThread.game.discardPile.checkSlappable()){
-			Log.d("Time", "after");
-				slapTry(egyptianratscrew.game.GameThread.game, secDelay);
-				makeMove(egyptianratscrew.game.GameThread.game);
-		}		
-		else*/ makeMove(egyptianratscrew.game.GameInfo.game);
-			
-		drawGame();
-		
+		makeMove();
 		Log.d("Time", "after");
 		}
 		}
 	}
-	public void makeMove(Game game){
+	public void makeMove(){
 		
 		try {
-			sleep(2000);
-		    game.makePlay(1);
+			makingMove = true;
+			Thread.sleep(3000);
+			egyptianratscrew.game.GameInfo.game.makePlay(1);
+			egyptianratscrew.game.GameInfo.game.nextTurn();
+			makingMove = false;
+			running = true;
 		    Log.i("Computer", "made play");
-		    
+		   
 			}
 		    
 		 catch(Exception ex) {
 		    Thread.currentThread().interrupt();
+		    Log.d("Interrupt", "with player slap");
+		    makingMove = false;
+		    running = false;
 		 }	
 		
 	}

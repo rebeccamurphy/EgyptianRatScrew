@@ -172,8 +172,8 @@ public class DiscardPile extends Deck{
 			activeArea[1] = (int) ((screenH/2)-(cardBack.getHeight()/2));
 			activeArea[2] = (int) ((screenW/2)- (scaledCardW/2) + j*scaledCardW/5+ scaledCardW);
 			activeArea[3] = activeArea[1] + scaledCardH;
-			Log.d("Touch Discard Area ", "X " +Integer.toString(activeArea[0]) + ", Y" + Integer.toString(activeArea[1]) + " X" +
-					Integer.toString(activeArea[2]) + ", Y" + Integer.toString(activeArea[3]));
+			//Log.d("Touch Discard Area ", "X " +Integer.toString(activeArea[0]) + ", Y" + Integer.toString(activeArea[1]) + " X" +
+			//		Integer.toString(activeArea[2]) + ", Y" + Integer.toString(activeArea[3]));
 		}
 		}
 	}
@@ -200,7 +200,7 @@ public class DiscardPile extends Deck{
 		}
 	}
 	
-	public void addPiletoHand(Player player){
+	public void addPileToHand(Player player){
 		//add current discard to players hand
 		player.addCard(deck);
 		deck = new ArrayList<Card>();
