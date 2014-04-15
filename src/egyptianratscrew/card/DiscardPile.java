@@ -80,15 +80,18 @@ public class DiscardPile extends Deck{
 	public boolean checkSandwich(){
 		Rule tempRule = rules.get("sandwich");
 		//add more here once different rules are available
-		if (tempRule.getNum() == 3&& upCards.size() >2)
-			return upCards.get(upCards.size()-1).getRank() ==upCards.get(upCards.size()-3).getRank();
+		if (tempRule.getNum() == 3&& deck.size() >2)
+			return deck.get(deck.size()-1).getRank() ==deck.get(deck.size()-3).getRank();
 		return false;
 	}
 	
 	public boolean checkDouble(){
 		Rule tempRule = rules.get("double");
-		if (tempRule.getNum() == 2 && upCards.size()>1 ) //null pointer?
-			return upCards.get(upCards.size()-1).getRank() ==upCards.get(upCards.size()-2).getRank();
+		if (tempRule.getNum() == 2 && deck.size()>1 ){ //null pointer?
+			//Log.d("Null pointer","deck size"+ Integer.toString(deck.size()));
+			return deck.get(deck.size()-1).getRank() ==deck.get(deck.size()-2).getRank();
+			
+		}
 		return false;
 	} 
 	
@@ -140,6 +143,14 @@ public class DiscardPile extends Deck{
 	}
 	
 	public void calcActiveArea(){}
+	
+	public void addPileToHand(Player player){
+		//add current discard to players hand
+		player.addCard(deck);
+		deck = new ArrayList<Card>();
+		upCards = new ArrayList<Card>();
+				
+	}
 	/*
 	 * End Deck Methods
 	 */
@@ -200,12 +211,6 @@ public class DiscardPile extends Deck{
 		}
 	}
 	
-	public void addPileToHand(Player player){
-		//add current discard to players hand
-		player.addCard(deck);
-		deck = new ArrayList<Card>();
-		upCards = new ArrayList<Card>();
-				
-	}
+	
 
 }

@@ -106,60 +106,62 @@ public class Game {
 		else
 			turn +=1;
 	}
-	
-	public void makePlay(Player player){
-		if (player.getId() != turn){
-			//make toast
-			Log.v("Turn", "not yours");
-		}/*
-		else if (faceCard == null){
-			discardPile.add(player.playCard());
-			if (discardPile.get(discardPile.size()-1).getRank() > 10){ //first time facecard played
-				faceCard = discardPile.get(discardPile.size()-1).getFace();
-				chances = discardPile.rules.get(faceCard).getNum();
-				nextTurn();// flips to next player
-			}
-		}
-		else if (faceCard !=null && chances>0){ // facecard played on facecard
-			discardPile.add(player.playCard());
-			chances--;
-			if (discardPile.get(discardPile.size()-1).getRank() > 10){
-				faceCard = discardPile.get(discardPile.size()-1).getFace();
-				chances = discardPile.rules.get(faceCard).getNum();
-				nextTurn();
-			}
-			
-		}*/
+	public int previousTurn(){
+		if(turn == 1 )
+			 return turnList.size();
+		else
+			 return turn -1;
 		
-			
-		}
+	}
+	
+	
 		
 		
 	
 	public void makePlay(int playerID){
-	if (playerID != turn){
-		//make toast
-		Log.v("Turn", "not yours");
-	}
-	else //if (faceCard == null){
-		discardPile.add(Players.get(playerID).playCard());/*
-		if (discardPile.get(discardPile.size()-1).getRank() > 10){ //first time facecard played
-			faceCard = discardPile.get(discardPile.size()-1).getFace();
-			chances = discardPile.rules.get(faceCard).getNum();
-			nextTurn();// flips to next player
+		if (playerID != turn){
+			//make toast
+			Log.v("Turn", "not yours");
 		}
-	}
-	else if (faceCard !=null && chances>0){ // facecard played on facecard
-		discardPile.add(Players.get(playerID).playCard());
-		chances--;
-		if (discardPile.get(discardPile.size()-1).getRank() > 10){
-			faceCard = discardPile.get(discardPile.size()-1).getFace();
-			chances = discardPile.rules.get(faceCard).getNum();
+		else if (faceCard == null){
+			discardPile.add(Players.get(playerID).playCard()); //if no current facecard in play player plays card normally
+			if (discardPile.get(discardPile.size()-1).getRank() > 10){ //first time facecard played 
+					faceCard = discardPile.get(discardPile.size()-1).getFace();
+					chances = discardPile.rules.get(faceCard).getNum();
+					
+			}
+			nextTurn(); //next turn no matter face card in play 
+		}
+		else if (faceCard !=null && chances>0){ //face card still in play 
+			discardPile.add(Players.get(playerID).playCard());
+			chances--;
+				if (discardPile.get(discardPile.size()-1).getRank() > 10){ //facecard played on facecard
+					faceCard = discardPile.get(discardPile.size()-1).getFace();
+					chances = discardPile.rules.get(faceCard).getNum();
+					nextTurn();
+				}
+		}
+		/*if (faceCard!=null &&chances ==0 && previousTurn() ==1){ //player has run out of chances 
+			try {
+			
+				Thread.sleep(secDelay);
+				discardPile.addPileToHand(Players.get(previousTurn())); //TODO  with ifthis way doesnt let the last card be drawn. 
+				faceCard = null;										//with else if player has to press again for pile to be taken. 
+		    	
+				}
+				catch(Exception ex) {
+				    Thread.currentThread().interrupt();   
+				}
+			
+		}*/
+		else if (faceCard!=null &&chances ==0 ){ 
+			
+			discardPile.addPileToHand(Players.get(previousTurn())); 
+			faceCard = null;									
 			nextTurn();
 		}
-		
-	}*/
-}
+			
+	}
 		
 	public void checkFaceCard(){
 		//if (checkAce() ||checkKing()|| checkQueen()|| checkJack())
@@ -171,6 +173,7 @@ public class Game {
 	}
 	
 	public void slap(Player player){
+		//TODO reset facecard
 		if (discardPile.checkAllSlapRules()){
 			discardPile.addPileToHand(player);
 			faceCard = null;
@@ -179,6 +182,7 @@ public class Game {
 				turn = player.getId();
 				//nextTurn(); // the person who gets the discard pile places the card
 				// Toast Player 2 turn 
+			discardPile.updateUpCards();
 		}
 		//else
 			//toast not a slap
@@ -186,12 +190,14 @@ public class Game {
 		
 	}
 	public void slap(int playerID){
+		//TODO reset facecard
 		if (discardPile.checkAllSlapRules()){
 			discardPile.addPileToHand(Players.get(playerID));
 			faceCard = null;
 			chances = 0;
 			if (turn != playerID)
 				turn = playerID;
+			discardPile.updateUpCards();
 				//nextTurn(); // the person who gets the discard pile places the card
 				// Toast Player 2 turn 
 		}

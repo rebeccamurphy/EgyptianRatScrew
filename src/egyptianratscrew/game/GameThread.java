@@ -65,7 +65,7 @@ public void drawGame(){
            synchronized (view.getHolder()) {
            	
            	view.draw(c);
-                 // view.onDraw(c);
+                
            }
     } finally {
            if (c != null) {
@@ -89,10 +89,8 @@ public boolean doTouchEvent(MotionEvent event){
 			
 			if (hitDiscard){
 				
-				if (egyptianratscrew.game.GameInfo.game.discardPile.checkAllSlapRules()&& computer.makingMove ==true){
+				if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()&& computer.makingMove ==true){
 					computer.interrupt();
-					//computer.makingMove = false;
-					//computer.setRunning(false);
 					egyptianratscrew.game.GameInfo.game.slap(2);
 					Log.d("Computer Status", "restarted");
 					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view);
@@ -107,7 +105,7 @@ public boolean doTouchEvent(MotionEvent event){
 			else if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 && !computer.makingMove){
 				//Human player makes move
 				egyptianratscrew.game.GameInfo.game.makePlay(2);
-				egyptianratscrew.game.GameInfo.game.nextTurn();
+				//egyptianratscrew.game.GameInfo.game.nextTurn();
 				Log.d("Touch", "move true");
 				Log.d("Computer is running, alive, moving ", Boolean.toString(computer.running) + " " + Boolean.toString(computer.isAlive())
 						+ " " +Boolean.toString(computer.makingMove));

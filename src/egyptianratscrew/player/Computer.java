@@ -16,6 +16,8 @@ public class Computer extends Thread{
 	public Computer(int secDelay, GameView view) {
 		this.secDelay = secDelay;
 		this.view = view;
+		this.makingMove = false;
+		this.running = false;
 	}
 	
 	public void setRunning(boolean running){
@@ -26,6 +28,13 @@ public class Computer extends Thread{
 	public void run(){
 		while(running){
 			//Log.d("C", "t");
+		
+		if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
+			running = false;
+			slapTry();
+			
+		}
+			
 		if (egyptianratscrew.game.GameInfo.game.turn == 1 && makingMove ==false){
 		running = false;	
 		Log.d("Time", "before");
@@ -41,7 +50,7 @@ public class Computer extends Thread{
 			makingMove = true;
 			Thread.sleep(3000);
 			egyptianratscrew.game.GameInfo.game.makePlay(1);
-			egyptianratscrew.game.GameInfo.game.nextTurn();
+			//egyptianratscrew.game.GameInfo.game.nextTurn();
 			makingMove = false;
 			running = true;
 		    Log.i("Computer", "made play");
@@ -56,13 +65,15 @@ public class Computer extends Thread{
 		 }	
 		
 	}
-	public void slapTry(Game game, int secDelay){
+	public void slapTry(){
 
 		try {
+		makingMove = true;
 		Thread.sleep(secDelay);
-	
-    	game.slap(1);
+		egyptianratscrew.game.GameInfo.game.slap(1);
     	Log.d("Computer Slap", "Computer slapped pile");
+    	makingMove =  false;
+    	running = true;
     	
 		}
 		catch(Exception ex) {
@@ -70,20 +81,6 @@ public class Computer extends Thread{
 		}
 
 	}
-	public void drawGame(){
-		Canvas c = null;
-	    try {
-	           c = view.getHolder().lockCanvas();
-	           synchronized (view.getHolder()) {
-	           	
-	           	view.draw(c);
-	                 // view.onDraw(c);
-	           }
-	    } finally {
-	           if (c != null) {
-	                  view.getHolder().unlockCanvasAndPost(c);
-	           }
-	    }
-	}
-
+	
+	
 }
