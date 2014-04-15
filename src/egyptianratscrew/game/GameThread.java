@@ -39,8 +39,7 @@ public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Ha
 
 public void setRunning(boolean run) {
       running = run;
-      computer.setRunning(run);
-      computer.start();
+      
       
 }
 public void setSurfaceSize(int width, int height, int screenW, int screenH){
@@ -101,7 +100,7 @@ public boolean doTouchEvent(MotionEvent event){
 					computer.start();
 				}
 				else
-				egyptianratscrew.game.GameInfo.game.slap(2);
+				egyptianratscrew.game.GameInfo.game.slap(2);//
 		
 			}
 			

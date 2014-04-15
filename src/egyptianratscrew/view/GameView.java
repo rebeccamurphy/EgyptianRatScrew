@@ -100,8 +100,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
 
         gameThread.setRunning(true);
+        gameThread.computer.setRunning(true);
         if (gameThread.getState() == Thread.State.NEW){
-        gameThread.start();
+        	gameThread.start();
+        	gameThread.computer.start();
         }
        //Canvas c = null;
        //setWillNotDraw(false);
