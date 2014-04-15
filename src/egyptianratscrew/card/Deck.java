@@ -68,11 +68,11 @@ public class Deck {
 		return false;
 	}
 	public void disableActiveArea(){
-		activeArea = null;
+		activeArea = new int[4];
 	}
 	public void drawPlayerDeck(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack, Paint paint, int p){
 		//draws down cards
-	
+		
 		for (int i = 0; i < 3; i++) 
 		{ 
 			float X =0, Y=0;

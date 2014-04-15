@@ -23,8 +23,9 @@ public Context context;
 public Handler handler;
 public float x;
 public float y;
-public boolean move = false;
-
+int move = 0;
+int slap =0;
+public boolean firstTurn = true;
 public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Handler handler ) {
     this.surfaceHolder = surfaceHolder;  
 	this.context = context;
@@ -47,14 +48,17 @@ public void setSurfaceSize(int width, int height, int screenW, int screenH){
 @Override
 public void run() {
       while (running) {
-             if (move){
-            	 drawPlayerTurn();
-            	 move = false;
+             if (move==2 || firstTurn){
+            	 drawGame();
+            	 move = 0;
+            	 firstTurn = false;
+            	 
              }
+             
       }
 }
 
-public void drawPlayerTurn(){
+public void drawGame(){
 	Canvas c = null;
     try {
            c = view.getHolder().lockCanvas();
@@ -70,15 +74,21 @@ public void drawPlayerTurn(){
     }
 }
 
-public boolean doTouchEvent(MotionEvent event){
+public boolean doTouchEvent(MotionEvent event, Game game){
 	synchronized(surfaceHolder){
 		int eventaction = event.getAction();
 		int X = (int) event.getX();
 		int Y = (int) event.getY();
-		
+		boolean hitDiscard, hitPlayerPile  = false;
 		switch (eventaction){
 		case MotionEvent.ACTION_DOWN:
-			move = true;
+			hitDiscard = game.discardPile.checkActiveArea(X, Y);
+			hitPlayerPile = game.Players.get(game.turn).getHand().checkActiveArea(X, Y);
+			if (hitPlayerPile){
+				game.Players.get(game.turn).getHand().disableActiveArea();
+				game.makePlay(game.turn);
+				move = 2;
+			}
 			x = X;
 			y = Y;
 			break;

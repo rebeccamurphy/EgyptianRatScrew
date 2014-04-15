@@ -32,15 +32,19 @@ import android.view.SurfaceView;
 
 
 
-public class GameView extends SurfaceView implements SurfaceHolder.Callback { 
-	private Context myContext;
-	private SurfaceHolder mySurfaceHolder;
+public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+	
 	private int screenW =1;
 	private int screenH =1;
-	private GameThread gameThread;
+	private int scaledCardW;
+	private int scaledCardH;
+	private float scale;
+	private Paint blackPaint;
 	private Paint redPaint;
-
- 
+	private Bitmap cardBack;
+	
+	private GameThread gameThread;
+	private Game game;
 
     public GameView(Context context, AttributeSet attrs) {
 
@@ -48,20 +52,35 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
         
-        gameThread = new GameThread(holder, context, this, 
-        		new Handler(){
-        		@Override
-        		public void handleMessage(Message m){
-        		}
-        }); 
+        gameThread = new GameThread(holder, context,this, new Handler() {
+            @Override
+            public void handleMessage(Message m) {
+
+            }
+        });
  
         redPaint = new Paint();
         redPaint.setColor(Color.RED);
-        // create the game loop thread
+       
+        scale = context.getResources().getDisplayMetrics().density;
+		screenH = context.getResources().getDisplayMetrics().heightPixels;
+		screenW = context.getResources().getDisplayMetrics().widthPixels;
+
+		scaledCardW = (int) (screenW /3);
+		scaledCardH = (int) (scaledCardW*1.28);
+		Bitmap tempBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.card_back);
+		cardBack = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
+
+		blackPaint = new Paint();
+		blackPaint.setAntiAlias(true);
+		blackPaint.setColor(Color.BLACK);
+		blackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+		blackPaint.setTextAlign(Paint.Align.LEFT);
+		blackPaint.setTextSize(scale*15);
 
         
-
- 
+		game = new Game(); //add options to constructor later
+		game.start(context);
 
         setFocusable(true);
 
@@ -120,7 +139,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
 
         //return super.onTouchEvent(event);
-    	return gameThread.doTouchEvent(event);
+    	return gameThread.doTouchEvent(event, game);
 
     }
 
@@ -129,8 +148,36 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void draw(Canvas canvas) {
     	try{
-    		canvas.drawColor(Color.BLACK);
-    		canvas.drawCircle(gameThread.x, gameThread.y, 30, redPaint);
+    		canvas.drawColor(Color.WHITE); //clears screen
+    		//canvas.drawCircle(gameThread.x, gameThread.y, 30, redPaint);
+    		for (int i =1; i<= game.Players.size(); i++)
+    		{
+    			//draws player decks
+    			try{
+    				
+    			game.Players.get(i).getHand()
+    			.drawPlayerDeck(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackPaint, i);
+    			;}
+
+    			catch(Exception e){
+    				Log.d("Player Not Drawn", Integer.toString(i));
+    			}
+    		}
+
+    		game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackPaint, game);
+    		game.updateScores();
+
+    		canvas.drawText(
+    				"Computer Score: " + Integer.toString(game.Players.get(1).getScore()) , 
+    				10, 
+    				blackPaint.getTextSize()+10,
+    				blackPaint);
+    		canvas.drawText(
+    				"My Score: " + Integer.toString(game.Players.get(2).getScore()) , 
+    				10, 
+    				screenH - blackPaint.getTextSize(),
+    				blackPaint);
+    		game.nextTurn();
     	}
     	catch (Exception e){
     		

@@ -45,7 +45,7 @@ public class Game {
 		firstTurn = true;
 		secDelay = 3000;
 		cardsDrawn = 5;
-		chances = -1;
+		chances = 0;
 		Players.put(1, new Player(1));//computer
 		Players.put(2, new Player(2));
 		turn = 2;
@@ -93,7 +93,7 @@ public class Game {
 		return discardPile;
 	}
 	
-	public void gameStart(Context myContext){
+	public void start(Context myContext){
 		discardPile.fillDeck(myContext, myContext.getResources().getDisplayMetrics().widthPixels);
 		discardPile.shuffle();
 		dealCards();
