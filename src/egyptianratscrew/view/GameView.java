@@ -44,7 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private Bitmap cardBack;
 	
 	private GameThread gameThread;
-	
+	private boolean firstTurn = true;
 
     public GameView(Context context, AttributeSet attrs) {
 
@@ -78,7 +78,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		blackPaint.setTextAlign(Paint.Align.LEFT);
 		blackPaint.setTextSize(scale*15);
 
-        //egyptianratscrew.game.GameInfo.game.start(context);
+        egyptianratscrew.game.GameInfo.game.start(context);
 		
 
         setFocusable(true);
@@ -103,6 +103,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if (gameThread.getState() == Thread.State.NEW){
         gameThread.start();
         }
+       //Canvas c = null;
+       //setWillNotDraw(false);
+       // draw(c);
     }
 
  
@@ -149,12 +152,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     	try{
     		canvas.drawColor(Color.WHITE); //clears screen
     		//canvas.drawCircle(gameThread.x, gameThread.y, 30, redPaint);
-    		for (int i =1; i<= gameThread.game.Players.size(); i++)
+    		for (int i =1; i<= egyptianratscrew.game.GameInfo.game.Players.size(); i++)
     		{
     			//draws player decks
     			try{
     				
-    			gameThread.game.Players.get(i).getHand()
+    			egyptianratscrew.game.GameInfo.game.Players.get(i).getHand()
     			.drawPlayerDeck(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackPaint, i);
     			;}
 
@@ -163,49 +166,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     			}
     		}
 
-    		//gameThread.game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackPaint, gameThread.game);
-    		if (gameThread.game.Players.get(gameThread.game.turn).drawn == false) {
-    			gameThread.game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackPaint, gameThread.game);
-    			gameThread.game.Players.get(gameThread.game.turn).drawn = true;
-    			//if (gameThread.game.faceCard == null)
-    				GameThread.game.nextTurn();
-    			/*else if (gameThread.game.chances ==0){
-    				//player didnt get a face card or slap in chances
-    					gameThread.game.faceCard = null;
-    					gameThread.game.chances = 0;
-    					if (gameThread.game.turn == 1 )//it was player 2's face card
-    						gameThread.game.discardPile.addPiletoHand(gameThread.game.Players.get(2));					
-    					else
-    						gameThread.game.discardPile.addPiletoHand(gameThread.game.Players.get(1));
-    					gameThread.game.getDiscardPile().drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack, blackPaint, gameThread.game);
-    					gameThread.game.nextTurn();
-
-    			}*/	
-    		}	
-
     		
-    		
-    		gameThread.game.updateScores();
+    		egyptianratscrew.game.GameInfo.game.updateScores();
 
     		canvas.drawText(
-    				"Computer Score: " + Integer.toString(gameThread.game.Players.get(1).getScore()) , 
+    				"Computer Score: " + Integer.toString(egyptianratscrew.game.GameInfo.game.Players.get(1).getScore()) , 
     				10, 
     				blackPaint.getTextSize()+10,
     				blackPaint);
     		canvas.drawText(
-    				"My Score: " + Integer.toString(gameThread.game.Players.get(2).getScore()) , 
+    				"My Score: " + Integer.toString(egyptianratscrew.game.GameInfo.game.Players.get(2).getScore()) , 
     				10, 
     				screenH - blackPaint.getTextSize(),
     				blackPaint);
-    		
-    		//gameThread.game.nextTurn();
+    	
+    		egyptianratscrew.game.GameInfo.game.discardPile.drawDiscardPile(canvas, screenW, screenH, scaledCardW, scaledCardH, scale, cardBack);
+    		//if (turn!=0)
+    		egyptianratscrew.game.GameInfo.game.Players.get(egyptianratscrew.game.GameInfo.game.turn).drawn = true;
+    	
+    		Log.d("Game", "Drawn");
     	}
     	catch (Exception e){
     		
     	}
       
     }
-
+    
 }
 
 

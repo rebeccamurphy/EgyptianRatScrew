@@ -151,7 +151,7 @@ public class DiscardPile extends Deck{
 		
 	}
 	
-	public void drawDiscardPile(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack, Paint paint, Game game){
+	public void drawDiscardPile(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack){
 		//should draw atleast 3 cards
 		//posibly down Cards as well
 		//should draw last card of discard pile on top.
@@ -159,7 +159,7 @@ public class DiscardPile extends Deck{
 		if (!deck.isEmpty())
 		{ //5 cards will be displayed on the screen 
 			int j =0;
-			for(int i = deck.size()-game.cardsDrawn; i <deck.size(); i++ ){
+			for(int i = deck.size()-egyptianratscrew.game.GameInfo.game.cardsDrawn; i <deck.size(); i++ ){
 			try {canvas.drawBitmap(deck.get(i).getBitmap(),
 					(screenW/2)- (scaledCardW/2) + j*scaledCardW/5,
 					(screenH/2)-(cardBack.getHeight()/2),

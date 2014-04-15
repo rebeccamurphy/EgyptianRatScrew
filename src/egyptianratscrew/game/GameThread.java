@@ -27,7 +27,8 @@ public float y;
 int move = 0;
 int slap =0;
 public boolean firstTurn = true;
-public static Game game;
+public boolean nextTurn = false;
+//public static Game egyptianratscrew.game.GameInfo.game;
 private Computer computer;
 
 public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Handler handler ) {
@@ -36,15 +37,15 @@ public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Ha
 	this.view = view;
 	this.x =50;
 	this.y =50;
-	game = new Game(); //add options to constructor later
-	game.start(context);
-	computer = new Computer(game.secDelay, view);
+	//egyptianratscrew.game.GameInfo.game = new Game(); //add options to constructor later
+	//egyptianratscrew.game.GameInfo.game.start(context);
+	computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view);
 }
 
 public void setRunning(boolean run) {
       running = run;
       computer.setRunning(run);
-      computer.start();
+      //computer.start();
       
 }
 public void setSurfaceSize(int width, int height, int screenW, int screenH){
@@ -57,23 +58,47 @@ public void setSurfaceSize(int width, int height, int screenW, int screenH){
 @Override
 public void run() {
       while (running) {
-             if (firstTurn){
-            	 drawGame();
-            	 firstTurn = false;
-             }
-             /*
-             else if (move ==2)
-             {
-            	 move =0;
-            	 drawGame();
-            	 //game.nextTurn();
-            	 Log.d("Test", "Player made move, Next turn:" + Integer.toString(game.turn));
-             }*/
-            
+    	  drawGame();
+    	  /*if (firstTurn){
+    		  Log.d("First turn", "drawn");
+    		  drawGame(0);
+    		  firstTurn = false;
+    	  }
+    	  	
+    	  else if (egyptianratscrew.game.GameInfo.game.turn ==2  && move ==2)
+            {
+            	Log.d("What", "Where");
+            	move =0;
+            	egyptianratscrew.game.GameInfo.game.Players.get(2).drawn = false;
+            	drawGame(2);
+            	egyptianratscrew.game.GameInfo.game.nextTurn();
+            }
+    	  */
+            /*
+            else if (egyptianratscrew.game.GameInfo.game.turn ==2 && nextTurn == true){
+            	Log.d("What", "Why");
+            	egyptianratscrew.game.GameInfo.game.nextTurn();
+            	nextTurn = false;
+            }*/
              
       }
 }
 
+public void drawGame(int turn){
+	Canvas c = null;
+    try {
+           c = view.getHolder().lockCanvas();
+           synchronized (view.getHolder()) {
+           	
+           	//view.draw(c, turn);
+                 // view.onDraw(c);
+           }
+    } finally {
+           if (c != null) {
+                  view.getHolder().unlockCanvasAndPost(c);
+           }
+    }
+}
 public void drawGame(){
 	Canvas c = null;
     try {
@@ -100,15 +125,15 @@ public boolean doTouchEvent(MotionEvent event){
 		switch (eventaction){
 		case MotionEvent.ACTION_DOWN:
 			Log.d("Touch", "true");
-			hitDiscard = game.discardPile.checkActiveArea(X, Y);
-			hitPlayerPile = game.Players.get(game.turn).getHand().checkActiveArea(X, Y);
-			if (hitPlayerPile && game.turn == 2){
-				//game.Players.get(game.turn).getHand().disableActiveArea();
-				game.makePlay(game.turn);
-				game.Players.get(game.turn).drawn = false;
+			hitDiscard = egyptianratscrew.game.GameInfo.game.discardPile.checkActiveArea(X, Y);
+			hitPlayerPile = egyptianratscrew.game.GameInfo.game.Players.get(egyptianratscrew.game.GameInfo.game.turn).getHand().checkActiveArea(X, Y);
+			if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 &&egyptianratscrew.game.GameInfo.game.Players.get(2).drawn && move==0){
+				//egyptianratscrew.game.GameInfo.game.Players.get(egyptianratscrew.game.GameInfo.game.turn).getHand().disableActiveArea();
+				egyptianratscrew.game.GameInfo.game.makePlay(egyptianratscrew.game.GameInfo.game.turn);
+				egyptianratscrew.game.GameInfo.game.Players.get(egyptianratscrew.game.GameInfo.game.turn).drawn = false;
 				move = 2;
 				Log.d("Touch", "move true");
-				drawGame();
+				//drawGame();
 			}
 			else 
 				Log.d("Turn", "not yous");
