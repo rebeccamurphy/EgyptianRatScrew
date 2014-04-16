@@ -78,7 +78,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		blackPaint.setTextAlign(Paint.Align.LEFT);
 		blackPaint.setTextSize(scale*15);
 
-        egyptianratscrew.game.GameInfo.game.start(context);
+         //move to onsurface create
 		
 
         setFocusable(true);
@@ -100,54 +100,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
 
     public void surfaceCreated(SurfaceHolder holder) {
-
+    	egyptianratscrew.game.GameInfo.game = new Game();
+        egyptianratscrew.game.GameInfo.game.start(gameThread.context);
+        
         gameThread.setRunning(true);
         gameThread.computer.setRunning(true);
         if (gameThread.getState() == Thread.State.NEW){
         	gameThread.start();
-        	gameThread.computer.start();
-        }
-       //Canvas c = null;
-       //setWillNotDraw(false);
-       // draw(c);
+        	gameThread.computer.start();	
+        }	
     }
 
  
 
     @Override
-
     public void surfaceDestroyed(SurfaceHolder holder) {
     	gameThread.setRunning(false);
     	gameThread.computer.setRunning(false);
-       /* boolean retry = true;
-
-        while (retry) {
-
-            try {
-
-                gameThread.join();
-
-                retry = false;
-
-            } catch (InterruptedException e) {
-
-                // try again shutting down the thread
-
-            }
-
-        }*/
-
     }
 
  
 
     @Override
-
     public boolean onTouchEvent(MotionEvent event) {
-
-        //return super.onTouchEvent(event);
     	return gameThread.doTouchEvent(event);
-
     }
 
  
@@ -155,7 +131,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void draw(Canvas canvas) {
     	try{
-    		//Log.d("Check thread: ", Boolean.toString(gameThread.isAlive()) +" " + Boolean.toString(gameThread.running));
+    		
     		canvas.drawColor(Color.WHITE); //clears screen
     		
     		for (int i =1; i<= egyptianratscrew.game.GameInfo.game.Players.size(); i++)
@@ -185,10 +161,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     				10, 
     				screenH - blackPaint.getTextSize(),
     				blackPaint);
-    	
-    		
-    	
-    		//Log.d("Game", "Drawn");
+    		canvas.drawText(
+    				"Turn " + Integer.toString(egyptianratscrew.game.GameInfo.game.turn) , 
+    				10, 
+    				screenH/2,
+    				blackPaint);
+
     	}
     	catch (Exception e){
     		

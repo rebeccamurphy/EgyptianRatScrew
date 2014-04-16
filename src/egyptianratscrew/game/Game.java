@@ -36,7 +36,7 @@ public class Game {
 	public boolean firstTurn;
 	public boolean playerGetsPile = false;
 	public boolean computerGetsPile = false;
-	public int winner;
+	public int loser;
 	
 	public Game() {
 		discardPile = new DiscardPile();
@@ -152,29 +152,12 @@ public class Game {
 								
 				}
 		}
-		/*
-		else if (faceCard!=null &&chances ==0 && playerGetsPile){ 
-			Log.d("Chance", "Player getting pile " + Integer.toString(chances));
-			discardPile.addPileToHand(Players.get(2)); 
-			faceCard = null;	
-			playerGetsPile =false;								
-			//nextTurn();
-			
-		}
-		if (faceCard!=null &&chances ==0 && computerGetsPile){ 
-			Log.d("Chance", "Computer getting pile " + Integer.toString(chances));
-			discardPile.addPileToHand(Players.get(previousTurn())); 
-			faceCard = null;	
-			computerGetsPile =false;								
-			nextTurn();
-			
-		}*/
+		
 		
 			
 	}
 		
 	public void checkFaceCard(){
-		//if (checkAce() ||checkKing()|| checkQueen()|| checkJack())
 		if (discardPile.checkFaceCard()){
 			faceCard = discardPile.get(discardPile.size()-1).getFace();
 			numCardsPlayed = 0;
@@ -219,8 +202,8 @@ public class Game {
 	 public void checkGameOver(){
 		 
 		for (int i =1; i< Players.size(); i++){
-			if (Players.get(i).getScore() == 52){
-				winner = i;
+			if (Players.get(i).getScore() == 0){
+				loser = i;
 				gameOver = true;
 				break;
 			}
