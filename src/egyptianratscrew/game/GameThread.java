@@ -51,7 +51,7 @@ public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Ha
 	notSlapToast = Toast.makeText(context, "Not a slap!", Toast.LENGTH_SHORT);
 	
 	computer.slapToast = Toast.makeText(context, "Computer got the slap!", Toast.LENGTH_SHORT);
-	grabPileToast = Toast.makeText(context, "Computer won the pile", Toast.LENGTH_SHORT);
+	computer.grabPileToast = Toast.makeText(context, "Computer won the pile", Toast.LENGTH_SHORT);
 	
 }
 
@@ -167,7 +167,7 @@ public boolean doTouchEvent(MotionEvent event){
 				}
 				
 				else if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 && 
-						computer.makingMove && !egyptianratscrew.game.GameInfo.game.playerGetsPile &&
+						 !egyptianratscrew.game.GameInfo.game.playerGetsPile && 
 						 !egyptianratscrew.game.GameInfo.game.computerGetsPile){
 					//Human player slaps before (interrupts) Computer slap
 					computer.interrupt();
@@ -177,18 +177,25 @@ public boolean doTouchEvent(MotionEvent event){
 					computer.setRunning(true);
 					computer.start();
 				}
-				else if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable())
-					//player slaps without having to interrupt the computer
-					egyptianratscrew.game.GameInfo.game.slap(2); 
 				else 
 					notSlapToast.show();
 			}
 			
 			else if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 && 
-					!computer.makingMove && !egyptianratscrew.game.GameInfo.game.playerGetsPile){
+					 !egyptianratscrew.game.GameInfo.game.playerGetsPile){
 				//HIT PLAYER PILE
 				//Human player makes move
-				egyptianratscrew.game.GameInfo.game.makePlay(2);
+				
+				if (computer.makingMove){
+					computer.interrupt();
+					egyptianratscrew.game.GameInfo.game.makePlay(2);
+					Log.d("Computer Status", "restarted");
+					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view);
+					computer.setRunning(true);
+					computer.start();
+				} 
+				else
+					egyptianratscrew.game.GameInfo.game.makePlay(2);
 				//egyptianratscrew.game.GameInfo.game.nextTurn();
 				Log.d("Touch", "move true");
 				Log.d("Computer is running, alive, moving ", Boolean.toString(computer.running) + " " + Boolean.toString(computer.isAlive())

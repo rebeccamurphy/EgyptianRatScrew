@@ -98,7 +98,7 @@ public class Computer extends Thread{
 		makingMove = true;
 		Thread.sleep(secDelay);
 		egyptianratscrew.game.GameInfo.game.slap(1);
-    	//slapToast.show();
+    	slapToast.show();
     	Log.d("Computer Slap", "Computer slapped pile");
     	makingMove =  false;
     	running = true;
@@ -117,7 +117,7 @@ public class Computer extends Thread{
 			Thread.sleep(2000);
 			egyptianratscrew.game.GameInfo.game.discardPile.addPileToHand(1);
 			//egyptianratscrew.game.GameInfo.game.nextTurn();
-			//grabPileToast.show();
+			grabPileToast.show();
 		    Log.i("Computer", "got pile");
 		    egyptianratscrew.game.GameInfo.game.computerGetsPile = false;
 		    egyptianratscrew.game.GameInfo.game.nextTurn();
