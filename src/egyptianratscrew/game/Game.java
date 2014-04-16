@@ -34,6 +34,9 @@ public class Game {
 	public int cardsDrawn;
 	public boolean gameOver;
 	public boolean firstTurn;
+	public boolean playerGetsPile = false;
+	public boolean computerGetsPile = false;
+	public int winner;
 	
 	public Game() {
 		discardPile = new DiscardPile();
@@ -142,6 +145,16 @@ public class Game {
 					chances = discardPile.rules.get(faceCard).getNum();
 					nextTurn();
 				}
+				else if (chances == 0){
+					switch(previousTurn()){
+					
+					case 1: computerGetsPile = true; break; //player1 gets pile
+					case 2: playerGetsPile = true; break; //player2 gets pile
+					
+					}
+					faceCard = null;
+					
+				}
 		}
 		/*if (faceCard!=null &&chances ==0 && previousTurn() ==1){ //player has run out of chances 
 			try {
@@ -208,5 +221,15 @@ public class Game {
 			//possible penalty
 		
 	}
-	
+	 public void checkGameOver(){
+		 
+		for (int i =1; i< Players.size(); i++){
+			if (Players.get(i).getScore() == 52){
+				winner = i;
+				gameOver = true;
+				break;
+			}
+		}
+			
+	 }
 }

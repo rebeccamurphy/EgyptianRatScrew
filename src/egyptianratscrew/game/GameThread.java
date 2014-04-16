@@ -53,6 +53,14 @@ public void setSurfaceSize(int width, int height, int screenW, int screenH){
 public void run() {
       while (running) {
     	  drawGame();
+    	  egyptianratscrew.game.GameInfo.game.checkGameOver();
+    	  if (egyptianratscrew.game.GameInfo.game.gameOver){
+    		  //TOAST
+    		  Log.d("Player: ", Integer.toString(egyptianratscrew.game.GameInfo.game.winner) + " Wins");
+    		  computer.setRunning(false);
+    		  setRunning(false);
+    		  
+    	  }
     	     
       }
 }
@@ -61,9 +69,9 @@ public void run() {
 public void drawGame(){
 	Canvas c = null;
     try {
-           c = view.getHolder().lockCanvas();
+           c = view.getHolder().lockCanvas(null); //null says redraw whole cnavas 
            synchronized (view.getHolder()) {
-           	
+           	//TODO add gameover here ?
            	view.draw(c);
                 
            }
@@ -89,7 +97,12 @@ public boolean doTouchEvent(MotionEvent event){
 			
 			if (hitDiscard){
 				
-				if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()&& computer.makingMove ==true){
+				if (egyptianratscrew.game.GameInfo.game.playerGetsPile){
+					egyptianratscrew.game.GameInfo.game.makePlay(2);
+					egyptianratscrew.game.GameInfo.game.playerGetsPile = false;
+				}
+					
+				else if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()&& computer.makingMove ==true){
 					computer.interrupt();
 					egyptianratscrew.game.GameInfo.game.slap(2);
 					Log.d("Computer Status", "restarted");
@@ -102,7 +115,7 @@ public boolean doTouchEvent(MotionEvent event){
 		
 			}
 			
-			else if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 && !computer.makingMove){
+			else if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 && !computer.makingMove && !egyptianratscrew.game.GameInfo.game.playerGetsPile){
 				//Human player makes move
 				egyptianratscrew.game.GameInfo.game.makePlay(2);
 				//egyptianratscrew.game.GameInfo.game.nextTurn();

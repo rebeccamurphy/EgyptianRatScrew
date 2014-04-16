@@ -44,7 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private Bitmap cardBack;
 	
 	private GameThread gameThread;
-	private boolean firstTurn = true;
+	//private boolean firstTurn = true;
 
     public GameView(Context context, AttributeSet attrs) {
 
@@ -90,7 +90,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
 
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    	//used when shifted portrait/landscape
     	gameThread.setSurfaceSize(width, height, screenW, screenH);
+    	
     }
 
  

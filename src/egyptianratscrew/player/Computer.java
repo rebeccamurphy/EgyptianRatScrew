@@ -28,7 +28,7 @@ public class Computer extends Thread{
 	public void run(){
 		while(running){
 			//Log.d("C", "t");
-		//TODO computer not slapping on its turn.
+		//TODO computer not slapping on its turn. is computer slapping at all? need to test 
 		if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
 			running = false;
 			slapTry();
@@ -36,6 +36,7 @@ public class Computer extends Thread{
 		}
 			
 		if (egyptianratscrew.game.GameInfo.game.turn == 1 && makingMove ==false){
+			
 		running = false;	
 		Log.d("Time", "before");
 		Log.i("Discard pile Before comp", Integer.toString(egyptianratscrew.game.GameInfo.game.discardPile.upCards.size()));
@@ -48,13 +49,17 @@ public class Computer extends Thread{
 		
 		try {
 			makingMove = true;
-			Thread.sleep(3000);
+			Thread.sleep(2000);
 			egyptianratscrew.game.GameInfo.game.makePlay(1);
 			//egyptianratscrew.game.GameInfo.game.nextTurn();
-			makingMove = false;
-			running = true;
+			
 		    Log.i("Computer", "made play");
-		   
+		    if (egyptianratscrew.game.GameInfo.game.computerGetsPile){
+		    	makeMove();
+		    	
+		    }
+		    makingMove = false;
+			running = true;
 			}
 		    
 		 catch(Exception ex) {
@@ -82,5 +87,7 @@ public class Computer extends Thread{
 
 	}
 	
-	
+	public void takePile(){
+		
+	}
 }
