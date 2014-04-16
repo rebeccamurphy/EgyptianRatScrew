@@ -151,6 +151,13 @@ public class DiscardPile extends Deck{
 		upCards = new ArrayList<Card>();
 				
 	}
+	public void addPileToHand(int player){
+		//add current discard to players hand
+		egyptianratscrew.game.GameInfo.game.Players.get(player).addCard(deck);
+		deck = new ArrayList<Card>();
+		upCards = new ArrayList<Card>();
+				
+	}
 	/*
 	 * End Deck Methods
 	 */

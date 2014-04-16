@@ -98,8 +98,9 @@ public boolean doTouchEvent(MotionEvent event){
 			if (hitDiscard){
 				
 				if (egyptianratscrew.game.GameInfo.game.playerGetsPile){
-					egyptianratscrew.game.GameInfo.game.makePlay(2);
+					egyptianratscrew.game.GameInfo.game.discardPile.addPileToHand(2);
 					egyptianratscrew.game.GameInfo.game.playerGetsPile = false;
+					
 				}
 					
 				else if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()&& computer.makingMove ==true){
@@ -114,8 +115,19 @@ public boolean doTouchEvent(MotionEvent event){
 				egyptianratscrew.game.GameInfo.game.slap(2);//
 		
 			}
-			
-			else if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 && !computer.makingMove && !egyptianratscrew.game.GameInfo.game.playerGetsPile){
+			else if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 && 
+					computer.makingMove && !egyptianratscrew.game.GameInfo.game.playerGetsPile){
+				//Human player interrupts Computer slap
+				computer.interrupt();
+				egyptianratscrew.game.GameInfo.game.makePlay(2);
+				Log.d("Computer Status", "restarted");
+				computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view);
+				computer.setRunning(true);
+				computer.start();
+				
+			}
+			else if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 && 
+					!computer.makingMove && !egyptianratscrew.game.GameInfo.game.playerGetsPile){
 				//Human player makes move
 				egyptianratscrew.game.GameInfo.game.makePlay(2);
 				//egyptianratscrew.game.GameInfo.game.nextTurn();
@@ -124,7 +136,12 @@ public boolean doTouchEvent(MotionEvent event){
 						+ " " +Boolean.toString(computer.makingMove));
 			
 			}
-			else 
+			
+			else if (egyptianratscrew.game.GameInfo.game.playerGetsPile)
+				//TOAST
+				Log.d("Grab pile", "to get pile");
+				//crashes if gets here when player should take pile and doesnt.
+			else
 				Log.d("Turn", "not yous");
 			break;
 		case MotionEvent.ACTION_UP:

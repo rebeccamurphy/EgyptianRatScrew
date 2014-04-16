@@ -27,37 +27,54 @@ public class Computer extends Thread{
 	@Override
 	public void run(){
 		while(running){
-			//Log.d("C", "t");
+			
 		//TODO computer not slapping on its turn. is computer slapping at all? need to test 
-		if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
-			running = false;
-			slapTry();
+			try {if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
+				running = false;
+				slapTry();
+				
+			}
+			}
+			catch(Exception e){
+				Log.d("CheckSlappable", "index out of bounds");
+			}
 			
-		}
-			
-		if (egyptianratscrew.game.GameInfo.game.turn == 1 && makingMove ==false){
-			
-		running = false;	
-		Log.d("Time", "before");
-		Log.i("Discard pile Before comp", Integer.toString(egyptianratscrew.game.GameInfo.game.discardPile.upCards.size()));
-		makeMove();
-		Log.d("Time", "after");
-		}
+			if (egyptianratscrew.game.GameInfo.game.computerGetsPile){
+				running = false;
+		    	//egyptianratscrew.game.GameInfo.game.computerGetsPile = false;
+		    	Log.d("Computer", "gets pile");
+		    	takePile();
+		    	
+		    }
+				
+			else if (egyptianratscrew.game.GameInfo.game.turn == 1 && makingMove ==false){
+				if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
+					//second check put in before move made. 
+					running = false;
+					slapTry();
+				}
+				else {
+					running = false;	
+					Log.d("Time", "before");
+					Log.i("Discard pile Before comp", Integer.toString(egyptianratscrew.game.GameInfo.game.discardPile.size()));
+					makeMove();
+					Log.d("Time", "after");
+				}
+			}
 		}
 	}
 	public void makeMove(){
 		
 		try {
+			running = false; 
 			makingMove = true;
+			
 			Thread.sleep(2000);
 			egyptianratscrew.game.GameInfo.game.makePlay(1);
 			//egyptianratscrew.game.GameInfo.game.nextTurn();
 			
 		    Log.i("Computer", "made play");
-		    if (egyptianratscrew.game.GameInfo.game.computerGetsPile){
-		    	makeMove();
-		    	
-		    }
+		   
 		    makingMove = false;
 			running = true;
 			}
@@ -88,6 +105,25 @@ public class Computer extends Thread{
 	}
 	
 	public void takePile(){
-		
+		try {
+			running = false; 
+			makingMove = true;
+			Thread.sleep(2000);
+			egyptianratscrew.game.GameInfo.game.discardPile.addPileToHand(1);
+			//egyptianratscrew.game.GameInfo.game.nextTurn();
+			
+		    Log.i("Computer", "got pile");
+		    egyptianratscrew.game.GameInfo.game.computerGetsPile = false;
+		    egyptianratscrew.game.GameInfo.game.nextTurn();
+		    makingMove = false;
+			running = true;
+			}
+		    
+		 catch(Exception ex) {
+		    Thread.currentThread().interrupt();
+		    Log.d("Interrupt", "with player slap");
+		    makingMove = false;
+		    running = false;
+		 }	
 	}
 }

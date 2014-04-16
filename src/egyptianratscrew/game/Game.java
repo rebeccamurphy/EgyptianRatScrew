@@ -22,7 +22,7 @@ import egyptianratscrew.player.Player;
 public class Game {
 
 	public DiscardPile discardPile;
-	public HashMap<Integer , Player> Players;
+	public HashMap<Integer , Player> Players; //change to more efficient structure
 	private int numPlayers;
 	public int turn;
 	public boolean touchDisabled;
@@ -116,11 +116,7 @@ public class Game {
 			 return turn -1;
 		
 	}
-	
-	
 		
-		
-	
 	public void makePlay(int playerID){
 		//TODO debug next turn 
 		//have player touch discard pile to take it when computer chances are 0?
@@ -133,48 +129,47 @@ public class Game {
 			if (discardPile.get(discardPile.size()-1).getRank() > 10){ //first time facecard played 
 					faceCard = discardPile.get(discardPile.size()-1).getFace();
 					chances = discardPile.rules.get(faceCard).getNum();
-					
 			}
 			nextTurn(); //next turn no matter face card in play 
 		}
 		else if (faceCard !=null && chances>0){ //face card still in play 
 			discardPile.add(Players.get(playerID).playCard());
+			Log.d("Chances Before", Integer.toString(chances));
 			chances--;
+			Log.d("Chances After", Integer.toString(chances));
 				if (discardPile.get(discardPile.size()-1).getRank() > 10){ //facecard played on facecard
 					faceCard = discardPile.get(discardPile.size()-1).getFace();
 					chances = discardPile.rules.get(faceCard).getNum();
 					nextTurn();
 				}
 				else if (chances == 0){
+					faceCard = null;
 					switch(previousTurn()){
 					
 					case 1: computerGetsPile = true; break; //player1 gets pile
-					case 2: playerGetsPile = true; break; //player2 gets pile
-					
+					case 2: playerGetsPile = true; nextTurn(); break; //player2 gets pile
 					}
-					faceCard = null;
-					
+								
 				}
 		}
-		/*if (faceCard!=null &&chances ==0 && previousTurn() ==1){ //player has run out of chances 
-			try {
+		/*
+		else if (faceCard!=null &&chances ==0 && playerGetsPile){ 
+			Log.d("Chance", "Player getting pile " + Integer.toString(chances));
+			discardPile.addPileToHand(Players.get(2)); 
+			faceCard = null;	
+			playerGetsPile =false;								
+			//nextTurn();
 			
-				Thread.sleep(secDelay);
-				discardPile.addPileToHand(Players.get(previousTurn())); //TODO  with ifthis way doesnt let the last card be drawn. 
-				faceCard = null;										//with else if player has to press again for pile to be taken. 
-		    	
-				}
-				catch(Exception ex) {
-				    Thread.currentThread().interrupt();   
-				}
+		}
+		if (faceCard!=null &&chances ==0 && computerGetsPile){ 
+			Log.d("Chance", "Computer getting pile " + Integer.toString(chances));
+			discardPile.addPileToHand(Players.get(previousTurn())); 
+			faceCard = null;	
+			computerGetsPile =false;								
+			nextTurn();
 			
 		}*/
-		else if (faceCard!=null &&chances ==0 ){ 
-			
-			discardPile.addPileToHand(Players.get(previousTurn())); 
-			faceCard = null;									
-			nextTurn();
-		}
+		
 			
 	}
 		
