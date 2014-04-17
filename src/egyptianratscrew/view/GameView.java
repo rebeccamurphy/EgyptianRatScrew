@@ -130,12 +130,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     	return gameThread.doTouchEvent(event);
     }
 
-    public void gameOver() {
-    	Intent createIntent = new Intent(gameThread.context, egyptianratscrew.activity.GameActivity.class);
-    	gameThread.context.startActivity(createIntent);
-    	
-    }
-
 
     public void draw(Canvas canvas) {
     	try{

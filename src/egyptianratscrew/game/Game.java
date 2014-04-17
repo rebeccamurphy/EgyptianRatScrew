@@ -191,11 +191,13 @@ public class Game {
 			discardPile.addPileToHand(Players.get(playerID));
 			faceCard = null;
 			chances = 0;
+			
 			if (turn != playerID)
 				turn = playerID;
 			discardPile.updateUpCards();
 				//nextTurn(); // the person who gets the discard pile places the card
 				// Toast Player 2 turn 
+			
 		}
 		else
 			Log.d("toast", "not a slap");

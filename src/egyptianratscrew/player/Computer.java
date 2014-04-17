@@ -101,12 +101,10 @@ public class Computer extends Thread {
 		try {
 		makingMove = true;
 		Thread.sleep(secDelay);
-		egyptianratscrew.game.GameInfo.game.slap(1);
 		
-    	Log.d("Computer Slap", "Computer slapped pile");
-    	makingMove =  false;
-    	running = true;
-    	handler.post(new Runnable() {
+		egyptianratscrew.game.GameInfo.game.slap(1);
+		/*
+		handler.post(new Runnable() {
     	    @Override
     	    public void run() {
     	    	try{
@@ -116,7 +114,11 @@ public class Computer extends Thread {
     	    		Log.d("Crash", "Landed");
     	    	}
     	    }
-    	});
+    	});*/
+    	Log.d("Computer Slap", "Computer slapped pile");
+    	makingMove =  false;
+    	running = true;
+    	
 		}
 		catch(Exception ex) {
 		    Thread.currentThread().interrupt();   
@@ -138,8 +140,8 @@ public class Computer extends Thread {
 		    egyptianratscrew.game.GameInfo.game.nextTurn();
 		    makingMove = false;
 			running = true;
-			
-			handler.post(new Runnable() {
+			/*
+			view.post(new Runnable() {
 			    @Override
 			    public void run() {
 			    	try{
@@ -150,7 +152,7 @@ public class Computer extends Thread {
 			    	}
 			    }
 			});
-			
+			*/
 			}
 		    
 		 catch(Exception ex) {

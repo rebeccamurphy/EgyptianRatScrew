@@ -196,7 +196,7 @@ public boolean doTouchEvent(MotionEvent event){
 			
 			else if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 && 
 					 !egyptianratscrew.game.GameInfo.game.playerGetsPile ){
-				
+				Log.d("Turn", "Not yours hitplayer Pile detected");
 				//HIT PLAYER PILE
 				if (computer.makingMove && !egyptianratscrew.game.GameInfo.game.computerGetsPile){
 					//Human player interrupts computer slap with move
@@ -207,23 +207,27 @@ public boolean doTouchEvent(MotionEvent event){
 					computer.setRunning(true);
 					computer.start();
 				} 
-				else if (!egyptianratscrew.game.GameInfo.game.computerGetsPile)
+				else if (!egyptianratscrew.game.GameInfo.game.computerGetsPile && 
+							(egyptianratscrew.game.GameInfo.game.chances >0 || 
+								egyptianratscrew.game.GameInfo.game.faceCard==null ))
 					//Human player can make move normally.
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
-				else
+				else if (egyptianratscrew.game.GameInfo.game.computerGetsPile)
 					//Computer is taking pile
-					computer.grabPileToast.show();
+					Toast.makeText(context, "Computer won the pile.", Toast.LENGTH_SHORT).show();
+				
 			}
 			
 			else if (egyptianratscrew.game.GameInfo.game.playerGetsPile){
 				//TOAST
-				grabPileToast.show();
 				Log.d("Grab pile", "to get pile");
+				grabPileToast.show();
+				
 				}
-			else{
+			else if (egyptianratscrew.game.GameInfo.game.turn != 2 ) {
 				Log.d("Turn", "not yous");
 				notTurnToast.show();
-			}
+			} 
 			break;
 		case MotionEvent.ACTION_UP:
 			
