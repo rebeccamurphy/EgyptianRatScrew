@@ -77,7 +77,7 @@ public void run() {
 	    	drawGame();
 	    	egyptianratscrew.game.GameInfo.game.checkGameOver();
 	    	  
-	    	if (egyptianratscrew.game.GameInfo.game.gameOver&& !egyptianratscrew.game.GameInfo.game.discardPile.checkAllSlapRules()){
+	    	if (egyptianratscrew.game.GameInfo.game.gameOver&& !egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
 	    		  //TOAST
 	    		//gameOverToast.show();
 	        	if (egyptianratscrew.game.GameInfo.game.loser ==1)

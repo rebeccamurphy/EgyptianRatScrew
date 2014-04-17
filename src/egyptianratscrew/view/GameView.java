@@ -164,9 +164,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     				screenH - blackPaint.getTextSize(),
     				blackPaint);
     		canvas.drawText(
-    				"Turn " + Integer.toString(egyptianratscrew.game.GameInfo.game.turn) , 
+    				"Turn: " + Integer.toString(egyptianratscrew.game.GameInfo.game.turn) , 
     				10, 
     				screenH/2,
+    				blackPaint);
+    		canvas.drawText(
+    				"Discard Pile Size: " + Integer.toString(egyptianratscrew.game.GameInfo.game.discardPile.size()), 
+    				10, 
+    				screenH/2+ blackPaint.getTextSize(),
     				blackPaint);
 
     	}

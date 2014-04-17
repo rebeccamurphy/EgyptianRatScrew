@@ -59,7 +59,7 @@ public class Game {
 	}
 	
 	public Game(int Decks, int numberPlayers, int secsDelay) {
-		discardPile= new DiscardPile (Decks);
+		discardPile= new DiscardPile ();
 		numPlayers = numberPlayers;
 		turn =2;
 		secDelay = secsDelay;
@@ -168,7 +168,7 @@ public class Game {
 	
 	public void slap(Player player){
 		//TODO reset facecard
-		if (discardPile.checkAllSlapRules()){
+		if (discardPile.checkSlappable()){
 			playerGetsPile = false;
 			computerGetsPile = false;
 			discardPile.addPileToHand(player);
@@ -178,14 +178,14 @@ public class Game {
 				turn = player.getId();
 				//nextTurn(); // the person who gets the discard pile places the card
 				// Toast Player 2 turn 
-			discardPile.updateUpCards();
+			
 		}
 		
 		
 	}
 	public void slap(int playerID){
 		//TODO reset facecard
-		if (discardPile.checkAllSlapRules()){
+		if (discardPile.checkSlappable()){
 			playerGetsPile = false;
 			computerGetsPile = false;
 			discardPile.addPileToHand(Players.get(playerID));
@@ -194,7 +194,7 @@ public class Game {
 			
 			if (turn != playerID)
 				turn = playerID;
-			discardPile.updateUpCards();
+	
 				//nextTurn(); // the person who gets the discard pile places the card
 				// Toast Player 2 turn 
 			
