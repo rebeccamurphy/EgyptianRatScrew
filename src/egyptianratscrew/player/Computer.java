@@ -102,11 +102,21 @@ public class Computer extends Thread {
 		makingMove = true;
 		Thread.sleep(secDelay);
 		egyptianratscrew.game.GameInfo.game.slap(1);
-    	//slapToast.show();
+		
     	Log.d("Computer Slap", "Computer slapped pile");
     	makingMove =  false;
     	running = true;
-    	
+    	handler.post(new Runnable() {
+    	    @Override
+    	    public void run() {
+    	    	try{
+    	    	slapToast.show();
+    	    }
+    	    	catch(Exception E){
+    	    		Log.d("Crash", "Landed");
+    	    	}
+    	    }
+    	});
 		}
 		catch(Exception ex) {
 		    Thread.currentThread().interrupt();   
@@ -122,11 +132,25 @@ public class Computer extends Thread {
 			egyptianratscrew.game.GameInfo.game.discardPile.addPileToHand(1);
 			//takes pile but doesnt go again.  
 			//view.post(show_toast);
+			
 		    Log.i("Computer", "got pile");
 		    egyptianratscrew.game.GameInfo.game.computerGetsPile = false;
 		    egyptianratscrew.game.GameInfo.game.nextTurn();
 		    makingMove = false;
 			running = true;
+			
+			handler.post(new Runnable() {
+			    @Override
+			    public void run() {
+			    	try{
+			    	grabPileToast.show();
+			    }
+			    	catch(Exception E){
+			    		Log.d("Crash", "Landed");
+			    	}
+			    }
+			});
+			
 			}
 		    
 		 catch(Exception ex) {
@@ -136,11 +160,18 @@ public class Computer extends Thread {
 		    running = false;
 		 }	
 	}
-	private Runnable show_toast = new Runnable()
-	{
-	    public void run()
-	    {
-	    	 grabPileToast.show();
+	
+	public void makeToast(){
+	handler.post(new Runnable() {
+	    @Override
+	    public void run() {
+	    	try{
+	    	slapToast.show();
 	    }
-	};
+	    	catch(Exception E){
+	    		Log.d("Crash", "Landed");
+	    	}
+	    }
+	});
+	}
 }

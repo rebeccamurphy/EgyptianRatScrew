@@ -53,7 +53,7 @@ public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Ha
 	gameOverToast = Toast.makeText(context, "Game Over!", Toast.LENGTH_SHORT);
 	
 	computer.slapToast = Toast.makeText(context, "Computer got the slap!", Toast.LENGTH_SHORT);
-	computer.grabPileToast = Toast.makeText(context, "Computer won the pile", Toast.LENGTH_SHORT);
+	computer.grabPileToast = Toast.makeText(context, "Computer won the pile.", Toast.LENGTH_SHORT);
 	
 }
 
@@ -195,11 +195,11 @@ public boolean doTouchEvent(MotionEvent event){
 			}
 			
 			else if (hitPlayerPile && egyptianratscrew.game.GameInfo.game.turn == 2 && 
-					 !egyptianratscrew.game.GameInfo.game.playerGetsPile){
-				//HIT PLAYER PILE
-				//Human player makes move
+					 !egyptianratscrew.game.GameInfo.game.playerGetsPile ){
 				
-				if (computer.makingMove){
+				//HIT PLAYER PILE
+				if (computer.makingMove && !egyptianratscrew.game.GameInfo.game.computerGetsPile){
+					//Human player interrupts computer slap with move
 					computer.interrupt();
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
 					Log.d("Computer Status", "restarted");
@@ -207,13 +207,12 @@ public boolean doTouchEvent(MotionEvent event){
 					computer.setRunning(true);
 					computer.start();
 				} 
-				else
+				else if (!egyptianratscrew.game.GameInfo.game.computerGetsPile)
+					//Human player can make move normally.
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
-				//egyptianratscrew.game.GameInfo.game.nextTurn();
-				Log.d("Touch", "move true");
-				Log.d("Computer is running, alive, moving ", Boolean.toString(computer.running) + " " + Boolean.toString(computer.isAlive())
-						+ " " +Boolean.toString(computer.makingMove));
-			
+				else
+					//Computer is taking pile
+					computer.grabPileToast.show();
 			}
 			
 			else if (egyptianratscrew.game.GameInfo.game.playerGetsPile){

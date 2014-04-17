@@ -169,6 +169,8 @@ public class Game {
 	public void slap(Player player){
 		//TODO reset facecard
 		if (discardPile.checkAllSlapRules()){
+			playerGetsPile = false;
+			computerGetsPile = false;
 			discardPile.addPileToHand(player);
 			faceCard = null;
 			chances = 0;
@@ -178,14 +180,14 @@ public class Game {
 				// Toast Player 2 turn 
 			discardPile.updateUpCards();
 		}
-		//else
-			//toast not a slap
-			//possible penalty
+		
 		
 	}
 	public void slap(int playerID){
 		//TODO reset facecard
 		if (discardPile.checkAllSlapRules()){
+			playerGetsPile = false;
+			computerGetsPile = false;
 			discardPile.addPileToHand(Players.get(playerID));
 			faceCard = null;
 			chances = 0;
