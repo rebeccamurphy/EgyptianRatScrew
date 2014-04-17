@@ -3,16 +3,29 @@ package egyptianratscrew.card;
 import android.graphics.Bitmap;
 
 public class Card {
-
+	/***
+	 * Card Class for Egyptian Rat Screw 
+	 */
 	private int id;
 	private Bitmap bmp;
 	private int rank;
 	private int suit;
+	
+	/**
+	 * Card Constructor 
+	 * sets card suit and rank.
+	 * @param newId
+	 */
 	public Card(int newId) {
 		id = newId;
 		suit = Math.round((id/100) * 100);
 		rank = id -suit;
 	}
+	
+	/**
+	 * 
+	 * @param newBitmap
+	 */
 	
 	public void setBitmap(Bitmap newBitmap){
 		bmp = newBitmap;
