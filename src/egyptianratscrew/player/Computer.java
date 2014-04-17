@@ -3,25 +3,28 @@ package egyptianratscrew.player;
 import java.util.concurrent.TimeUnit;
 
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
 import egyptianratscrew.game.Game;
 import egyptianratscrew.view.GameView;
 
-public class Computer extends Thread{
+public class Computer extends Thread {
 	public boolean running = false;
 	public int secDelay;
-	private GameView view;
+	private GameView view;//TODO not used delete
 	public boolean makingMove = false;
 	public Toast grabPileToast;
 	public Toast slapToast;
+	public Handler handler;
 	
-	public Computer(int secDelay, GameView view) {
+	public Computer(int secDelay, GameView view, Handler handler) {
 		this.secDelay = secDelay;
 		this.view = view;
 		this.makingMove = false;
 		this.running = false;
+		this.handler = handler;
 		
 	}
 	
@@ -34,7 +37,8 @@ public class Computer extends Thread{
 		while(running){
 			
 		//TODO computer not slapping on its turn. is computer slapping at all? need to test 
-			try {if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
+			try {
+				if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
 				running = false;
 				slapTry();
 				
@@ -44,7 +48,7 @@ public class Computer extends Thread{
 				Log.d("CheckSlappable", "index out of bounds");
 			}
 			
-			if (egyptianratscrew.game.GameInfo.game.computerGetsPile){
+			if (egyptianratscrew.game.GameInfo.game.computerGetsPile &&  running){
 				running = false;
 		    	//egyptianratscrew.game.GameInfo.game.computerGetsPile = false;
 		    	Log.d("Computer", "gets pile");
@@ -52,7 +56,7 @@ public class Computer extends Thread{
 		    	
 		    }
 				
-			else if (egyptianratscrew.game.GameInfo.game.turn == 1 && makingMove ==false){
+			else if (egyptianratscrew.game.GameInfo.game.turn == 1 && makingMove ==false && running){
 				if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
 					//second check put in before move made. 
 					running = false;
@@ -98,7 +102,7 @@ public class Computer extends Thread{
 		makingMove = true;
 		Thread.sleep(secDelay);
 		egyptianratscrew.game.GameInfo.game.slap(1);
-    	slapToast.show();
+    	//slapToast.show();
     	Log.d("Computer Slap", "Computer slapped pile");
     	makingMove =  false;
     	running = true;
@@ -116,8 +120,8 @@ public class Computer extends Thread{
 			makingMove = true;
 			Thread.sleep(2000);
 			egyptianratscrew.game.GameInfo.game.discardPile.addPileToHand(1);
-			//egyptianratscrew.game.GameInfo.game.nextTurn();
-			grabPileToast.show();
+			//takes pile but doesnt go again.  
+			//view.post(show_toast);
 		    Log.i("Computer", "got pile");
 		    egyptianratscrew.game.GameInfo.game.computerGetsPile = false;
 		    egyptianratscrew.game.GameInfo.game.nextTurn();
@@ -132,4 +136,11 @@ public class Computer extends Thread{
 		    running = false;
 		 }	
 	}
+	private Runnable show_toast = new Runnable()
+	{
+	    public void run()
+	    {
+	    	 grabPileToast.show();
+	    }
+	};
 }

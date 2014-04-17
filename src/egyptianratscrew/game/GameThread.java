@@ -43,7 +43,8 @@ public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Ha
     this.surfaceHolder = surfaceHolder;  
 	this.context = context;
 	this.view = view;
-	computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view);
+	this.handler = handler;
+	computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view, handler);
 	
 	notTurnToast = Toast.makeText(context, "Not your turn.", Toast.LENGTH_SHORT);
 	grabPileToast = Toast.makeText(context, "The pile is yours, tap it to take it.", Toast.LENGTH_SHORT);
@@ -87,8 +88,6 @@ public void run() {
 			    .setCancelable(false)
 			    .setPositiveButton("Play again?", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int whichButton) {
-			        	//com.kgght.studybug.objects.PreTest.qNum = 0;
-			        	//com.kgght.studybug.objects.PreTest.flipq = false;
 			        	Intent createIntent = new Intent(context, egyptianratscrew.view.GameView.class);
 						context.startActivity(createIntent);
 						
@@ -96,8 +95,6 @@ public void run() {
 			    })
 			    .setNegativeButton("Quit?", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int whichButton) {
-			        	//com.kgght.studybug.objects.PreTest.qNum = 0;
-			        	//com.kgght.studybug.objects.PreTest.flipq = false;
 			        	Intent createIntent = new Intent(context, egyptianratscrew.view.TitleView.class);
 						context.startActivity(createIntent);
 			        }
@@ -155,13 +152,13 @@ public boolean doTouchEvent(MotionEvent event){
 					
 				}
 					
-				else if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()&& computer.makingMove ==true){
+				else if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
 					// human player slaps pile while computer is trying to take pile
 					computer.interrupt();
 					egyptianratscrew.game.GameInfo.game.slap(2);
 					slapToast.show();
 					Log.d("Computer Status", "restarted");
-					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view);
+					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view, handler);
 					computer.setRunning(true);
 					computer.start();
 				}
@@ -173,7 +170,7 @@ public boolean doTouchEvent(MotionEvent event){
 					computer.interrupt();
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
 					Log.d("Computer Status", "restarted");
-					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view);
+					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view, handler);
 					computer.setRunning(true);
 					computer.start();
 				}
@@ -190,7 +187,7 @@ public boolean doTouchEvent(MotionEvent event){
 					computer.interrupt();
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
 					Log.d("Computer Status", "restarted");
-					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view);
+					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view, handler);
 					computer.setRunning(true);
 					computer.start();
 				} 
