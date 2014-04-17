@@ -50,6 +50,7 @@ public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Ha
 	grabPileToast = Toast.makeText(context, "The pile is yours, tap it to take it.", Toast.LENGTH_SHORT);
 	slapToast = Toast.makeText(context, "You got the slap! Now play a card.", Toast.LENGTH_SHORT);
 	notSlapToast = Toast.makeText(context, "Not a slap!", Toast.LENGTH_SHORT);
+	gameOverToast = Toast.makeText(context, "Game Over!", Toast.LENGTH_SHORT);
 	
 	computer.slapToast = Toast.makeText(context, "Computer got the slap!", Toast.LENGTH_SHORT);
 	computer.grabPileToast = Toast.makeText(context, "Computer won the pile", Toast.LENGTH_SHORT);
@@ -76,39 +77,53 @@ public void run() {
 	    	drawGame();
 	    	egyptianratscrew.game.GameInfo.game.checkGameOver();
 	    	  
-	    	if (egyptianratscrew.game.GameInfo.game.gameOver){
+	    	if (egyptianratscrew.game.GameInfo.game.gameOver&& !egyptianratscrew.game.GameInfo.game.discardPile.checkAllSlapRules()){
 	    		  //TOAST
-	    		if (egyptianratscrew.game.GameInfo.game.loser ==1)
+	    		//gameOverToast.show();
+	        	if (egyptianratscrew.game.GameInfo.game.loser ==1)
 	    			winner = "You";
 	    		else
 	    			winner = "Computer";
-	    		new AlertDialog.Builder(context)
-			    .setTitle("Game Over!")
-			    .setMessage(winner +" win!")
-			    .setCancelable(false)
-			    .setPositiveButton("Play again?", new DialogInterface.OnClickListener() {
-			        public void onClick(DialogInterface dialog, int whichButton) {
-			        	Intent createIntent = new Intent(context, egyptianratscrew.view.GameView.class);
-						context.startActivity(createIntent);
-						
-			        }
-			    })
-			    .setNegativeButton("Quit?", new DialogInterface.OnClickListener() {
-			        public void onClick(DialogInterface dialog, int whichButton) {
-			        	Intent createIntent = new Intent(context, egyptianratscrew.view.TitleView.class);
-						context.startActivity(createIntent);
-			        }
-			    }).show();
-			    
-	    		  Log.d("Player: ", Integer.toString(egyptianratscrew.game.GameInfo.game.loser) + " Wins");
-	    		  computer.setRunning(false);
-	    		  setRunning(false);
+	        	
+	        	computer.setRunning(false);
+	        	running = false; 
+	        	
+	    		
+	    		handler.post(new Runnable() {
+	    		    @Override
+	    		    public void run() {
+	    		        	AlertDialog.Builder gameOverAlert =new AlertDialog.Builder(context);
+	    gameOverAlert.setTitle("Game Over!");
+	    gameOverAlert.setMessage(winner +" win!");
+	    gameOverAlert.setCancelable(false);
+	    gameOverAlert.setPositiveButton("Play again?", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	        	Intent createIntent = new Intent(context, egyptianratscrew.activity.GameActivity.class);
+	        	context.startActivity(createIntent);
+				
+	        }
+	    });
+	    gameOverAlert.setNegativeButton("Quit?", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	        	Intent createIntent = new Intent(context, egyptianratscrew.activity.MainActivity.class);
+	        	context.startActivity(createIntent);
+				
+	        }
+	    });
+	    gameOverAlert.show();
+    	
+	    		    
+	    		
+	    		
+	    		    }});
+	    	
 	    		
 	    	}
     	  }
     	  catch(Exception ex) {
     		  Thread.currentThread().interrupt();
-    		  Log.d("Interrupt", "Draw wait");   
+    		  Log.d("Interrupt", "Draw wait");
+    		  running = false;
   		 }	
       }
 }
@@ -128,6 +143,7 @@ public void drawGame(){
            }
     }
 }
+
 
 public boolean doTouchEvent(MotionEvent event){
 	synchronized(surfaceHolder){
@@ -211,6 +227,7 @@ public boolean doTouchEvent(MotionEvent event){
 			}
 			break;
 		case MotionEvent.ACTION_UP:
+			
 			break;
 		case MotionEvent.ACTION_MOVE:
 			break;

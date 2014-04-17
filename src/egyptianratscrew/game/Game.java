@@ -37,6 +37,7 @@ public class Game {
 	public boolean playerGetsPile = false;
 	public boolean computerGetsPile = false;
 	public int loser;
+	public int winner;
 	
 	public Game() {
 		discardPile = new DiscardPile();
@@ -209,5 +210,9 @@ public class Game {
 			}
 		}
 			
+	 }
+	 public void setGameOver(){
+		 	loser =1;
+		 	gameOver = true;
 	 }
 }

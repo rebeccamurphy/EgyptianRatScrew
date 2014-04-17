@@ -16,7 +16,10 @@ import egyptianratscrew.player.Player;
 
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -43,6 +46,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private Paint redPaint;
 	private Bitmap cardBack;
 	
+	private String winner;
 	private GameThread gameThread;
 	//private boolean firstTurn = true;
 
@@ -126,7 +130,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     	return gameThread.doTouchEvent(event);
     }
 
- 
+    public void gameOver() {
+    	Intent createIntent = new Intent(gameThread.context, egyptianratscrew.activity.GameActivity.class);
+    	gameThread.context.startActivity(createIntent);
+    	
+    }
 
 
     public void draw(Canvas canvas) {
