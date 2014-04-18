@@ -1,24 +1,16 @@
 package egyptianratscrew.game;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.view.View;
-import android.content.res.Resources;
 
-import egyptianratscrew.activity.R;
-import egyptianratscrew.card.Card;
-import egyptianratscrew.card.Deck;
 import egyptianratscrew.card.DiscardPile;
 import egyptianratscrew.player.Player;
 
+@SuppressLint("UseSparseArrays")
 public class Game {
 
 	public DiscardPile discardPile;
@@ -39,6 +31,9 @@ public class Game {
 	public int loser;
 	public int winner;
 	
+	/***
+	 * Default Constructor for game
+	 */
 	public Game() {
 		discardPile = new DiscardPile();
 		numPlayers =2;
@@ -51,15 +46,20 @@ public class Game {
 		cardsDrawn = 5;
 		chances = 0;
 		Players.put(1, new Player(1));//computer
-		Players.put(2, new Player(2));
+		Players.put(2, new Player(2));//human
 		turn = 2;
 		turnList = new ArrayList<Integer>() ;
 		turnList.add(1);
 		turnList.add(2);
 	}
-	
+	/***
+	 * Custom Game construct for when options are implemented
+	 * @param Decks
+	 * @param numberPlayers
+	 * @param secsDelay
+	 */
 	public Game(int Decks, int numberPlayers, int secsDelay) {
-		discardPile= new DiscardPile (Decks);
+		discardPile= new DiscardPile ();
 		numPlayers = numberPlayers;
 		turn =2;
 		secDelay = secsDelay;
@@ -69,7 +69,9 @@ public class Game {
 			turnList.add(i);
 		}
 	}
-	
+	/**
+	 * Deals cards to players at the start of the game.
+	 */
 	private void dealCards(){
 		while (!discardPile.isEmpty())
 		{
@@ -78,38 +80,56 @@ public class Game {
 		}
 
 	}
+	/***
+	 * Method updates the player scores displayed and sets game over
+	 */
 	public void updateScores(){
 		for (int i=1; i<= numPlayers; i++){
 			Players.get(i).setScore();
 			if (Players.get(i).getScore() == 0)
 				gameOver = true;
-				//add somethign forloser
-		}
-		
-		//draw score to screen on next lines
-			
+		}	
 	}
-	
+	/***
+	 * Method to return hashmap of players
+	 * @return Players
+	 */
 	public HashMap<Integer, Player> getPlayers(){
 		return Players;
 	}
+	
+	/***
+	 * Method to return the discardPile
+	 * @return discardPile
+	 */
 	public DiscardPile getDiscardPile(){
 		return discardPile;
 	}
 	
+	/***
+	 * Starts the game by filling the game deck, shuffling the deck, deals the 
+	 * cards to the players and updates the scores. 
+	 * @param myContext
+	 */
 	public void start(Context myContext){
 		discardPile.fillDeck(myContext, myContext.getResources().getDisplayMetrics().widthPixels);
 		discardPile.shuffle();
 		dealCards();
 		updateScores();
-		
 	}
+	/***
+	 * Sets the next turn of the game.
+	 */
 	public void nextTurn(){
 		if(turn == turnList.size() )
 			turn = 1;
 		else
 			turn +=1;
 	}
+	/***
+	 * Returns the previous turn of the game
+	 * @return int previousTurn
+	 */
 	public int previousTurn(){
 		if(turn == 1 )
 			 return turnList.size();
@@ -117,10 +137,11 @@ public class Game {
 			 return turn -1;
 		
 	}
-		
+	/***
+	 * Makes a play based off the playerID
+	 * @param playerID
+	 */
 	public void makePlay(int playerID){
-		//TODO debug next turn 
-		//have player touch discard pile to take it when computer chances are 0?
 		if (playerID != turn){
 			//make toast
 			Log.v("Turn", "not yours");
@@ -157,7 +178,9 @@ public class Game {
 		
 			
 	}
-		
+	/***
+	 * Checks if a faceCard was played on the top of the discardPile
+	 */
 	public void checkFaceCard(){
 		if (discardPile.checkFaceCard()){
 			faceCard = discardPile.get(discardPile.size()-1).getFace();
@@ -165,45 +188,39 @@ public class Game {
 		}
 			
 	}
-	
+	/***
+	 * Method for when a player/computer slaps
+	 * @param player
+	 */
 	public void slap(Player player){
-		//TODO reset facecard
-		if (discardPile.checkAllSlapRules()){
+		if (discardPile.checkSlappable()){
 			playerGetsPile = false;
 			computerGetsPile = false;
 			discardPile.addPileToHand(player);
 			faceCard = null;
 			chances = 0;
 			if (turn != player.getId())
-				turn = player.getId();
-				//nextTurn(); // the person who gets the discard pile places the card
-				// Toast Player 2 turn 
-			discardPile.updateUpCards();
+				turn = player.getId(); //the person who slapped automatically goes next
 		}
-		
-		
 	}
+	/***
+	 * Method for when a player/computer slaps
+	 * @param player
+	 */
 	public void slap(int playerID){
-		//TODO reset facecard
-		if (discardPile.checkAllSlapRules()){
+		if (discardPile.checkSlappable()){
 			playerGetsPile = false;
 			computerGetsPile = false;
 			discardPile.addPileToHand(Players.get(playerID));
 			faceCard = null;
 			chances = 0;
-			
 			if (turn != playerID)
-				turn = playerID;
-			discardPile.updateUpCards();
-				//nextTurn(); // the person who gets the discard pile places the card
-				// Toast Player 2 turn 
-			
+				turn = playerID;//the person who slapped automatically goes next
 		}
-		else
-			Log.d("toast", "not a slap");
-			//possible penalty
-		
 	}
+	/***
+	 * Checks for Gameover by checking if a player's score is 0. 
+	 */
 	 public void checkGameOver(){
 		 
 		for (int i =1; i< Players.size(); i++){
@@ -215,8 +232,5 @@ public class Game {
 		}
 			
 	 }
-	 public void setGameOver(){
-		 	loser =1;
-		 	gameOver = true;
-	 }
+	 
 }

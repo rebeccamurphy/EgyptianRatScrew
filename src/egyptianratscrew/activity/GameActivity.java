@@ -21,7 +21,7 @@ public class GameActivity extends Activity {
 		
 		gView = (GameView) findViewById(R.id.GAME);
 		gView.setKeepScreenOn(true);
-		
+		//TODO remove to bar, in xml?
 		
 		
 	}

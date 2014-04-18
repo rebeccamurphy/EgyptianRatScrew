@@ -1,25 +1,13 @@
 package egyptianratscrew.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
 import egyptianratscrew.activity.R;
-import egyptianratscrew.card.Card;
-import egyptianratscrew.card.DiscardPile;
+
 import egyptianratscrew.game.Game;
 import egyptianratscrew.game.GameThread;
-import egyptianratscrew.player.Player;
 
-
-
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -32,9 +20,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 
 
+@SuppressLint("HandlerLeak")
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	
 	private int screenW =1;
@@ -45,11 +35,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private Paint blackPaint;
 	private Paint redPaint;
 	private Bitmap cardBack;
-	
-	private String winner;
 	private GameThread gameThread;
-	//private boolean firstTurn = true;
 
+	/**
+	 * Constructor for GameView
+	 * @param context
+	 * @param attrs
+	 */
     public GameView(Context context, AttributeSet attrs) {
 
         super(context, attrs);
@@ -82,9 +74,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		blackPaint.setTextAlign(Paint.Align.LEFT);
 		blackPaint.setTextSize(scale*15);
 
-         //move to onsurface create
-		
-
         setFocusable(true);
 
     }
@@ -92,7 +81,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
  
 
     @Override
-
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     	//used when shifted portrait/landscape
     	gameThread.setSurfaceSize(width, height, screenW, screenH);
@@ -102,8 +90,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
  
 
     @Override
-
     public void surfaceCreated(SurfaceHolder holder) {
+    	Toast.makeText(gameThread.context, "Touch your deck to play a card!", Toast.LENGTH_LONG).show();
     	egyptianratscrew.game.GameInfo.game = new Game();
         egyptianratscrew.game.GameInfo.game.start(gameThread.context);
         
@@ -164,9 +152,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     				screenH - blackPaint.getTextSize(),
     				blackPaint);
     		canvas.drawText(
-    				"Turn " + Integer.toString(egyptianratscrew.game.GameInfo.game.turn) , 
+    				"Turn: " + Integer.toString(egyptianratscrew.game.GameInfo.game.turn) , 
     				10, 
     				screenH/2,
+    				blackPaint);
+    		canvas.drawText(
+    				"Pile Size: " + Integer.toString(egyptianratscrew.game.GameInfo.game.discardPile.size()), 
+    				10, 
+    				screenH/2+ blackPaint.getTextSize(),
     				blackPaint);
 
     	}

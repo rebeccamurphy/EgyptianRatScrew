@@ -3,121 +3,131 @@ package egyptianratscrew.game;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import egyptianratscrew.activity.R;
 import egyptianratscrew.player.Computer;
 import egyptianratscrew.view.GameView;
 
 
+@SuppressLint("ShowToast")
 public class GameThread extends Thread {
+	
 private GameView view;
 public boolean running = false;
 public SurfaceHolder surfaceHolder;
 public Context context;
 public Handler handler;
-public float x;
-public float y;
-int move = 0;
-int slap =0;
-public boolean firstTurn = true;
-public boolean nextTurn = false;
 public Computer computer;
-private Toast gameOverToast; 
 private Toast notTurnToast;
 private Toast grabPileToast;
+private Toast computerGrabPileToast;
 private Toast slapToast;
+private Toast computerSlapToast;
 private Toast notSlapToast;
 private String winner;
+
+/***
+ * Constructor for GameThread, this thread runs the game. it handles touch input, drawing to the canvas
+ * and managing the computer thread.
+ * @param surfaceHolder
+ * @param context
+ * @param view
+ * @param handler
+ */
+
 public GameThread(SurfaceHolder surfaceHolder, Context context,GameView view, Handler handler ) {
     this.surfaceHolder = surfaceHolder;  
 	this.context = context;
 	this.view = view;
 	this.handler = handler;
-	computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view, handler);
+	computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, handler);
 	
 	notTurnToast = Toast.makeText(context, "Not your turn.", Toast.LENGTH_SHORT);
 	grabPileToast = Toast.makeText(context, "The pile is yours, tap it to take it.", Toast.LENGTH_SHORT);
 	slapToast = Toast.makeText(context, "You got the slap! Now play a card.", Toast.LENGTH_SHORT);
 	notSlapToast = Toast.makeText(context, "Not a slap!", Toast.LENGTH_SHORT);
-	gameOverToast = Toast.makeText(context, "Game Over!", Toast.LENGTH_SHORT);
-	
-	computer.slapToast = Toast.makeText(context, "Computer got the slap!", Toast.LENGTH_SHORT);
-	computer.grabPileToast = Toast.makeText(context, "Computer won the pile.", Toast.LENGTH_SHORT);
+	computerSlapToast = Toast.makeText(context, "Computer got the slap!", Toast.LENGTH_SHORT);
+	computerGrabPileToast = Toast.makeText(context, "Computer won the pile.", Toast.LENGTH_SHORT);
 	
 }
 
+/***
+ * Sets the thread running or not running.
+ * @param boolean run
+ */
 public void setRunning(boolean run) {
       running = run;
-      
-      
 }
+/***
+ * Method when surface is changed
+ * @param width
+ * @param height
+ * @param screenW
+ * @param screenH
+ */
 public void setSurfaceSize(int width, int height, int screenW, int screenH){
 	synchronized(this.surfaceHolder){
 		screenW = width;
 		screenH = height;
 	}
 }
-
+/***
+ * Threading running
+ */
 @Override
 public void run() {
+	
       while (running) {
     	  try {
-	  		Thread.sleep(33);	  		
-	    	drawGame();
-	    	egyptianratscrew.game.GameInfo.game.checkGameOver();
-	    	  
-	    	if (egyptianratscrew.game.GameInfo.game.gameOver&& !egyptianratscrew.game.GameInfo.game.discardPile.checkAllSlapRules()){
-	    		  //TOAST
-	    		//gameOverToast.show();
+	  		//Thread.sleep(33);	  		
+	    	drawGame();// draw game
+	    	if (egyptianratscrew.game.GameInfo.game.computerGetsPile)
+				//Computer is taking pile
+				computerGrabPileToast.show();
+	    	else if (computer.slap && egyptianratscrew.game.GameInfo.game.discardPile.isEmpty()){
+	    		//computer slapped the pile
+	    		computerSlapToast.show();
+	    		computer.slap = false;
+	    	}
+	    	egyptianratscrew.game.GameInfo.game.checkGameOver(); //check game over
+	    	if (egyptianratscrew.game.GameInfo.game.gameOver&& !egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
+	    		//if game over and the discard pile isn't slappable
 	        	if (egyptianratscrew.game.GameInfo.game.loser ==1)
 	    			winner = "You";
 	    		else
 	    			winner = "Computer";
-	        	
 	        	computer.setRunning(false);
 	        	running = false; 
-	        	
-	    		
 	    		handler.post(new Runnable() {
+	    			//Game Over Dialog
 	    		    @Override
 	    		    public void run() {
 	    		        	AlertDialog.Builder gameOverAlert =new AlertDialog.Builder(context);
-	    gameOverAlert.setTitle("Game Over!");
-	    gameOverAlert.setMessage(winner +" win!");
-	    gameOverAlert.setCancelable(false);
-	    gameOverAlert.setPositiveButton("Play again?", new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int whichButton) {
-	        	Intent createIntent = new Intent(context, egyptianratscrew.activity.GameActivity.class);
-	        	context.startActivity(createIntent);
-				
-	        }
-	    });
-	    gameOverAlert.setNegativeButton("Quit?", new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int whichButton) {
-	        	Intent createIntent = new Intent(context, egyptianratscrew.activity.MainActivity.class);
-	        	context.startActivity(createIntent);
-				
-	        }
-	    });
-	    gameOverAlert.show();
-    	
-	    		    
-	    		
-	    		
-	    		    }});
-	    	
-	    		
+						    gameOverAlert.setTitle("Game Over!");
+						    gameOverAlert.setMessage(winner +" win!");
+						    gameOverAlert.setCancelable(false);
+						    gameOverAlert.setPositiveButton("Play again?", new DialogInterface.OnClickListener() {
+							    public void onClick(DialogInterface dialog, int whichButton) {
+							    	Intent createIntent = new Intent(context, egyptianratscrew.activity.GameActivity.class);
+							    	context.startActivity(createIntent);
+							    }
+						    });
+						   gameOverAlert.setNegativeButton("Quit?", new DialogInterface.OnClickListener() {
+							   public void onClick(DialogInterface dialog, int whichButton) {
+								   Intent createIntent = new Intent(context, egyptianratscrew.activity.MainActivity.class);
+								   context.startActivity(createIntent);
+							   }
+						   });
+					gameOverAlert.show();	
+	    		    }
+	    		});
 	    	}
     	  }
     	  catch(Exception ex) {
@@ -128,6 +138,9 @@ public void run() {
       }
 }
 
+/***
+ * Method to call the draw method on the view
+ */
 
 public void drawGame(){
 	Canvas c = null;
@@ -144,7 +157,11 @@ public void drawGame(){
     }
 }
 
-
+/***
+ * Method that handles touch imput for player moves.
+ * @param event
+ * @return boolean true
+ */
 public boolean doTouchEvent(MotionEvent event){
 	synchronized(surfaceHolder){
 		int eventaction = event.getAction();
@@ -157,7 +174,6 @@ public boolean doTouchEvent(MotionEvent event){
 			Log.d("Touch", "true");
 			hitDiscard = egyptianratscrew.game.GameInfo.game.discardPile.checkActiveArea(X, Y);
 			hitPlayerPile = egyptianratscrew.game.GameInfo.game.Players.get(egyptianratscrew.game.GameInfo.game.turn).getHand().checkActiveArea(X, Y);
-			
 			
 			if (hitDiscard){
 				//HIT DISCARD 
@@ -174,7 +190,7 @@ public boolean doTouchEvent(MotionEvent event){
 					egyptianratscrew.game.GameInfo.game.slap(2);
 					slapToast.show();
 					Log.d("Computer Status", "restarted");
-					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view, handler);
+					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, handler);
 					computer.setRunning(true);
 					computer.start();
 				}
@@ -186,7 +202,7 @@ public boolean doTouchEvent(MotionEvent event){
 					computer.interrupt();
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
 					Log.d("Computer Status", "restarted");
-					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view, handler);
+					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, handler);
 					computer.setRunning(true);
 					computer.start();
 				}
@@ -203,7 +219,7 @@ public boolean doTouchEvent(MotionEvent event){
 					computer.interrupt();
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
 					Log.d("Computer Status", "restarted");
-					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, view, handler);
+					computer = new Computer(egyptianratscrew.game.GameInfo.game.secDelay, handler);
 					computer.setRunning(true);
 					computer.start();
 				} 
@@ -212,14 +228,11 @@ public boolean doTouchEvent(MotionEvent event){
 								egyptianratscrew.game.GameInfo.game.faceCard==null ))
 					//Human player can make move normally.
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
-				else if (egyptianratscrew.game.GameInfo.game.computerGetsPile)
-					//Computer is taking pile
-					Toast.makeText(context, "Computer won the pile.", Toast.LENGTH_SHORT).show();
+			
 				
 			}
 			
 			else if (egyptianratscrew.game.GameInfo.game.playerGetsPile){
-				//TOAST
 				Log.d("Grab pile", "to get pile");
 				grabPileToast.show();
 				
@@ -238,4 +251,5 @@ public boolean doTouchEvent(MotionEvent event){
 	}
 	return true;
 }
+
 }
