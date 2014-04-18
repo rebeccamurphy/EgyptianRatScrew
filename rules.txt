@@ -1,0 +1,17 @@
+Rules of Egyptian Rat Screw:
+
+Player 2 (human) goes first.
+A player makes a move my touching their deck. 
+
+Cards are placed on the center pile. 
+
+A player can slap the center pile when there is a sandwhich (the top three cards form a pattern of Card Rank 1, Card Rank 2, Card Rank 1) or a double (top 2 cards for a pattern of: Card Rank 1, Card Rank 1)
+
+When a facecard is played, the next player has a certain amount of chances to play another facecard or get a slap, other wise the player that put down the face card originally gets the pile.
+
+Ace: 4 chances
+King: 3 chances
+Queen: 2 chances
+Jack: 1 chance
+
+The goal of the game is to make the opposing player run out of cards, so they are no longer able to play. 
