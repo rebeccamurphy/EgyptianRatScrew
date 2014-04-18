@@ -3,17 +3,13 @@ package egyptianratscrew.card;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.util.Log;
 
-import egyptianratscrew.game.Game;
 import egyptianratscrew.game.Rule;
 import egyptianratscrew.player.Player;
 
@@ -152,28 +148,46 @@ public class DiscardPile extends Deck{
 	/*
 	 * Deck Methods
 	 */
+	/**
+	 * Returns card in deck at specified index
+	 * @param index
+	 * @return Card card at index
+	 */
 	public Card get(int index){
 		return deck.get(index);
 	}
+	
+	/***
+	 * Returns if discardPile is empty
+	 * @return boolean true if deck is empty, false otherwise
+	 */
 	public boolean isEmpty(){
 		return deck.isEmpty();
 	}
 	
+	/***
+	 *	Shuffles the discard pile. 
+	 */
 	public void shuffle(){
 		long seed = System.nanoTime();
 		Collections.shuffle(deck, new Random(seed));
 	}
-	
-	
-	public void calcActiveArea(){}
-	
+	/***
+	 * Method to add the discard pile to a player's hand, 
+	 * and clears the discardPile  
+	 * @param Player player
+	 */
 	public void addPileToHand(Player player){
 		//add current discard to players hand
 		player.addCard(deck);
 		deck = new ArrayList<Card>();
-
-				
 	}
+	
+	/***
+	 * Method to add the discard pile to a player's hand, 
+	 * and clears the discardPile  
+	 * @param Int player
+	 */
 	public void addPileToHand(int player){
 		//add current discard to players hand
 		egyptianratscrew.game.GameInfo.game.Players.get(player).addCard(deck);
@@ -182,11 +196,15 @@ public class DiscardPile extends Deck{
 				
 	}
 	
+	/***
+	 * Creates the discardPile, called when the came is started.
+	 * @param Context myContext
+	 * @param int screenW
+	 */
 	public void fillDeck(Context myContext, int screenW) {
 		int scaledCardW =0;
 		int scaledCardH =0;
 		for (int k=0; k<numDecks; k++){
-			
 			for (int i = 0; i < 4; i++) {
 				for (int j = 102; j < 115; j++) {
 					int tempId = j + (i * 100);
@@ -203,6 +221,7 @@ public class DiscardPile extends Deck{
 			}
 		}
 	}
+	
 	/*
 	 * End Deck Methods
 	 */
@@ -210,10 +229,16 @@ public class DiscardPile extends Deck{
 	/*
 	 * Start Draw Methods
 	 */
-	public void drawUpCards(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack, Paint paint){
-		
-	}
-	
+	/***
+	 * Method to draw the discardPile
+	 * @param canvas
+	 * @param screenW
+	 * @param screenH
+	 * @param scaledCardW
+	 * @param scaledCardH
+	 * @param scale
+	 * @param cardBack
+	 */
 	public void drawDiscardPile(Canvas canvas, int screenW,int screenH, int scaledCardW, int scaledCardH, float scale,Bitmap cardBack){
 		//should draw atleast 3 cards
 		//posibly down Cards as well
@@ -223,21 +248,20 @@ public class DiscardPile extends Deck{
 		{ //5 cards will be displayed on the screen 
 			int j =0;
 			for(int i = deck.size()-egyptianratscrew.game.GameInfo.game.cardsDrawn; i <deck.size(); i++ ){
-			try {canvas.drawBitmap(deck.get(i).getBitmap(),
+				try {
+					canvas.drawBitmap(deck.get(i).getBitmap(),
 					(screenW/2)- (scaledCardW/2) + j*scaledCardW/5,
 					(screenH/2)-(cardBack.getHeight()/2),
 					null);
-				j++;
-				
+					j++;
+					
+				}
+				catch(Exception e) {}
+				activeArea[0] = (int) ((screenW/2)- (scaledCardW/2) + 0*scaledCardW/5);
+				activeArea[1] = (int) ((screenH/2)-(cardBack.getHeight()/2));
+				activeArea[2] = (int) ((screenW/2)- (scaledCardW/2) + j*scaledCardW/5+ scaledCardW);
+				activeArea[3] = activeArea[1] + scaledCardH;
 			}
-			catch(Exception e) {}
-			activeArea[0] = (int) ((screenW/2)- (scaledCardW/2) + 0*scaledCardW/5);
-			activeArea[1] = (int) ((screenH/2)-(cardBack.getHeight()/2));
-			activeArea[2] = (int) ((screenW/2)- (scaledCardW/2) + j*scaledCardW/5+ scaledCardW);
-			activeArea[3] = activeArea[1] + scaledCardH;
-			//Log.d("Touch Discard Area ", "X " +Integer.toString(activeArea[0]) + ", Y" + Integer.toString(activeArea[1]) + " X" +
-			//		Integer.toString(activeArea[2]) + ", Y" + Integer.toString(activeArea[3]));
-		}
 		}
 	}
 	
@@ -246,5 +270,4 @@ public class DiscardPile extends Deck{
 	 */
 	
 	
-
 }

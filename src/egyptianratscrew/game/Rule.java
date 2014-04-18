@@ -1,33 +1,30 @@
 package egyptianratscrew.game;
 
-import java.util.ArrayList;
-
 public class Rule {
 
-	//private ArrayList<Rule> rules;
-	private String ruleName;
-	private int cardNum; //card num allowances 
-	private boolean active;
+	private int cardNum; //number of chances associated with face card.  
+	private boolean active; 
 	
+	/***
+	 * Constructor for Rule
+	 * @param int cards
+	 * @param boolean on
+	 */
 	public Rule(int cards, boolean on) {
 		cardNum =cards;
 		active = on;
 	}
-	/*
-	public Rule(String name, int cards, boolean on) {
-		ruleName = name;
-		cardNum =cards;
-		active = on;
-	}
-	
-	public String getName(){
-		return ruleName;
-	}
-	*/
+	/***
+	 * Returns number of chances associated with rule
+	 * @return int chances
+	 */
 	public int getNum(){
 		return cardNum;
 	}
-	
+	/***
+	 * Method to check if rule is in play
+	 * @return boolean active
+	 */
 	public boolean checkActive(){
 		return active;
 	}
