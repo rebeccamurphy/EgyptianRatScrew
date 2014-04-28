@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -19,9 +20,13 @@ public class OptionsActivity extends Activity {
 	
 	  @Override
 	  public void onCreate(Bundle savedInstanceState) {
+		  //create slider for computer speed
+		  //checkbox for toasts on
+		  //save button
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-	 
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.options_layout);
+		 addListenerOnButton();
 	  }
 	  
 	  // get the selected dropdown list value
