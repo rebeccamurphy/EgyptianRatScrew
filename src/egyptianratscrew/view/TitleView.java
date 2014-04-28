@@ -1,6 +1,7 @@
 package egyptianratscrew.view;
 
 import egyptianratscrew.activity.GameActivity;
+import egyptianratscrew.activity.OptionsActivity;
 import egyptianratscrew.activity.R;
 
 import android.content.Context;
@@ -110,10 +111,8 @@ public class TitleView extends View {
 				Intent gameIntent = new Intent(myContext, GameActivity.class);
 				myContext.startActivity(gameIntent);
 			} else if (optionButtonPressed) {
-				// Intent gameIntent = new Intent(myContext,
-				// OptionActivity.class);
-				// myContext.startActivity(gameIntent);
-				// For a later Assignment
+				Intent optionsIntent = new Intent(myContext, OptionsActivity.class);
+				myContext.startActivity(optionsIntent);
 			}
 			// makes sure both buttons are no longer being pressed
 			playButtonPressed = false;

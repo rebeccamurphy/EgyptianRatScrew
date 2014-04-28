@@ -4,5 +4,13 @@
     <string name="app_name">Egyptian Rat Screw</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="save_btn">Save</string>
+       <string name="rules_prompt">Choose rules</string>
+       
+    <string-array name="rules_array">
+        <item>Default Rules</item>
+        <item>Custom Rules</item>
+    </string-array>
+    
 
 </resources>
