@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import egyptianratscrew.card.DiscardPile;
@@ -87,7 +88,7 @@ public class Game {
 	}
 	public Game(Game gameCopy) {
 		//default values
-		discardPile = new DiscardPile(gameCopy.discardPile.numDecks);
+		
 		Players = new HashMap<Integer, Player>();
 		touchDisabled =false;
 		gameOver = false;
@@ -98,6 +99,7 @@ public class Game {
 		turn =2;
 		
 		//custom values
+		discardPile = new DiscardPile(gameCopy.discardPile.numDecks);
 		this.secDelay = gameCopy.secDelay;
 		this.moveDelay = gameCopy.moveDelay;
 		this.hints = gameCopy.hints;
@@ -108,6 +110,31 @@ public class Game {
 			turnList.add(i);
 		}
 	}
+	public Game(SharedPreferences settings){
+		//default values
+		
+		Players = new HashMap<Integer, Player>();
+		touchDisabled =false;
+		gameOver = false;
+		firstTurn = true;
+		cardsDrawn = 5;
+		chances = 0;
+		numPlayers = 2;
+		turn =2;
+				
+		//custom values 
+		discardPile = new DiscardPile(settings.getInt("deckNum", 1));
+		this.secDelay = settings.getInt("slapSpeed", 2000);
+		this.moveDelay = settings.getInt("turnSpeed", 2000);
+		this.hints = settings.getBoolean("hints", false);
+		this.sound = settings.getBoolean("sound", false);
+		turnList = new ArrayList<Integer>() ;
+		for (int i=1; i <= numPlayers;i++ ){
+			Players.put(i, new Player(i));
+			turnList.add(i);
+		}
+	}
+	
 	/**
 	 * Deals cards to players at the start of the game.
 	 */

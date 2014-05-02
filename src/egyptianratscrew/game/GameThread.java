@@ -4,6 +4,7 @@ package egyptianratscrew.game;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.media.AudioManager;
@@ -193,7 +194,10 @@ public boolean doTouchEvent(MotionEvent event){
 			if ((X >context.getResources().getDisplayMetrics().widthPixels - soundIcon.getWidth() -10 && X < context.getResources().getDisplayMetrics().widthPixels -10)
 					&& (Y < soundIcon.getHeight() && Y >0)){
 				Log.d("touch", "soundicon touched");
-				egyptianratscrew.game.GameInfo.game.sound = !egyptianratscrew.game.GameInfo.game.sound; 
+				egyptianratscrew.game.GameInfo.game.sound = !egyptianratscrew.game.GameInfo.game.sound;
+				SharedPreferences.Editor editor =context.getSharedPreferences(egyptianratscrew.game.GameInfo.PREFERENCES_NAME, 0).edit();
+				editor.putBoolean("sound", egyptianratscrew.game.GameInfo.game.sound);
+				editor.commit();
 			}
 			
 			
