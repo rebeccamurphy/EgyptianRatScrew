@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import egyptianratscrew.game.Rule;
 import egyptianratscrew.player.Player;
@@ -25,6 +26,23 @@ public class DiscardPile extends Deck{
 	public DiscardPile() {
 		deck= new ArrayList<Card>();
 		numDecks = 1;
+		slappable = false;
+		
+		//default rules
+		rules = new HashMap<String, Rule>();
+		rules.put("ace", new Rule(4, true));
+		rules.put("king",new Rule( 3, true));
+		rules.put("queen",new Rule( 2, true));
+		rules.put("jack", new Rule(1, true));
+		
+		rules.put("sandwich", new Rule( 3, true));
+		rules.put("double", new Rule( 2, true));
+		
+	}
+	public DiscardPile(int numDecks) {
+		deck= new ArrayList<Card>();
+		Log.d("deck", "num decks in discardpile" + numDecks);
+		this.numDecks = numDecks;
 		slappable = false;
 		
 		//default rules
@@ -202,6 +220,7 @@ public class DiscardPile extends Deck{
 	 * @param int screenW
 	 */
 	public void fillDeck(Context myContext, int screenW) {
+		Log.d("deck", "numDecks" +numDecks);
 		int scaledCardW =0;
 		int scaledCardH =0;
 		for (int k=0; k<numDecks; k++){
@@ -220,6 +239,7 @@ public class DiscardPile extends Deck{
 				}	
 			}
 		}
+		Log.d("deck", "size " + deck.size());
 	}
 	
 	/*

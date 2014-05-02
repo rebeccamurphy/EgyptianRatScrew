@@ -23,13 +23,17 @@ public class Game {
 	public int numCardsPlayed;
 	public int chances;
 	public int secDelay;
+	public int moveDelay;
 	public int cardsDrawn;
+	public int loser;
+	public int winner;
 	public boolean gameOver;
 	public boolean firstTurn;
 	public boolean playerGetsPile = false;
 	public boolean computerGetsPile = false;
-	public int loser;
-	public int winner;
+	public boolean hints = true;
+	public boolean sound = false;
+
 	
 	/***
 	 * Default Constructor for game
@@ -38,11 +42,11 @@ public class Game {
 		discardPile = new DiscardPile();
 		numPlayers =2;
 		Players = new HashMap<Integer, Player>();
-		numPlayers =2;
 		touchDisabled =false;
 		gameOver = false;
 		firstTurn = true;
 		secDelay = 3000;
+		moveDelay = 2000;
 		cardsDrawn = 5;
 		chances = 0;
 		Players.put(1, new Player(1));//computer
@@ -55,14 +59,26 @@ public class Game {
 	/***
 	 * Custom Game construct for when options are implemented
 	 * @param Decks
-	 * @param numberPlayers
 	 * @param secsDelay
 	 */
-	public Game(int Decks, int numberPlayers, int secsDelay) {
-		discardPile= new DiscardPile ();
-		numPlayers = numberPlayers;
+	public Game(int numDecks, int secDelay, int moveDelay, boolean hints, boolean sound) {
+		//default values
+		Log.d("deck", "num decks in game" +numDecks);
+		discardPile = new DiscardPile(numDecks);
+		Players = new HashMap<Integer, Player>();
+		touchDisabled =false;
+		gameOver = false;
+		firstTurn = true;
+		cardsDrawn = 5;
+		chances = 0;
+		numPlayers = 2;
 		turn =2;
-		secDelay = secsDelay;
+		
+		//custom values
+		this.secDelay = secDelay;
+		this.moveDelay = moveDelay;
+		this.hints = hints;
+		this.sound = sound;
 		turnList = new ArrayList<Integer>() ;
 		for (int i=1; i <= numPlayers;i++ ){
 			Players.put(i, new Player(i));

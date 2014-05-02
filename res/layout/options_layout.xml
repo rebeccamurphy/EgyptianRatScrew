@@ -1,115 +1,140 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <Button
-        android:id="@+id/save_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:gravity="center_vertical"
-        android:text="@string/save_btn" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="Reset" />
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
     <ToggleButton
-        android:id="@+id/toggleButton2"
+        android:id="@+id/HintBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/toggleButton1"
-        android:layout_alignBottom="@+id/toggleButton1"
-        android:layout_toLeftOf="@+id/button1"
-        android:text="ToggleButton" />
-
-    <Spinner
-        android:id="@+id/spinnerRules"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:entries="@array/rules_array"
-        android:prompt="@string/rules_prompt" />
-
-    <SeekBar
-        android:id="@+id/seekBar2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/textView3"
-        android:layout_marginTop="36dp" />
+        android:layout_alignBottom="@+id/SoundBtn"
+        android:layout_toRightOf="@+id/slapSpeed"
+        android:textOff="Hints Off"
+        android:textOn="Hints On" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/spinnerRules"
-        android:text="Turn Speed"
+        android:layout_alignRight="@+id/TextView01"
+        android:layout_centerVertical="true"
+        android:text="@string/SSpd"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/slapSpeed"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/textView1"
+        android:ems="10"
+        android:hint="@string/two"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/turnSpeed"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/TextView01"
+        android:layout_alignBottom="@+id/TextView01"
+        android:layout_alignLeft="@+id/slapSpeed"
+        android:ems="10"
+        android:hint="@string/two"
+        android:inputType="number" />
+
+    <ToggleButton
+        android:id="@+id/SoundBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_below="@+id/slapSpeed"
+        android:layout_marginTop="43dp"
+        android:textOff="Sound Off"
+        android:textOn="Sound On" />
+
+    <Button
+        android:id="@+id/SaveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/SoundBtn"
+        android:layout_marginBottom="34dp"
+        android:text="@string/save_btn" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/slapSpeed"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_marginBottom="40dp"
+        android:text="@string/TSpd"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="42dp"
+        android:text="@string/NumDecks"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/ResetBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/SaveBtn"
+        android:layout_alignBottom="@+id/SaveBtn"
+        android:layout_toRightOf="@+id/slapSpeed"
+        android:text="@string/reset_btn" />
+
+    <RadioGroup
+        android:id="@+id/DeckNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/turnSpeed"
+        android:layout_alignRight="@+id/ResetBtn" >
+
+        <RadioButton
+            android:id="@+id/deck1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/one" />
+
+        <RadioButton
+            android:id="@+id/deck2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/two" />
+
+        <RadioButton
+            android:id="@+id/deck3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/three" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/TextView02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/turnSpeed"
+        android:layout_alignBottom="@+id/turnSpeed"
+        android:layout_alignLeft="@+id/DeckNum"
+        android:text="@string/secs"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="92dp"
-        android:text="Slap Speed"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignLeft="@+id/TextView02"
+        android:text="@string/secs"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <SeekBar
-        android:id="@+id/seekBar1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="17dp" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/toggleButton1"
-        android:text="Rules"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView5"
-        android:layout_alignBottom="@+id/textView5"
-        android:layout_alignRight="@+id/toggleButton1"
-        android:text="Sounds"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <ToggleButton
-        android:id="@+id/toggleButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/save_btn"
-        android:layout_marginBottom="52dp"
-        android:layout_toLeftOf="@+id/textView3"
-        android:text="ToggleButton" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/toggleButton2"
-        android:layout_alignRight="@+id/toggleButton2"
-        android:layout_marginBottom="16dp"
-        android:text="Hints"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

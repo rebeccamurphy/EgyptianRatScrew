@@ -48,6 +48,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
         
+        if (egyptianratscrew.game.GameInfo.game==null)
+        	//creates default game if options were not changed. TODO
+        	//prob need to be fixed if it remembers settings
+        	egyptianratscrew.game.GameInfo.game = new Game();
+        
         gameThread = new GameThread(holder, context,this, new Handler() {
             @Override
             public void handleMessage(Message m) {
@@ -92,7 +97,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
     	Toast.makeText(gameThread.context, "Touch your deck to play a card!", Toast.LENGTH_LONG).show();
-    	egyptianratscrew.game.GameInfo.game = new Game();
+    	//egyptianratscrew.game.GameInfo.game = new Game();
         egyptianratscrew.game.GameInfo.game.start(gameThread.context);
         
         gameThread.setRunning(true);

@@ -82,20 +82,23 @@ public final class R {
         public static final int title_graphic=0x7f02003b;
     }
     public static final class id {
+        public static final int DeckNum=0x7f09000a;
         public static final int GAME=0x7f090000;
-        public static final int action_settings=0x7f09000d;
-        public static final int button1=0x7f090002;
-        public static final int save_btn=0x7f090001;
-        public static final int seekBar1=0x7f09000a;
-        public static final int seekBar2=0x7f090007;
-        public static final int spinnerRules=0x7f090006;
-        public static final int textView1=0x7f090005;
-        public static final int textView2=0x7f090009;
-        public static final int textView3=0x7f090008;
-        public static final int textView4=0x7f09000c;
-        public static final int textView5=0x7f09000b;
-        public static final int toggleButton1=0x7f090004;
-        public static final int toggleButton2=0x7f090003;
+        public static final int HintBtn=0x7f090001;
+        public static final int ResetBtn=0x7f090009;
+        public static final int SaveBtn=0x7f090008;
+        public static final int SoundBtn=0x7f090002;
+        public static final int TextView01=0x7f090005;
+        public static final int TextView02=0x7f09000e;
+        public static final int action_settings=0x7f090010;
+        public static final int deck1=0x7f09000b;
+        public static final int deck2=0x7f09000c;
+        public static final int deck3=0x7f09000d;
+        public static final int slapSpeed=0x7f090003;
+        public static final int textView1=0x7f090006;
+        public static final int textView2=0x7f090004;
+        public static final int textView3=0x7f09000f;
+        public static final int turnSpeed=0x7f090007;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -106,11 +109,19 @@ public final class R {
         public static final int main=0x7f080000;
     }
     public static final class string {
+        public static final int NumDecks=0x7f050006;
+        public static final int SSpd=0x7f05000b;
+        public static final int TSpd=0x7f05000a;
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
-        public static final int hello_world=0x7f050002;
-        public static final int rules_prompt=0x7f050004;
-        public static final int save_btn=0x7f050003;
+        public static final int one=0x7f050007;
+        public static final int reset_btn=0x7f050004;
+        public static final int rules=0x7f050005;
+        public static final int rules_prompt=0x7f050003;
+        public static final int save_btn=0x7f050002;
+        public static final int secs=0x7f05000c;
+        public static final int three=0x7f050009;
+        public static final int two=0x7f050008;
     }
     public static final class style {
         /** 

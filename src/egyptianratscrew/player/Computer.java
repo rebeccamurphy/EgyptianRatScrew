@@ -7,6 +7,7 @@ public class Computer extends Thread {
 	public boolean running = false;
 	public boolean slap = false;
 	public int secDelay;
+	public int moveDelay;
 	public boolean makingMove = false;
 	public Handler handler;
 	
@@ -15,11 +16,12 @@ public class Computer extends Thread {
 	 * @param secDelay
 	 * @param handler
 	 */
-	public Computer(int secDelay, Handler handler) {
+	public Computer(int secDelay, int moveDelay, Handler handler) {
 		this.secDelay = secDelay;
 		this.makingMove = false;
 		this.running = false;
 		this.handler = handler;
+		this.moveDelay = moveDelay;
 		
 	}
 	/***
@@ -82,7 +84,7 @@ public class Computer extends Thread {
 		try {
 			running = false; 
 			makingMove = true;
-			Thread.sleep(2000);
+			Thread.sleep(moveDelay);
 			egyptianratscrew.game.GameInfo.game.makePlay(1);
 		    Log.i("Computer", "made play");
 		    makingMove = false;
@@ -119,7 +121,7 @@ public class Computer extends Thread {
 		try {
 			running = false; 
 			makingMove = true;
-			Thread.sleep(2000);
+			Thread.sleep(moveDelay);
 			egyptianratscrew.game.GameInfo.game.discardPile.addPileToHand(1);
 		    Log.i("Computer", "got pile");
 		    egyptianratscrew.game.GameInfo.game.computerGetsPile = false;

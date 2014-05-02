@@ -2,10 +2,27 @@
 <resources>
 
     <string name="app_name">Egyptian Rat Screw</string>
+    
+    
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    
     <string name="save_btn">Save</string>
-       <string name="rules_prompt">Choose rules</string>
+    <string name="rules_prompt">Choose rules</string>
+    <string name="reset_btn">Reset</string>
+    <string name="rules">Rules</string>
+    
+    
+    <string name="NumDecks">Number of Decks</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    
+    <string name="TSpd">Turn Speed</string>
+    <string name="SSpd">Slap Speed</string>
+    <string name="secs">seconds</string>
+
+    
+    
        
     <string-array name="rules_array">
         <item>Default Rules</item>
