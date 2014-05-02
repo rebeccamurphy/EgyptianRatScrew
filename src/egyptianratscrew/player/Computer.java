@@ -1,5 +1,9 @@
 package egyptianratscrew.player;
 
+import egyptianratscrew.activity.R;
+import android.content.Context;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Handler;
 import android.util.Log;
 
@@ -11,18 +15,26 @@ public class Computer extends Thread {
 	public boolean makingMove = false;
 	public Handler handler;
 	
+	private AudioManager audioManager;
+	private float volume;
+	private static SoundPool sounds;
+	private static int cardSound;
+	private static int compSlapSound;
 	/***
 	 * Constructor for Computer Player 
 	 * @param secDelay
 	 * @param handler
 	 */
-	public Computer(int secDelay, int moveDelay, Handler handler) {
+	public Computer(Context context, int secDelay, int moveDelay, Handler handler) {
 		this.secDelay = secDelay;
 		this.makingMove = false;
 		this.running = false;
 		this.handler = handler;
 		this.moveDelay = moveDelay;
-		
+		sounds = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+		cardSound = sounds.load(context, R.raw.cardsound, 1);
+		compSlapSound = sounds.load(context, R.raw.compslapsound, 1);
+		audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 	}
 	/***
 	 * Set computer running
@@ -38,7 +50,7 @@ public class Computer extends Thread {
 	@Override
 	public void run(){
 		while(running){
-			 
+			volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC); 
 			try {
 				if (egyptianratscrew.game.GameInfo.game.discardPile.checkSlappable()){
 				//computer tries to slap pile if the pile is slappables
@@ -85,6 +97,7 @@ public class Computer extends Thread {
 			running = false; 
 			makingMove = true;
 			Thread.sleep(moveDelay);
+			playCardSound(volume);
 			egyptianratscrew.game.GameInfo.game.makePlay(1);
 		    Log.i("Computer", "made play");
 		    makingMove = false;
@@ -104,6 +117,7 @@ public class Computer extends Thread {
 		try {
 			makingMove = true;
 			Thread.sleep(secDelay);
+			compSlapSound(volume);
 			egyptianratscrew.game.GameInfo.game.slap(1);
 			Log.d("Computer Slap", "Computer slapped pile");
 			makingMove =  false;
@@ -122,6 +136,7 @@ public class Computer extends Thread {
 			running = false; 
 			makingMove = true;
 			Thread.sleep(moveDelay);
+			compSlapSound(volume);
 			egyptianratscrew.game.GameInfo.game.discardPile.addPileToHand(1);
 		    Log.i("Computer", "got pile");
 		    egyptianratscrew.game.GameInfo.game.computerGetsPile = false;
@@ -136,5 +151,15 @@ public class Computer extends Thread {
 		    running = false;
 		}	
 	}
-	
+
+	public void playCardSound(float volume){
+		if (egyptianratscrew.game.GameInfo.game.sound){
+			sounds.play(cardSound, volume, volume, 1, 0, 1);
+		}
+	}
+	public void compSlapSound(float volume){
+		if (egyptianratscrew.game.GameInfo.game.sound){
+			sounds.play(compSlapSound, volume, volume, 1, 0, 1);
+		}
+	}
 }

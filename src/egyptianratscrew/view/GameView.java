@@ -35,8 +35,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private Paint blackPaint;
 	private Paint redPaint;
 	private Bitmap cardBack;
+	private Bitmap soundOn;
+	private Bitmap soundOff;
 	private GameThread gameThread;
-
+	
 	/**
 	 * Constructor for GameView
 	 * @param context
@@ -51,15 +53,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if (egyptianratscrew.game.GameInfo.game==null)
         	//creates default game if options were not changed. TODO
         	//prob need to be fixed if it remembers settings
-        	egyptianratscrew.game.GameInfo.game = new Game();
         
-        gameThread = new GameThread(holder, context,this, new Handler() {
-            @Override
-            public void handleMessage(Message m) {
-
-            }
-        });
- 
         redPaint = new Paint();
         redPaint.setColor(Color.RED);
        
@@ -71,7 +65,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		scaledCardH = (int) (scaledCardW*1.28);
 		Bitmap tempBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.card_back);
 		cardBack = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
-
+		
+		tempBitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.soundon);
+		soundOn = Bitmap.createScaledBitmap(tempBitmap, (int) (screenW/4), (int) (screenW/4*1.1), false);
+		tempBitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.soundoff);
+		soundOff = Bitmap.createScaledBitmap(tempBitmap, (int) (screenW/4), (int) (screenW/4*1.1), false);
+		
 		blackPaint = new Paint();
 		blackPaint.setAntiAlias(true);
 		blackPaint.setColor(Color.BLACK);
@@ -79,6 +78,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		blackPaint.setTextAlign(Paint.Align.LEFT);
 		blackPaint.setTextSize(scale*15);
 
+		egyptianratscrew.game.GameInfo.game = new Game();
+        
+        gameThread = new GameThread(holder, context,this, new Handler() {
+            @Override
+            public void handleMessage(Message m) {
+
+            }
+        }, soundOff);
+ 
         setFocusable(true);
 
     }
@@ -97,7 +105,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
     	Toast.makeText(gameThread.context, "Touch your deck to play a card!", Toast.LENGTH_LONG).show();
-    	//egyptianratscrew.game.GameInfo.game = new Game();
+    	if (egyptianratscrew.game.GameInfo.game!=null)
+    		egyptianratscrew.game.GameInfo.game = new Game(egyptianratscrew.game.GameInfo.game);
         egyptianratscrew.game.GameInfo.game.start(gameThread.context);
         
         gameThread.setRunning(true);
@@ -167,6 +176,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     				screenH/2+ blackPaint.getTextSize(),
     				blackPaint);
 
+    		if (egyptianratscrew.game.GameInfo.game.sound){
+    			canvas.drawBitmap(soundOn, screenW - soundOn.getWidth() -10, 0, null );
+    		}
+    		else 
+    			canvas.drawBitmap(soundOff, screenW - soundOn.getWidth() - 10, 0, null );
     	}
     	catch (Exception e){
     		

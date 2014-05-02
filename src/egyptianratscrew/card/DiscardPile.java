@@ -16,7 +16,7 @@ import egyptianratscrew.player.Player;
 
 public class DiscardPile extends Deck{
 
-	private int numDecks;
+	public int numDecks;
 	public HashMap<String,Rule> rules;
 	private boolean slappable;
 

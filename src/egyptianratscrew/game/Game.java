@@ -85,6 +85,29 @@ public class Game {
 			turnList.add(i);
 		}
 	}
+	public Game(Game gameCopy) {
+		//default values
+		discardPile = new DiscardPile(gameCopy.discardPile.numDecks);
+		Players = new HashMap<Integer, Player>();
+		touchDisabled =false;
+		gameOver = false;
+		firstTurn = true;
+		cardsDrawn = 5;
+		chances = 0;
+		numPlayers = 2;
+		turn =2;
+		
+		//custom values
+		this.secDelay = gameCopy.secDelay;
+		this.moveDelay = gameCopy.moveDelay;
+		this.hints = gameCopy.hints;
+		this.sound = gameCopy.sound;
+		turnList = new ArrayList<Integer>() ;
+		for (int i=1; i <= numPlayers;i++ ){
+			Players.put(i, new Player(i));
+			turnList.add(i);
+		}
+	}
 	/**
 	 * Deals cards to players at the start of the game.
 	 */
