@@ -246,7 +246,7 @@ public boolean doTouchEvent(MotionEvent event){
 					 !egyptianratscrew.game.GameInfo.game.playerGetsPile ){
 				Log.d("Turn", "Not yours hitplayer Pile detected");
 				//HIT PLAYER PILE
-				if (computer.makingMove && !egyptianratscrew.game.GameInfo.game.computerGetsPile){
+				if (computer.makingMove && !egyptianratscrew.game.GameInfo.game.computerGetsPile && egyptianratscrew.game.GameInfo.game.faceCard==null ){
 					//Human player interrupts computer slap with move
 					playCardSound(volume);
 					computer.interrupt();
