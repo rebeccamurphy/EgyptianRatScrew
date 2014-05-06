@@ -40,13 +40,6 @@ public class OptionsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.options_layout);
-		 addListenerOnButton();
-	  }
-	  
-	  // get the selected dropdown list value
-	  public void addListenerOnButton() {
-	 
-		
 		btnSave = (Button) findViewById(R.id.SaveBtn);
 		btnReset = (Button) findViewById(R.id.ResetBtn);
 		sSpeed = (EditText) findViewById(R.id.slapSpeed);
@@ -56,12 +49,24 @@ public class OptionsActivity extends Activity {
 		deckNum = (RadioGroup) findViewById(R.id.DeckNum);
 		
 		//TODO change hint to match pref
-		if (egyptianratscrew.game.GameInfo.PREFERENCES_NAME !=null){
 			SharedPreferences settings = getSharedPreferences(egyptianratscrew.game.GameInfo.PREFERENCES_NAME, 0);
-			sSpeed.setHint(settings.getInt("slapSpeed", 2));
-			tSpeed.setHint(settings.getInt("turnSpeed", 2));
+					
+			soundTog.setChecked(settings.getBoolean("sound", false));
+			hintsTog.setChecked(settings.getBoolean("hints", false));
 			
-		}
+			sSpeed.setHint(Integer.toString(settings.getInt("slapSpeed", 2)));
+			tSpeed.setHint(Integer.toString(settings.getInt("turnSpeed", 2)));
+	
+		
+		addListenerOnButton();
+		
+		
+					
+	  }
+	  
+	  // get the selected dropdown list value
+	  public void addListenerOnButton() {
+	 
 			
 		btnSave.setOnClickListener(new OnClickListener() {
 	 
@@ -71,11 +76,9 @@ public class OptionsActivity extends Activity {
 			 sound = soundTog.getText().toString().equals("Sound On") ? true: false;
 			 hints = hintsTog.getText().toString().equals("Hints On") ? true: false; 
 			 selectedDeckNum = (RadioButton) findViewById(deckNum.getCheckedRadioButtonId());
-			 turnSpeed = tSpeed.getText().toString().isEmpty()? 2000 : Integer.parseInt(tSpeed.getText().toString()) *1000;
-			 slapSpeed = sSpeed.getText().toString().isEmpty()? 2000 : Integer.parseInt(sSpeed.getText().toString()) *1000;
-			 if (egyptianratscrew.game.GameInfo.PREFERENCES_NAME == null)
-				 egyptianratscrew.game.GameInfo.PREFERENCES_NAME = "Preferences";
-			 
+			 turnSpeed = tSpeed.getText().toString().isEmpty()? 2 : Integer.parseInt(tSpeed.getText().toString()) ;
+			 slapSpeed = sSpeed.getText().toString().isEmpty()? 2 : Integer.parseInt(sSpeed.getText().toString()) ;
+			
 			SharedPreferences settings = getSharedPreferences(egyptianratscrew.game.GameInfo.PREFERENCES_NAME, 0);
 			SharedPreferences.Editor editor= settings.edit();
 			editor.putBoolean("sound", sound);
@@ -83,9 +86,10 @@ public class OptionsActivity extends Activity {
 			editor.putInt("deckNum", Integer.parseInt(selectedDeckNum.getText().toString()));
 			editor.putInt("turnSpeed", turnSpeed);
 			editor.putInt("slapSpeed", slapSpeed);
+			editor.putBoolean("prefs", true);
 			editor.commit(); 
 			 //create new game
-			 egyptianratscrew.game.GameInfo.game = new Game(settings);
+			 //egyptianratscrew.game.GameInfo.game = new Game(settings);
 			  
 			 //toast settings saved
 			 Toast.makeText(getApplicationContext(),"Saved!", Toast.LENGTH_SHORT).show();
@@ -100,8 +104,7 @@ public class OptionsActivity extends Activity {
 			 
 			  @Override
 			  public void onClick(View v) {
-				  if (egyptianratscrew.game.GameInfo.PREFERENCES_NAME ==null)
-					  egyptianratscrew.game.GameInfo.PREFERENCES_NAME = "Preferences";
+				 
 				  SharedPreferences settings = getSharedPreferences(egyptianratscrew.game.GameInfo.PREFERENCES_NAME, 0);
 					SharedPreferences.Editor editor= settings.edit();
 					editor.putBoolean("sound", false);
@@ -111,7 +114,7 @@ public class OptionsActivity extends Activity {
 					editor.putInt("slapSpeed", 2000);
 					editor.commit(); 
 				  //makes default game  
-				  egyptianratscrew.game.GameInfo.game = new Game();
+				  //egyptianratscrew.game.GameInfo.game = new Game();
 				  //make toast
 				  Toast.makeText(getApplicationContext(),"Reset!", Toast.LENGTH_SHORT).show();
 				  //return to main screen

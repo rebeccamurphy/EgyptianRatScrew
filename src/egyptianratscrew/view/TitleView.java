@@ -3,9 +3,11 @@ package egyptianratscrew.view;
 import egyptianratscrew.activity.GameActivity;
 import egyptianratscrew.activity.OptionsActivity;
 import egyptianratscrew.activity.R;
+import egyptianratscrew.game.Game;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -48,6 +50,18 @@ public class TitleView extends View {
 				R.drawable.play_button_down);
 		optionButtonDown = BitmapFactory.decodeResource(getResources(),
 				R.drawable.option_button_down);
+	//define default shared prefs here if options is not pressed TODO
+		SharedPreferences settings = context.getSharedPreferences(egyptianratscrew.game.GameInfo.PREFERENCES_NAME, 0);
+		if (!settings.getBoolean("prefs", false)){
+			SharedPreferences.Editor editor= settings.edit();
+			editor.putBoolean("sound", false);
+			editor.putBoolean("hints", false);
+			editor.putInt("deckNum", 1);
+			editor.putInt("turnSpeed", 2);
+			editor.putInt("slapSpeed", 2);
+			editor.commit();
+		}
+		egyptianratscrew.game.GameInfo.game = new Game(context.getSharedPreferences(egyptianratscrew.game.GameInfo.PREFERENCES_NAME, 0));
 	}
 
 	@Override

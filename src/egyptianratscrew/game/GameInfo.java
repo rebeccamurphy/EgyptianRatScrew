@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class GameInfo extends Application {
 	public static Game game = null;
-	public static String PREFERENCES_NAME = null;
+	public static final String PREFERENCES_NAME = "Preferences";
 	
 	public Game getGame(){
 		return game;

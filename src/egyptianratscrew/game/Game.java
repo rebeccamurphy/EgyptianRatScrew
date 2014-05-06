@@ -124,8 +124,8 @@ public class Game {
 				
 		//custom values 
 		discardPile = new DiscardPile(settings.getInt("deckNum", 1));
-		this.secDelay = settings.getInt("slapSpeed", 2000);
-		this.moveDelay = settings.getInt("turnSpeed", 2000);
+		this.secDelay = settings.getInt("slapSpeed", 2000) *1000;
+		this.moveDelay = settings.getInt("turnSpeed", 2000)*1000;
 		this.hints = settings.getBoolean("hints", false);
 		this.sound = settings.getBoolean("sound", false);
 		turnList = new ArrayList<Integer>() ;
