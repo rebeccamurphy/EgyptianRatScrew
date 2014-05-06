@@ -256,13 +256,16 @@ public boolean doTouchEvent(MotionEvent event){
 					computer.setRunning(true);
 					computer.start();
 				} 
-				else if (!egyptianratscrew.game.GameInfo.game.computerGetsPile && 
-							(egyptianratscrew.game.GameInfo.game.chances >0 || 
-								egyptianratscrew.game.GameInfo.game.faceCard==null ))
-					//Human player can make move normally.
+			else if (egyptianratscrew.game.GameInfo.game.chances >0 && egyptianratscrew.game.GameInfo.game.faceCard!=null){
+					//Human player plays card on facecard
 					playCardSound(volume);
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
-			
+				}
+			else if(egyptianratscrew.game.GameInfo.game.faceCard==null && (!egyptianratscrew.game.GameInfo.game.computerGetsPile || !egyptianratscrew.game.GameInfo.game.playerGetsPile)) {
+					//normal move 
+					playCardSound(volume);
+					egyptianratscrew.game.GameInfo.game.makePlay(2);
+				} 
 				
 			}
 			
