@@ -201,7 +201,7 @@ public boolean doTouchEvent(MotionEvent event){
 			}
 			
 			
-			else if (hitDiscard){
+			if (hitDiscard){
 				//HIT DISCARD 
 				if (egyptianratscrew.game.GameInfo.game.playerGetsPile){
 					//Human takes pile if the computer has run out of face card chances
@@ -258,11 +258,13 @@ public boolean doTouchEvent(MotionEvent event){
 				} 
 			else if (egyptianratscrew.game.GameInfo.game.chances >0 && egyptianratscrew.game.GameInfo.game.faceCard!=null){
 					//Human player plays card on facecard
+				Log.d("bug", "first check not working");
 					playCardSound(volume);
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
 				}
-			else if(egyptianratscrew.game.GameInfo.game.faceCard==null && (!egyptianratscrew.game.GameInfo.game.computerGetsPile || !egyptianratscrew.game.GameInfo.game.playerGetsPile)) {
+			else if(egyptianratscrew.game.GameInfo.game.faceCard==null && !egyptianratscrew.game.GameInfo.game.computerGetsPile && !egyptianratscrew.game.GameInfo.game.playerGetsPile) {
 					//normal move 
+				Log.d("bug", "second check not working");
 					playCardSound(volume);
 					egyptianratscrew.game.GameInfo.game.makePlay(2);
 				} 
